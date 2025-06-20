@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "806588779429",
+    "project_id": "takipapp-d1574",
+    "storage_bucket": "takipapp-d1574.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806588779429:android:b5983de47fb9365359364c",
+        "android_client_info": {
+          "package_name": "com.truyazilim.takip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWSf1XiP4Sv_6f2TEwEawcAOihhvkGrm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
