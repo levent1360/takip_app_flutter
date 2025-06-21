@@ -17,8 +17,12 @@ class _ShopHomePageState extends State<ShopHomePage> {
   @override
   void initState() {
     super.initState();
-    _productsFuture = sl<UrunService>().getProducts();
+    getProducts();
     print(_productsFuture);
+  }
+
+  Future<void> getProducts() async {
+    _productsFuture = sl<UrunService>().getProducts();
   }
 
   @override
@@ -64,12 +68,19 @@ class _ShopHomePageState extends State<ShopHomePage> {
               // Shop Markets
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Shop Markets',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text('See All', style: TextStyle(color: Colors.grey)),
+                  IconButton(
+                    onPressed: () async {
+                      await getProducts();
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.refresh),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -186,8 +197,8 @@ class ShopCategory extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final String image;
   final String title;
-  final int price;
-  final int oldPrice;
+  final double price;
+  final double oldPrice;
   final String url;
   const ProductCard({
     super.key,
@@ -227,12 +238,13 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: Image.network(
                   image,
-                  height: 140,
+                  height: 130,
+                  alignment: Alignment.topCenter,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
-              Positioned(
+              const Positioned(
                 right: 10,
                 top: 10,
                 child: Icon(Icons.favorite_border),
@@ -243,6 +255,8 @@ class ProductCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -251,12 +265,12 @@ class ProductCard extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "\$$price",
+                  "$price ₺",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  "\$$oldPrice",
+                  "$oldPrice ₺",
                   style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     color: Colors.grey,
@@ -265,13 +279,12 @@ class ProductCard extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
-          GestureDetector(
-            onTap: gotoUrl,
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: gotoUrl,
+              child: const Align(
+                alignment: Alignment.bottomRight,
                 child: CircleAvatar(
                   backgroundColor: Colors.black,
                   child: Icon(Icons.arrow_upward, color: Colors.white),

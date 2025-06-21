@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/notification_service.dart';
+import 'package:takip/data/services/urun_service.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
 
 void main() async {
@@ -89,6 +90,9 @@ class _SampleAppPageState extends State<SampleAppPage> {
     if (sharedData != null) {
       setState(() {
         dataShared = sharedData as String;
+        print(dataShared);
+        final result = sl<UrunService>().getUrlProducts(dataShared);
+        print(result);
       });
     }
   }

@@ -4,8 +4,8 @@ class UrunModel {
   final String link;
   final String eImg;
   final String prices;
-  final int firstPrice;
-  final int lastPrice;
+  final double firstPrice;
+  final double lastPrice;
   final String siteMarka;
   final bool isBilidirimBasarisiz;
   final bool isGosterildi;
@@ -35,8 +35,8 @@ class UrunModel {
     link: json["link"],
     eImg: json["eImg"],
     prices: json["prices"],
-    firstPrice: json["firstPrice"],
-    lastPrice: json["lastPrice"],
+    firstPrice: json["firstPrice"]?.toDouble(),
+    lastPrice: json["lastPrice"]?.toDouble(),
     siteMarka: json["siteMarka"],
     isBilidirimBasarisiz: json["isBilidirimBasarisiz"],
     isGosterildi: json["isGosterildi"],
