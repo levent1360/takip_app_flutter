@@ -59,7 +59,7 @@ class BaseApiService {
           type: DioExceptionType.badResponse,
         );
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

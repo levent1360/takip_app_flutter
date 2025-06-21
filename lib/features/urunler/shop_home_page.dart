@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/services/urun_service.dart';
-import 'package:takip/features/urunler/model/urun_model.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:takip/features/urunler/urun_model.dart';
+import 'package:takip/features/urunler/widgets/marka_list_widget.dart';
+import 'package:takip/features/urunler/widgets/urun_list_widget.dart';
 
 class ShopHomePage extends StatefulWidget {
   const ShopHomePage({super.key});
@@ -84,39 +85,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                height: 90,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: const [
-                    ShopCategory(
-                      title: "Women",
-                      image:
-                          "https://img.freepik.com/premium-vector/avatar-portrait-young-caucasian-woman-round-frame-vector-cartoon-flat-illustration_551425-22.jpg?semt=ais_hybrid&w=740",
-                    ),
-                    ShopCategory(
-                      title: "Men",
-                      image:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt_0plSJKNSdr-PRYr_V36bNZDdEa_TXeBqg&s",
-                    ),
-                    ShopCategory(
-                      title: "Kids",
-                      image:
-                          "https://cdn-icons-png.flaticon.com/512/163/163807.png",
-                    ),
-                    ShopCategory(
-                      title: "Shoes",
-                      image:
-                          "https://cdn.vectorstock.com/i/500p/43/21/stylish-black-canvas-shoes-vector-724321.jpg",
-                    ),
-                    ShopCategory(
-                      title: "Beauty",
-                      image:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmqZLvYa5f8aLeZf4yw6aebd7KXK3cB23Y5Q&s",
-                    ),
-                  ],
-                ),
-              ),
+              MarkaListWidget(),
 
               const SizedBox(height: 20),
               // Popular Items
@@ -131,166 +100,10 @@ class _ShopHomePageState extends State<ShopHomePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              FutureBuilder<List<UrunModel>>(
-                future: _productsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text("Hata: ${snapshot.error}"));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("Ürün bulunamadı"));
-                  }
-
-                  final urunler = snapshot.data!;
-
-                  return GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.7,
-                    children: urunler.map((urun) {
-                      return ProductCard(
-                        image: urun.eImg, // varsayılan resim
-                        title: urun.name,
-                        price: urun.firstPrice,
-                        oldPrice: urun.lastPrice,
-                        url: urun.link, // örnek olarak eski fiyat
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
+              UrunListWidget(),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ShopCategory extends StatelessWidget {
-  final String title;
-  final String image;
-  const ShopCategory({super.key, required this.title, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 70,
-      margin: const EdgeInsets.only(right: 12),
-      child: Column(
-        children: [
-          CircleAvatar(radius: 28, child: Image.network(image)),
-          const SizedBox(height: 5),
-          Text(title, style: const TextStyle(fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  final String image;
-  final String title;
-  final double price;
-  final double oldPrice;
-  final String url;
-  const ProductCard({
-    super.key,
-    required this.image,
-    required this.title,
-    required this.price,
-    required this.oldPrice,
-    required this.url,
-  });
-
-  void gotoUrl() async {
-    final Uri _url = Uri.parse(this.url.toString());
-    print('_url = $_url');
-
-    if (await canLaunchUrl(_url)) {
-      await launchUrl(_url, mode: LaunchMode.platformDefault);
-    } else {
-      print('URL açılamadı!');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.grey[100],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-                child: Image.network(
-                  image,
-                  height: 130,
-                  alignment: Alignment.topCenter,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              const Positioned(
-                right: 10,
-                top: 10,
-                child: Icon(Icons.favorite_border),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  "$price ₺",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  "$oldPrice ₺",
-                  style: const TextStyle(
-                    decoration: TextDecoration.lineThrough,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: gotoUrl,
-              child: const Align(
-                alignment: Alignment.bottomRight,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  child: Icon(Icons.arrow_upward, color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

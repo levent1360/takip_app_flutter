@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/notification_service.dart';
@@ -13,7 +14,7 @@ void main() async {
   await Firebase.initializeApp();
 
   await NotificationService.initFCMToken();
-  runApp(const SampleApp());
+  runApp(ProviderScope(child: const SampleApp()));
 }
 
 class SampleApp extends StatelessWidget {

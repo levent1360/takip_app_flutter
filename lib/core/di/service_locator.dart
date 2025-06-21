@@ -5,6 +5,7 @@ import 'package:takip/core/constant/env.dart';
 import 'package:takip/core/interceptors/app_interceptor.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/base_api_service.dart';
+import 'package:takip/data/services/marka_service.dart';
 import 'package:takip/data/services/urun_service.dart';
 
 final sl = GetIt.instance;
@@ -38,5 +39,8 @@ Future<void> setupLocator() async {
 
   sl.registerLazySingleton<UrunService>(
     () => UrunServiceImpl(sl<BaseApiService>()),
+  );
+  sl.registerLazySingleton<MarkaService>(
+    () => MarkaServiceImpl(sl<BaseApiService>()),
   );
 }

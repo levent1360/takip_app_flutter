@@ -3,15 +3,15 @@ import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/base_api_service.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 
-abstract class UrunService {
+abstract class MarkaService {
   Future<List<UrunModel>> getProducts();
   Future<bool> getUrlProducts(String? url);
 }
 
-class UrunServiceImpl implements UrunService {
+class MarkaServiceImpl implements MarkaService {
   final BaseApiService _apiService;
 
-  UrunServiceImpl(this._apiService);
+  MarkaServiceImpl(this._apiService);
 
   Future<List<UrunModel>> getProducts() async {
     final localDataSource = sl<LocalDataSource>();
