@@ -153,9 +153,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
                     childAspectRatio: 0.7,
                     children: urunler.map((urun) {
                       return ProductCard(
-                        image:
-                            urun.eImg ??
-                            "https://via.placeholder.com/150", // varsayılan resim
+                        image: urun.eImg, // varsayılan resim
                         title: urun.name,
                         price: urun.firstPrice,
                         oldPrice: urun.lastPrice,
