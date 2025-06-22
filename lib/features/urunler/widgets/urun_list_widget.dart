@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
@@ -10,6 +9,16 @@ class UrunListWidget extends ConsumerStatefulWidget {
 }
 
 class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Notifier üzerinden veri çek
+    Future.microtask(() {
+      ref.read(urunNotifierProvider.notifier).getProducts();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -27,22 +36,27 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           return const Center(child: Text("Herhangi bir veri bulunamadı"));
         }
 
-        return GridView.count(
-          physics: const NeverScrollableScrollPhysics(),
+        return GridView.builder(
           shrinkWrap: true,
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.7,
-          children: allItems.map((urun) {
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // satırda kaç kutu olacak
+            childAspectRatio: 0.65, // genişlik / yükseklik oranı
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+          ),
+          padding: const EdgeInsets.all(5),
+          itemCount: allItems.length,
+          itemBuilder: (context, index) {
+            final urun = allItems[index];
             return ProductCard(
-              image: urun.eImg, // varsayılan resim
+              image: urun.eImg,
               title: urun.name,
               price: urun.firstPrice,
               oldPrice: urun.lastPrice,
-              url: urun.link, // örnek olarak eski fiyat
+              url: urun.link,
             );
-          }).toList(),
+          },
         );
       },
     );

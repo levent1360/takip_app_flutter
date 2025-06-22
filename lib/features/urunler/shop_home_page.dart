@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:takip/core/di/service_locator.dart';
-import 'package:takip/data/services/urun_service.dart';
-import 'package:takip/features/urunler/urun_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/marka_list_widget.dart';
 import 'package:takip/features/urunler/widgets/urun_list_widget.dart';
 
-class ShopHomePage extends StatefulWidget {
+class ShopHomePage extends ConsumerStatefulWidget {
   const ShopHomePage({super.key});
 
   @override
-  State<ShopHomePage> createState() => _ShopHomePageState();
+  ConsumerState<ShopHomePage> createState() => _ShopHomePageState();
 }
 
-class _ShopHomePageState extends State<ShopHomePage> {
-  late Future<List<UrunModel>> _productsFuture;
-
+class _ShopHomePageState extends ConsumerState<ShopHomePage> {
   @override
   void initState() {
     super.initState();
-    getProducts();
-    print(_productsFuture);
   }
 
   Future<void> getProducts() async {
-    _productsFuture = sl<UrunService>().getProducts();
+    ref.read(urunNotifierProvider.notifier).getProducts();
   }
 
   @override
@@ -100,7 +95,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              UrunListWidget(),
+              Expanded(child: UrunListWidget()),
             ],
           ),
         ),
