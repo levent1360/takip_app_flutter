@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ShopCategory extends StatelessWidget {
+class MarkaWidget extends StatelessWidget {
   final String title;
   final String image;
-  const ShopCategory({super.key, required this.title, required this.image});
+  const MarkaWidget({super.key, required this.title, required this.image});
 
   @override
   Widget build(BuildContext context) {

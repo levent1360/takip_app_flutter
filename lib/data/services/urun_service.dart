@@ -16,13 +16,10 @@ class UrunServiceImpl implements UrunService {
   Future<List<UrunModel>> getProducts() async {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
-    List<UrunModel> aaa = await _apiService.getList<UrunModel>(
+    return await _apiService.getList<UrunModel>(
       '/takip/urunler/$token',
       fromJsonT: (json) => UrunModel.fromJson(json),
     );
-
-    print('Service $aaa');
-    return aaa;
   }
 
   Future<bool> getUrlProducts(String? url) async {
@@ -33,8 +30,6 @@ class UrunServiceImpl implements UrunService {
       'takip/link/$token?linktext=$url',
       fromJsonT: (json) => json as bool,
     );
-
-    print('Service $result');
     return result;
   }
 }

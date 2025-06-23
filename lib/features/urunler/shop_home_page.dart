@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/features/markalar/marka_screen.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
-import 'package:takip/features/urunler/widgets/marka_list_widget.dart';
 import 'package:takip/features/urunler/widgets/urun_list_widget.dart';
 
 class ShopHomePage extends ConsumerStatefulWidget {
@@ -30,7 +30,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ListView(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               // Search Bar
               Row(
                 children: [
@@ -38,7 +38,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
-                        hintText: 'Search',
+                        hintText: 'Ara ...',
                         filled: true,
                         fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
@@ -59,39 +59,31 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
 
               // Shop Markets
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shop Markets',
+                    'Markalar',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text('See All', style: TextStyle(color: Colors.grey)),
-                  IconButton(
-                    onPressed: () async {
-                      await getProducts();
-                      setState(() {});
-                    },
-                    icon: Icon(Icons.refresh),
-                  ),
+                  Text('Hepsi', style: TextStyle(color: Colors.grey)),
                 ],
               ),
               const SizedBox(height: 10),
-              MarkaListWidget(),
-
-              const SizedBox(height: 20),
+              MarkaScreen(),
+              const SizedBox(height: 10),
               // Popular Items
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
-                    'Popular Items',
+                    'Ürünleriniz',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text('See All', style: TextStyle(color: Colors.grey)),
+                  Text('Hepsi', style: TextStyle(color: Colors.grey)),
                 ],
               ),
               const SizedBox(height: 10),

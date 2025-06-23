@@ -14,8 +14,8 @@ class UrunNotifier extends StateNotifier<UrunState> {
   UrunNotifier(this.ref) : super(UrunState.initial()) {}
 
   Future<void> getProducts() async {
-    state = state.copyWith(isLoading: false);
-
+    state = state.copyWith(isLoading: true);
+    await Future.delayed(Duration(seconds: 3));
     final apiResponse = await ref.read(urunControllerProvider).getProducts();
 
     state = state.copyWith(data: apiResponse, isLoading: false);

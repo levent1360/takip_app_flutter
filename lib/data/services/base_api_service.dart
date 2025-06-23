@@ -37,11 +37,7 @@ class BaseApiService {
           response.statusCode! >= 200 &&
           response.statusCode! < 300) {
         final data = response.data;
-        print('data,  ${data}');
-
         if (data is List) {
-          final u_list = data.map((item) => fromJsonT(item)).toList();
-          print('API,  ${u_list}');
           return data.map((item) => fromJsonT(item)).toList();
         } else {
           throw DioException(
@@ -59,8 +55,13 @@ class BaseApiService {
           type: DioExceptionType.badResponse,
         );
       }
-    } on DioException {
-      rethrow;
+    } catch (e) {
+      // diğer hatalar da aynı şekilde DioException olarak sarılabilir
+      throw DioException(
+        requestOptions: RequestOptions(path: path),
+        error: 'İşlenmeyen bir hata oluştu: $e',
+        type: DioExceptionType.unknown,
+      );
     }
   }
 }

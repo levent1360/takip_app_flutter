@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/di/service_locator.dart';
+import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/data/services/urun_service.dart';
@@ -10,6 +12,7 @@ import 'package:takip/features/urunler/shop_home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ErrorService().navigatorKey = GlobalKey<NavigatorState>();
   await setupLocator();
   await Firebase.initializeApp();
 
@@ -24,8 +27,9 @@ class SampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sample Shared App Handler',
+      title: 'Fiyat Takip',
       debugShowCheckedModeBanner: false,
+      navigatorKey: ErrorService().navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -61,29 +65,7 @@ class _SampleAppPageState extends State<SampleAppPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(dataShared),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ShopHomePage()),
-                );
-              },
-              child: Text('TextButton'),
-            ),
-            Text(token ?? ''),
-          ],
-        ),
-      ),
-    );
+    return ShopHomePage();
   }
 
   Future<void> getSharedText() async {
