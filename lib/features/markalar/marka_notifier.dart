@@ -15,9 +15,7 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
 
   Future<void> getMarkas() async {
     state = state.copyWith(isLoading: true);
-    await Future.delayed(Duration(seconds: 3));
     final apiResponse = await ref.read(markaControllerProvider).getMarkas();
-
     state = state.copyWith(data: apiResponse, isLoading: false);
   }
 }

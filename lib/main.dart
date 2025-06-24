@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/data/services/urun_service.dart';
+import 'package:takip/features/splash_screen/splash_screen.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
 
 void main() async {
@@ -17,11 +17,11 @@ void main() async {
   await Firebase.initializeApp();
 
   await NotificationService.initFCMToken();
-  runApp(ProviderScope(child: const SampleApp()));
+  runApp(ProviderScope(child: const TakipApp()));
 }
 
-class SampleApp extends StatelessWidget {
-  const SampleApp({super.key});
+class TakipApp extends StatelessWidget {
+  const TakipApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -33,34 +33,25 @@ class SampleApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SampleAppPage(),
+      home: const SplashScreen(),
     );
   }
 }
 
-class SampleAppPage extends StatefulWidget {
-  const SampleAppPage({super.key});
+class TakipAppPage extends StatefulWidget {
+  const TakipAppPage({super.key});
 
   @override
-  State<SampleAppPage> createState() => _SampleAppPageState();
+  State<TakipAppPage> createState() => _SampleAppPageState();
 }
 
-class _SampleAppPageState extends State<SampleAppPage> {
+class _SampleAppPageState extends State<TakipAppPage> {
   static const platform = MethodChannel('app.channel.shared.data');
-  String dataShared = 'No data';
-  String? token;
 
   @override
   void initState() {
     super.initState();
     getSharedText();
-    getDeviceToken();
-  }
-
-  Future<void> getDeviceToken() async {
-    final localDataSource = sl<LocalDataSource>();
-    token = await localDataSource.getDeviceToken();
-    setState(() {});
   }
 
   @override
@@ -69,13 +60,10 @@ class _SampleAppPageState extends State<SampleAppPage> {
   }
 
   Future<void> getSharedText() async {
-    var sharedData = await platform.invokeMethod('getSharedText');
+    String? sharedData = await platform.invokeMethod('getSharedText');
     if (sharedData != null) {
       setState(() {
-        dataShared = sharedData as String;
-        print(dataShared);
-        final result = sl<UrunService>().getUrlProducts(dataShared);
-        print(result);
+        sl<UrunService>().getUrlProducts(sharedData);
       });
     }
   }

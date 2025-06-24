@@ -24,12 +24,6 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         final state = ref.watch(markaNotifierProvider);
         final allItems = state.data;
 
-        if (state.isLoading && allItems.length == 0) {
-          return const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
         if (!state.isLoading && allItems.length == 0) {
           return const Center(child: Text("Herhangi bir veri bulunamadı"));
         }
@@ -38,10 +32,18 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
           height: 90,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: allItems.length,
+            itemCount: state.isLoading ? 5 : allItems.length,
             itemBuilder: (context, index) {
-              final marka = allItems[index];
-              return MarkaWidget(title: marka.orjName, image: marka.link);
+              if (state.isLoading) {
+                return const MarkaWidget(isLoading: true, title: '', image: '');
+              } else {
+                final marka = allItems[index];
+                return MarkaWidget(
+                  title: marka.orjName,
+                  image: marka.link,
+                  isLoading: false,
+                );
+              }
             },
           ),
         );

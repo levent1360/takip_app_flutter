@@ -41,7 +41,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // satırda kaç kutu olacak
-            childAspectRatio: 0.65, // genişlik / yükseklik oranı
+            childAspectRatio: 0.7, // genişlik / yükseklik oranı
             crossAxisSpacing: 5,
             mainAxisSpacing: 5,
           ),

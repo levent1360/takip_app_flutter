@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
+import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/markalar/marka_screen.dart';
+import 'package:takip/features/searchbar/search_bar_screen.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/widgets/animation_please_wait_container_widget.dart';
 import 'package:takip/features/urunler/widgets/urun_list_widget.dart';
 
 class ShopHomePage extends ConsumerStatefulWidget {
@@ -32,33 +38,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
             children: [
               const SizedBox(height: 10),
               // Search Bar
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        hintText: 'Ara ...',
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(Icons.qr_code_scanner),
-                  ),
-                ],
-              ),
+              SearchBarScreen(),
               const SizedBox(height: 15),
 
               // Shop Markets
@@ -78,16 +58,54 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
               // Popular Items
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Ürünleriniz',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text('Hepsi', style: TextStyle(color: Colors.grey)),
+                  Row(
+                    children: [
+                      Text('Hepsi', style: TextStyle(color: Colors.grey)),
+                      IconButton(
+                        onPressed: getProducts,
+                        icon: Icon(Icons.refresh),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
-              Expanded(child: UrunListWidget()),
+              AnimationPleaseWaitContainerWidget(),
+              Container(
+                width: double.infinity, // Ekran genişliği kadar olur
+                height: 100,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(83, 33, 149, 243),
+                  borderRadius: BorderRadius.circular(16), // Köşeleri yumuşatır
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Lottie.asset(
+                        LottieFiles.success,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'Ürünleriniz Kaydediliyor...',
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 12, 71, 123),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              UrunListWidget(),
             ],
           ),
         ),

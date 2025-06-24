@@ -30,6 +30,7 @@ class UrunServiceImpl implements UrunService {
       'takip/link/$token?linktext=$url',
       fromJsonT: (json) => json as bool,
     );
+    print('Kayıt Sonucu:  $result');
     return result;
   }
 }
