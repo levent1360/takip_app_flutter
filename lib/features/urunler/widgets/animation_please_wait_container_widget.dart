@@ -4,7 +4,8 @@ import 'package:lottie/lottie.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 
 class AnimationPleaseWaitContainerWidget extends StatefulWidget {
-  const AnimationPleaseWaitContainerWidget({super.key});
+  final bool isLoading;
+  const AnimationPleaseWaitContainerWidget({super.key, required this.isLoading});
 
   @override
   State<AnimationPleaseWaitContainerWidget> createState() =>
@@ -45,13 +46,13 @@ class _AnimationPleaseWaitContainerWidgetState
     return AnimatedSize(
       duration: Duration(milliseconds: 500),
       curve: Curves.easeInOut,
-      child: _visible
+      child: widget.isLoading
           ? AnimatedOpacity(
-              opacity: _opacity,
+              opacity: 1.0,
               duration: Duration(seconds: 1), // 1 saniyede kaybolur
               child: Container(
                 width: double.infinity, // Ekran genişliği kadar olur
-                height: 100,
+                height: 75,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(83, 33, 149, 243),
                   borderRadius: BorderRadius.circular(16), // Köşeleri yumuşatır
@@ -59,8 +60,8 @@ class _AnimationPleaseWaitContainerWidgetState
                 child: Row(
                   children: [
                     SizedBox(
-                      height: 100,
-                      width: 100,
+                      height: 75,
+                      width: 75,
                       child: Lottie.asset(
                         LottieFiles.success,
                         fit: BoxFit.cover,

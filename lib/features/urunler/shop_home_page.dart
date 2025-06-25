@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/markalar/marka_screen.dart';
 import 'package:takip/features/searchbar/search_bar_screen.dart';
+import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/animation_please_wait_container_widget.dart';
 import 'package:takip/features/urunler/widgets/urun_list_widget.dart';
@@ -29,6 +30,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final state1 = ref.watch(urunKaydetNotifierProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -75,36 +77,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              AnimationPleaseWaitContainerWidget(),
-              Container(
-                width: double.infinity, // Ekran genişliği kadar olur
-                height: 100,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(83, 33, 149, 243),
-                  borderRadius: BorderRadius.circular(16), // Köşeleri yumuşatır
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Lottie.asset(
-                        LottieFiles.success,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        'Ürünleriniz Kaydediliyor...',
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 12, 71, 123),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading,),
               UrunListWidget(),
             ],
           ),

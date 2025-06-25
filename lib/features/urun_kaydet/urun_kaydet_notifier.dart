@@ -18,7 +18,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         .read(urunKaydetControllerProvider)
         .getUrlProducts(url);
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 10));
     state = state.copyWith(isLoading: false);
   }
 }
