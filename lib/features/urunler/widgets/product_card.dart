@@ -4,15 +4,15 @@ import 'package:url_launcher/url_launcher.dart';
 class ProductCard extends StatelessWidget {
   final String image;
   final String title;
-  final double price;
-  final double oldPrice;
+  final double firstPrice;
+  final double lastPrice;
   final String url;
   const ProductCard({
     super.key,
     required this.image,
     required this.title,
-    required this.price,
-    required this.oldPrice,
+    required this.firstPrice,
+    required this.lastPrice,
     required this.url,
   });
 
@@ -72,13 +72,13 @@ class ProductCard extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "$price ₺",
+                  "$lastPrice ₺",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 5),
-                price != oldPrice
+                lastPrice != firstPrice
                     ? Text(
-                        "$oldPrice ₺",
+                        "$firstPrice ₺",
                         style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           color: Colors.grey,

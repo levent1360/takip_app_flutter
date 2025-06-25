@@ -52,8 +52,8 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
             return ProductCard(
               image: urun.eImg,
               title: urun.name,
-              price: urun.firstPrice,
-              oldPrice: urun.lastPrice,
+              firstPrice: urun.firstPrice,
+              lastPrice: urun.lastPrice,
               url: urun.link,
             );
           },
