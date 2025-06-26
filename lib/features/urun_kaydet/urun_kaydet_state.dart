@@ -1,10 +1,14 @@
 class UrunKaydetState {
   final bool isLoading;
-  UrunKaydetState({required this.isLoading});
+  final bool? result;
+  UrunKaydetState({required this.isLoading, this.result});
 
   factory UrunKaydetState.initial() => UrunKaydetState(isLoading: false);
 
-  UrunKaydetState copyWith({bool? isLoading}) {
-    return UrunKaydetState(isLoading: isLoading ?? this.isLoading);
+  UrunKaydetState copyWith({bool? isLoading, bool? result}) {
+    return UrunKaydetState(
+      isLoading: isLoading ?? this.isLoading,
+      result: result ?? this.result,
+    );
   }
 }

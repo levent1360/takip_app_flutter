@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
@@ -24,7 +25,9 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     return Consumer(
       builder: (context, provider, child) {
         final state = ref.watch(urunNotifierProvider);
+        final stateMarka = ref.watch(markaNotifierProvider);
         final allItems = state.data;
+        final markalar = stateMarka.data;
 
         if (state.isLoading && allItems.length == 0) {
           return const Padding(
@@ -49,12 +52,16 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           itemCount: allItems.length,
           itemBuilder: (context, index) {
             final urun = allItems[index];
+            final marka = markalar.firstWhere(
+              (element) => element.name == urun.siteMarka,
+            );
             return ProductCard(
               image: urun.eImg,
               title: urun.name,
               firstPrice: urun.firstPrice,
               lastPrice: urun.lastPrice,
               url: urun.link,
+              markaLogo: marka.link,
             );
           },
         );

@@ -1,3 +1,4 @@
+import 'package:takip/core/constant/api_endpoints.dart';
 import 'package:takip/data/services/base_api_service.dart';
 import 'package:takip/features/markalar/marka_model.dart';
 
@@ -12,11 +13,10 @@ class MarkaServiceImpl implements MarkaService {
 
   Future<List<MarkaModel>> getMarkas() async {
     List<MarkaModel> aaa = await _apiService.getList<MarkaModel>(
-      '/takip/markalar',
+      ApiEndpoints.markalar,
       fromJsonT: (json) => MarkaModel.fromJson(json),
     );
 
-    print('Service $aaa');
     return aaa;
   }
 }

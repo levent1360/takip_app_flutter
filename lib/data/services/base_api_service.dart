@@ -25,6 +25,20 @@ class BaseApiService {
     }
   }
 
+  Future getBasic(String path) async {
+    try {
+      return await _dio.get(path);
+    } on DioException {
+      rethrow; // Interceptor işini yapar
+    } catch (e) {
+      throw DioException(
+        requestOptions: RequestOptions(path: path),
+        error: 'İşlenmeyen bir hata oluştu: $e',
+        type: DioExceptionType.unknown,
+      );
+    }
+  }
+
   Future<List<T>> getList<T>(
     String path, {
     Map<String, dynamic>? queryParameters,

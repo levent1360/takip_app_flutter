@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
-import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/markalar/marka_screen.dart';
 import 'package:takip/features/searchbar/search_bar_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
@@ -77,7 +75,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading,),
+              AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading),
               UrunListWidget(),
             ],
           ),

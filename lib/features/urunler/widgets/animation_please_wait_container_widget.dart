@@ -1,11 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 
 class AnimationPleaseWaitContainerWidget extends StatefulWidget {
   final bool isLoading;
-  const AnimationPleaseWaitContainerWidget({super.key, required this.isLoading});
+  const AnimationPleaseWaitContainerWidget({
+    super.key,
+    required this.isLoading,
+  });
 
   @override
   State<AnimationPleaseWaitContainerWidget> createState() =>
@@ -13,31 +15,14 @@ class AnimationPleaseWaitContainerWidget extends StatefulWidget {
 }
 
 class _AnimationPleaseWaitContainerWidgetState
-    extends State<AnimationPleaseWaitContainerWidget>
-    with TickerProviderStateMixin {
-  double _opacity = 1.0;
-  bool _visible = true;
-
-  late final Timer _timer;
-
+    extends State<AnimationPleaseWaitContainerWidget> {
   @override
   void initState() {
     super.initState();
-
-    _timer = Timer(Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _opacity = 0.0;
-          _visible = false;
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    print('timer cancelled'); // Timer'ı iptal et
     super.dispose();
   }
 
@@ -63,7 +48,7 @@ class _AnimationPleaseWaitContainerWidgetState
                       height: 75,
                       width: 75,
                       child: Lottie.asset(
-                        LottieFiles.success,
+                        LottieFiles.shopping_loading,
                         fit: BoxFit.cover,
                       ),
                     ),

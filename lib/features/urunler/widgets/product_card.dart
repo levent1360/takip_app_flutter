@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class ProductCard extends StatelessWidget {
   final double firstPrice;
   final double lastPrice;
   final String url;
+  final String markaLogo;
   const ProductCard({
     super.key,
     required this.image,
@@ -14,6 +16,7 @@ class ProductCard extends StatelessWidget {
     required this.firstPrice,
     required this.lastPrice,
     required this.url,
+    required this.markaLogo,
   });
 
   void gotoUrl() async {
@@ -36,6 +39,7 @@ class ProductCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Stack(
             children: [
@@ -61,7 +65,7 @@ class ProductCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '$title $title $title $title',
+              '$title',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -88,18 +92,30 @@ class ProductCard extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: gotoUrl,
-              child: const Align(
-                alignment: Alignment.bottomRight,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  child: Icon(Icons.arrow_upward, color: Colors.white),
+                  radius: 15,
+                  child: NetworkImageWithLoader(markaLogo),
                 ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: gotoUrl,
+                  child: const Align(
+                    alignment: Alignment.bottomRight,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blueGrey,
+                      child: Icon(Icons.arrow_upward, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

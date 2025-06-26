@@ -9,4 +9,8 @@ class UrunController {
   Future<List<UrunModel>> getProducts() async {
     return await _urunService.getProducts();
   }
+
+  Future urunGoruldu() async {
+    return await _urunService.urunGoruldu();
+  }
 }
