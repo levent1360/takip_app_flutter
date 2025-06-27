@@ -13,4 +13,8 @@ class UrunController {
   Future urunGoruldu() async {
     return await _urunService.urunGoruldu();
   }
+
+  Future urunSil(int id) async {
+    return await _urunService.urunSil(id);
+  }
 }

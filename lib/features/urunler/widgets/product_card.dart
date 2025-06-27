@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
+import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductCard extends StatelessWidget {
@@ -9,6 +10,7 @@ class ProductCard extends StatelessWidget {
   final double lastPrice;
   final String url;
   final String markaLogo;
+  final VoidCallback delete;
   const ProductCard({
     super.key,
     required this.image,
@@ -17,16 +19,23 @@ class ProductCard extends StatelessWidget {
     required this.lastPrice,
     required this.url,
     required this.markaLogo,
+    required this.delete,
   });
 
-  void gotoUrl() async {
-    final Uri _url = Uri.parse(this.url.toString());
-    print('_url = $_url');
+  Future<void> launchMyUrl(String url) async {
+    try {
+      final Uri uri = Uri.parse(Uri.encodeFull(url));
+      print('Encoded URL: $uri');
 
-    if (await canLaunchUrl(_url)) {
-      await launchUrl(_url, mode: LaunchMode.platformDefault);
-    } else {
-      print('URL açılamadı!');
+      final success = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!success) {
+        print('launchUrl başarısız oldu!');
+      }
+    } catch (e) {
+      print('Hata oluştu: $e');
     }
   }
 
@@ -49,16 +58,29 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: Image.network(
                   image,
-                  height: 130,
+                  height: 120,
                   alignment: Alignment.topCenter,
                   width: double.infinity,
                   fit: BoxFit.contain,
                 ),
               ),
-              const Positioned(
-                right: 10,
-                top: 10,
-                child: Icon(Icons.favorite_border),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: IconButton(
+                  onPressed: () async {
+                    final result = await showConfirmDialog(
+                      title: 'Silme Onayı',
+                      content: 'Bu ürünü silmek istediğinize emin misiniz?',
+                    );
+
+                    if (result == true) {
+                      delete();
+                    }
+                  },
+                  icon: Icon(Icons.close),
+                  color: Colors.redAccent,
+                ),
               ),
             ],
           ),
@@ -105,7 +127,7 @@ class ProductCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  onTap: gotoUrl,
+                  onTap: () => launchMyUrl(url),
                   child: const Align(
                     alignment: Alignment.bottomRight,
                     child: CircleAvatar(

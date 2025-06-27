@@ -19,4 +19,14 @@ class UrunNotifier extends StateNotifier<UrunState> {
     await ref.read(urunControllerProvider).urunGoruldu();
     state = state.copyWith(data: apiResponse, isLoading: false);
   }
+
+  Future<void> urunSil(int id) async {
+    state = state.copyWith(isLoading: true);
+    final apiResponse = await ref.read(urunControllerProvider).urunSil(id);
+    if (apiResponse >= 200 && apiResponse < 300) {
+      final updatedData = state.data.where((item) => item.id != id).toList();
+      state = state.copyWith(isLoading: false, data: updatedData);
+    }
+    state = state.copyWith(isLoading: false);
+  }
 }

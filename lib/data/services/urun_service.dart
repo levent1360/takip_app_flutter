@@ -8,6 +8,7 @@ abstract class UrunService {
   Future<List<UrunModel>> getProducts();
   Future<bool> getUrlProducts(String? url);
   Future urunGoruldu();
+  Future<int> urunSil(int id);
 }
 
 class UrunServiceImpl implements UrunService {
@@ -28,6 +29,15 @@ class UrunServiceImpl implements UrunService {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
     await await _apiService.getBasic('${ApiEndpoints.goruldu}/$token');
+  }
+
+  Future<int> urunSil(int id) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+    final result = await _apiService.getBasic(
+      ApiEndpoints.takipSil(token!, id),
+    );
+    return result.statusCode as int;
   }
 
   Future<bool> getUrlProducts(String? url) async {

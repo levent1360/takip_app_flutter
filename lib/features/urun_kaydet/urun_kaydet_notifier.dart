@@ -13,6 +13,9 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
   UrunKaydetNotifier(this.ref) : super(UrunKaydetState.initial()) {}
 
   Future<void> getUrlProducts(String? url) async {
+    print("-----------------------------------");
+    print("URL alındı: $url");
+    print("-----------------------------------");
     state = state.copyWith(isLoading: true);
     final apiResponse = await ref
         .read(urunKaydetControllerProvider)

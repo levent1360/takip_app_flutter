@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/widgets/no_items_view.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
 class UrunListWidget extends ConsumerStatefulWidget {
@@ -20,6 +21,10 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     });
   }
 
+  Future<void> delete(int id) async {
+    ref.read(urunNotifierProvider.notifier).urunSil(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -36,7 +41,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           );
         }
         if (!state.isLoading && allItems.length == 0) {
-          return const Center(child: Text("Herhangi bir veri bulunamadı"));
+          return const Center(child: NoItemsView());
         }
 
         return GridView.builder(
@@ -56,6 +61,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
               (element) => element.name == urun.siteMarka,
             );
             return ProductCard(
+              delete: () => delete(urun.id),
               image: urun.eImg,
               title: urun.name,
               firstPrice: urun.firstPrice,
