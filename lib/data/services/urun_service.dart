@@ -2,6 +2,7 @@ import 'package:takip/core/constant/api_endpoints.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/services/base_api_service.dart';
+import 'package:takip/features/notification/models/hatali_kayit_model.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 
 abstract class UrunService {
@@ -9,6 +10,7 @@ abstract class UrunService {
   Future<bool> getUrlProducts(String? url);
   Future urunGoruldu();
   Future<int> urunSil(int id);
+  Future<List<HataliKayitModel>> hataliKayitlar();
 }
 
 class UrunServiceImpl implements UrunService {
@@ -50,5 +52,14 @@ class UrunServiceImpl implements UrunService {
     );
     print('Kayıt Sonucu:  $result');
     return result;
+  }
+
+  Future<List<HataliKayitModel>> hataliKayitlar() async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+    return await _apiService.getList<HataliKayitModel>(
+      'takip/hatali/eUTKRt0VTU-NZ0rqUneR3w:APA91bGD1lng96z8hi6TVpWmmqJm63kPLzi7vak-blcgm7L9vvA9qv0wocAaVrznw99CpKt7I2OS1X5W_0sUpeE9VLnQ4mImEymeauqW_uRIABYZpm_SuSU',
+      fromJsonT: (json) => HataliKayitModel.fromJson(json),
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/features/notification/bildirim_screen.dart';
 
 class SearchBarScreen extends StatelessWidget {
   const SearchBarScreen({super.key});
@@ -29,6 +30,22 @@ class SearchBarScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(Icons.qr_code_scanner),
+        ),
+        const SizedBox(width: 5),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const BildirimScreen()));
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(Icons.notifications),
+          ),
         ),
       ],
     );
