@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/features/markalar/marka_notifier.dart';
+import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/no_items_view.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
@@ -21,8 +21,20 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     });
   }
 
+  Future<void> refresh(String link) async {
+    ref.read(urunKaydetNotifierProvider.notifier).getUrlProducts(link);
+  }
+
   Future<void> delete(int id) async {
     ref.read(urunNotifierProvider.notifier).urunSil(id);
+  }
+
+  Future<void> bildirimAc(int id, bool deger) async {
+    ref.read(urunNotifierProvider.notifier).bildirimAc(id, deger);
+  }
+
+  Future<void> hataliSil(String url) async {
+    ref.read(urunNotifierProvider.notifier).hataliSil(url);
   }
 
   @override
@@ -30,9 +42,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     return Consumer(
       builder: (context, provider, child) {
         final state = ref.watch(urunNotifierProvider);
-        final stateMarka = ref.watch(markaNotifierProvider);
         final allItems = state.data;
-        final markalar = stateMarka.data;
 
         if (state.isLoading && allItems.length == 0) {
           return const Padding(
@@ -57,17 +67,20 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           itemCount: allItems.length,
           itemBuilder: (context, index) {
             final urun = allItems[index];
-            final marka = markalar.firstWhere(
-              (element) => element.name == urun.siteMarka,
-            );
+
             return ProductCard(
-              delete: () => delete(urun.id),
-              image: urun.eImg,
-              title: urun.name,
-              firstPrice: urun.firstPrice,
-              lastPrice: urun.lastPrice,
+              delete: () =>
+                  urun.isIslendi ? delete(urun.id) : hataliSil(urun.link),
+              refresh: () => refresh(urun.link),
+              bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
+              urun: urun,
+              isIslendi: urun.isIslendi,
+              image: urun.eImg!,
+              title: urun.isIslendi ? urun.name ?? '' : urun.link,
+              firstPrice: urun.firstPrice ?? 0,
+              lastPrice: urun.lastPrice ?? 0,
               url: urun.link,
-              markaLogo: marka.link,
+              markaLogo: urun.markaIcon ?? '',
             );
           },
         );

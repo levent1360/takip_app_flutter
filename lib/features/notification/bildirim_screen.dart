@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/features/notification/bildiirim_notifier.dart';
+import 'package:takip/features/notification/widgets/no_bildirim_view.dart';
 import 'package:takip/features/notification/widgets/notification_tile.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
@@ -59,7 +59,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
               );
             }
             if (!state.isLoading && allItems.length == 0) {
-              return const Center(child: NoItemsView());
+              return const Center(child: NoBildirimView());
             }
             return Column(
               children: [

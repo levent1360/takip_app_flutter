@@ -17,4 +17,12 @@ class UrunController {
   Future urunSil(int id) async {
     return await _urunService.urunSil(id);
   }
+
+  Future bildirimAc(int id, bool deger) async {
+    return await _urunService.bildirimAc(id, deger);
+  }
+
+  Future hataliSil(String url) async {
+    return await _urunService.hataliSil(url);
+  }
 }

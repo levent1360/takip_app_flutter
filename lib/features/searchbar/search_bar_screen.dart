@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
 import 'package:takip/features/notification/bildirim_screen.dart';
 
 class SearchBarScreen extends StatelessWidget {
@@ -23,13 +24,23 @@ class SearchBarScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(16),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                opaque: false, // ŞART: Arka planı şeffaf yapar
+                pageBuilder: (_, __, ___) => const LinkYapistirScreen(),
+              ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(Icons.qr_code_scanner),
           ),
-          child: const Icon(Icons.qr_code_scanner),
         ),
         const SizedBox(width: 5),
         GestureDetector(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 
-class NoItemsView extends StatelessWidget {
-  const NoItemsView({super.key});
+class NoBildirimView extends StatelessWidget {
+  const NoBildirimView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class NoItemsView extends StatelessWidget {
         Container(
           height: 200,
           width: 300,
-          child: Lottie.asset(LottieFiles.noitem, fit: BoxFit.contain),
+          child: Lottie.asset(LottieFiles.no_notification, fit: BoxFit.contain),
         ),
         const SizedBox(height: 32),
         const Text(
-          'Ürün Bulunamadı',
+          'Bildirim Bulunamadı',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -26,7 +26,7 @@ class NoItemsView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         const Text(
-          'Seçilen markalardan takip edilmesini istediğiniz ürünün bağlantı adresini paylaşın.',
+          'Bildirimlerinizi burada görüntüleyebilirsiniz',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.black54),
         ),

@@ -10,7 +10,9 @@ abstract class UrunService {
   Future<bool> getUrlProducts(String? url);
   Future urunGoruldu();
   Future<int> urunSil(int id);
+  Future<int> hataliSil(String link);
   Future<List<HataliKayitModel>> hataliKayitlar();
+  Future<int> bildirimAc(int id, bool deger);
 }
 
 class UrunServiceImpl implements UrunService {
@@ -42,6 +44,22 @@ class UrunServiceImpl implements UrunService {
     return result.statusCode as int;
   }
 
+  Future<int> hataliSil(String link) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+    final result = await _apiService.getBasic(
+      ApiEndpoints.hataliSil(token!, link),
+    );
+    return result.statusCode as int;
+  }
+
+  Future<int> bildirimAc(int id, bool deger) async {
+    final result = await _apiService.getBasic(
+      ApiEndpoints.bildirimAc(id, !deger),
+    );
+    return result.statusCode as int;
+  }
+
   Future<bool> getUrlProducts(String? url) async {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
@@ -58,7 +76,7 @@ class UrunServiceImpl implements UrunService {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
     return await _apiService.getList<HataliKayitModel>(
-      'takip/hatali/eUTKRt0VTU-NZ0rqUneR3w:APA91bGD1lng96z8hi6TVpWmmqJm63kPLzi7vak-blcgm7L9vvA9qv0wocAaVrznw99CpKt7I2OS1X5W_0sUpeE9VLnQ4mImEymeauqW_uRIABYZpm_SuSU',
+      'takip/hatali/$token',
       fromJsonT: (json) => HataliKayitModel.fromJson(json),
     );
   }
