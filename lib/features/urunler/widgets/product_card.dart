@@ -77,22 +77,27 @@ class ProductCard extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: GestureDetector(
-                    onTap: bildirimAc,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white12,
-                      child: urun.isBildirimAcik
-                          ? Icon(Icons.notifications_active, color: Colors.teal)
-                          : Icon(Icons.notifications, color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ),
+              isIslendi
+                  ? Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: GestureDetector(
+                          onTap: bildirimAc,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white12,
+                            child: urun.isBildirimAcik
+                                ? Icon(
+                                    Icons.notifications_active,
+                                    color: Colors.teal,
+                                  )
+                                : Icon(Icons.notifications, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
           Padding(
@@ -148,10 +153,10 @@ class ProductCard extends StatelessWidget {
                                 child: const Align(
                                   alignment: Alignment.bottomRight,
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white12,
                                     child: Icon(
                                       Icons.refresh,
-                                      color: Colors.white,
+                                      color: Colors.lightBlue,
                                     ),
                                   ),
                                 ),
