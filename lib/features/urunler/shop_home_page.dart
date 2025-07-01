@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/di/service_locator.dart';
+import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/markalar/marka_screen.dart';
 import 'package:takip/features/searchbar/search_bar_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
@@ -24,6 +26,11 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
 
   Future<void> getProducts() async {
     ref.read(urunNotifierProvider.notifier).getProducts();
+  }
+
+  Future<void> deleteOnboardingSeen() async {
+    final localDataSource = sl<LocalDataSource>();
+    await localDataSource.deleteOnboardingSeen();
   }
 
   @override
@@ -69,6 +76,10 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                       IconButton(
                         onPressed: getProducts,
                         icon: Icon(Icons.refresh),
+                      ),
+                      IconButton(
+                        onPressed: deleteOnboardingSeen,
+                        icon: Icon(Icons.remove),
                       ),
                     ],
                   ),

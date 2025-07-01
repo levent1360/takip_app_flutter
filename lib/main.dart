@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
+import 'package:takip/features/onboarding/onboarding_screen.dart';
 import 'package:takip/features/splash_screen/splash_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
@@ -84,7 +85,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: OnboardingScreen(),
     );
   }
 }

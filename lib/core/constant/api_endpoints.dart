@@ -5,6 +5,7 @@ class ApiEndpoints {
   static const String markalar = 'takip/markalar/';
   static const String hatali = 'takip/hatali';
   static const String hatalisil = 'takip/hatalisil';
+  static const String onboarding = 'takip/sunum';
 
   static String takipLink(String token, String url) {
     return 'takip/link/$token?linktext=$url';

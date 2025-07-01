@@ -5,7 +5,7 @@ import 'package:takip/features/markalar/widgets/shop_category.dart';
 
 class MarkaScreen extends ConsumerStatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MarkaScreenState();
+  ConsumerState<MarkaScreen> createState() => _MarkaScreenState();
 }
 
 class _MarkaScreenState extends ConsumerState<MarkaScreen> {
