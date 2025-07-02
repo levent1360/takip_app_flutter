@@ -28,9 +28,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     checkSharedText();
     _listenForNewSharedText();
     platform.setMethodCallHandler((call) async {
-      if (call.method == "getSharedText") {
-        final sharedText = call.arguments as String?;
-      }
+      if (call.method == "getSharedText") {}
     });
   }
 
