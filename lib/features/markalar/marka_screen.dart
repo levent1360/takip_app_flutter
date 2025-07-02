@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
+import 'package:takip/features/markalar/widgets/marka_loading_widget.dart';
 import 'package:takip/features/markalar/widgets/shop_category.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
 
 class MarkaScreen extends ConsumerStatefulWidget {
   @override
@@ -23,6 +25,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
       builder: (context, provider, child) {
         final state = ref.watch(markaNotifierProvider);
         final allItems = state.data;
+        final selectedItem = state.selectedMarka;
 
         if (!state.isLoading && allItems.length == 0) {
           return const Center(child: Text("Herhangi bir veri bulunamadı"));
@@ -35,13 +38,21 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
             itemCount: state.isLoading ? 5 : allItems.length,
             itemBuilder: (context, index) {
               if (state.isLoading) {
-                return const MarkaWidget(isLoading: true, title: '', image: '');
+                return const MarkaLoadingWidget();
               } else {
                 final marka = allItems[index];
                 return MarkaWidget(
-                  title: marka.orjName,
-                  image: marka.link,
-                  isLoading: false,
+                  marka: marka,
+                  isFiltered: selectedItem == null ? false : true,
+                  isSelected: selectedItem?.name == marka.name,
+                  onTap: (value) async {
+                    await ref
+                        .read(markaNotifierProvider.notifier)
+                        .selectedMarka(marka);
+                    await ref
+                        .read(urunNotifierProvider.notifier)
+                        .filterByMarkaProducts();
+                  },
                 );
               }
             },

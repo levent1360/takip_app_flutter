@@ -42,7 +42,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     return Consumer(
       builder: (context, provider, child) {
         final state = ref.watch(urunNotifierProvider);
-        final allItems = state.data;
+        final allItems = state.filteredData;
 
         if (state.isLoading && allItems.length == 0) {
           return const Padding(

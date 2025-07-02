@@ -1,17 +1,28 @@
 import 'package:takip/features/urunler/urun_model.dart';
 
 class UrunState {
-  final List<UrunModel> data;
-
   final bool isLoading;
-  UrunState({required this.data, required this.isLoading});
+  final List<UrunModel> data;
+  final List<UrunModel> filteredData;
 
-  factory UrunState.initial() => UrunState(data: [], isLoading: false);
+  UrunState({
+    required this.data,
+    required this.filteredData,
+    required this.isLoading,
+  });
 
-  UrunState copyWith({List<UrunModel>? data, bool? isLoading}) {
+  factory UrunState.initial() =>
+      UrunState(data: [], filteredData: [], isLoading: false);
+
+  UrunState copyWith({
+    List<UrunModel>? data,
+    List<UrunModel>? filteredData,
+    bool? isLoading,
+  }) {
     return UrunState(
-      data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
+      data: data ?? this.data,
+      filteredData: filteredData ?? this.filteredData,
     );
   }
 }

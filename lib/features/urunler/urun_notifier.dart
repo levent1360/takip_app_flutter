@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/snackbar/success_snackbar_component.dart';
+import 'package:takip/core/utils/normalizeTurkishCharacters.dart';
+import 'package:takip/features/markalar/marka_notifier.dart';
+import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/urun_provider.dart';
 import 'package:takip/features/urunler/urun_state.dart';
 
@@ -19,7 +22,59 @@ class UrunNotifier extends StateNotifier<UrunState> {
     final apiResponse = await ref.read(urunControllerProvider).getProducts();
     await ref.read(urunControllerProvider).urunGoruldu();
 
-    state = state.copyWith(data: apiResponse, isLoading: false);
+    state = state.copyWith(
+      data: apiResponse,
+      filteredData: apiResponse,
+      isLoading: false,
+    );
+  }
+
+  Future<void> getFilteredProducts() async {
+    state = state.copyWith(isLoading: true);
+
+    state = state.copyWith(
+      data: state.data,
+      filteredData: state.filteredData,
+      isLoading: false,
+    );
+  }
+
+  void filterProducts(String query) {
+    state = state.copyWith(isLoading: true);
+    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
+
+    final filtered = state.data.where((q) {
+      final normalizedName = normalizeTurkishCharacters(q.name!.toLowerCase());
+      return normalizedName.contains(normalizedQuery);
+    }).toList();
+
+    state = state.copyWith(filteredData: filtered, isLoading: false);
+  }
+
+  Future<void> filterByMarkaProducts() async {
+    state = state.copyWith(isLoading: true);
+
+    // Marka state'ini almak için read kullanıyoruz
+    final markaState = ref.read(markaNotifierProvider);
+
+    List<UrunModel> filtered = [];
+
+    // Eğer selectedMarka null ise, tüm verileri filteredData'ya ekliyoruz
+    if (markaState.selectedMarka == null) {
+      filtered = state.data.isEmpty ? [] : state.data;
+    } else {
+      // Eğer selectedMarka varsa, veri filtreleme işlemi yapıyoruz
+      filtered = state.data
+          .where((q) => q.siteMarka == markaState.selectedMarka?.name)
+          .toList();
+    }
+
+    // filteredData'yı güncelliyoruz ve loading'i false yapıyoruz
+    state = state.copyWith(filteredData: filtered, isLoading: false);
+  }
+
+  void resetFilter() {
+    state = state.copyWith(filteredData: state.data);
   }
 
   Future<void> urunSil(int id) async {

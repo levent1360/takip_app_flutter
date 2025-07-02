@@ -2,15 +2,22 @@ import 'package:takip/features/markalar/marka_model.dart';
 
 class MarkaState {
   final List<MarkaModel> data;
-
   final bool isLoading;
-  MarkaState({required this.data, required this.isLoading});
+  final MarkaModel? selectedMarka;
 
-  factory MarkaState.initial() => MarkaState(data: [], isLoading: false);
+  MarkaState({required this.data, this.selectedMarka, required this.isLoading});
 
-  MarkaState copyWith({List<MarkaModel>? data, bool? isLoading}) {
+  factory MarkaState.initial() =>
+      MarkaState(data: [], selectedMarka: null, isLoading: false);
+
+  MarkaState copyWith({
+    List<MarkaModel>? data,
+    MarkaModel? selectedMarka,
+    bool? isLoading,
+  }) {
     return MarkaState(
       data: data ?? this.data,
+      selectedMarka: selectedMarka,
       isLoading: isLoading ?? this.isLoading,
     );
   }

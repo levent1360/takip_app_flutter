@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:url_launcher/url_launcher.dart';

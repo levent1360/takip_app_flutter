@@ -24,8 +24,8 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
     super.initState();
   }
 
-  Future<void> getProducts() async {
-    ref.read(urunNotifierProvider.notifier).getProducts();
+  Future<void> refresh() async {
+    ref.read(urunNotifierProvider.notifier).getFilteredProducts();
   }
 
   Future<void> deleteOnboardingSeen() async {
@@ -38,57 +38,58 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
     final state1 = ref.watch(urunKaydetNotifierProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ListView(
-            children: [
-              const SizedBox(height: 10),
-              // Search Bar
-              SearchBarScreen(),
-              const SizedBox(height: 15),
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView(
+              children: [
+                const SizedBox(height: 10),
+                // Search Bar
+                SearchBarScreen(),
+                const SizedBox(height: 15),
 
-              // Shop Markets
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Markalar',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text('Hepsi', style: TextStyle(color: Colors.grey)),
-                ],
-              ),
-              const SizedBox(height: 10),
-              MarkaScreen(),
-              const SizedBox(height: 10),
-              // Popular Items
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Ürünleriniz',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: [
-                      Text('Hepsi', style: TextStyle(color: Colors.grey)),
-                      IconButton(
-                        onPressed: getProducts,
-                        icon: Icon(Icons.refresh),
+                // Shop Markets
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Markalar',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      IconButton(
-                        onPressed: deleteOnboardingSeen,
-                        icon: Icon(Icons.remove),
+                    ),
+                    // Text('Hepsi', style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                MarkaScreen(),
+                const SizedBox(height: 10),
+                // Popular Items
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Ürünleriniz',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading),
-              UrunListWidget(),
-            ],
+                    ),
+                    // Row(
+                    //   children: [
+                    //     Text('Hepsi', style: TextStyle(color: Colors.grey)),
+                    //   ],
+                    // ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading),
+                UrunListWidget(),
+              ],
+            ),
           ),
         ),
       ),

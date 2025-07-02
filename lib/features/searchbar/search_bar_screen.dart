@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
 import 'package:takip/features/notification/bildirim_screen.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
 
-class SearchBarScreen extends StatelessWidget {
+class SearchBarScreen extends ConsumerStatefulWidget {
   const SearchBarScreen({super.key});
 
+  @override
+  ConsumerState<SearchBarScreen> createState() => _SearchBarScreenState();
+}
+
+class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: TextField(
+            onChanged: (value) {
+              ref.read(urunNotifierProvider.notifier).filterProducts(value);
+            },
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
               hintText: 'Ara ...',

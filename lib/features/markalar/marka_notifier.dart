@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/features/markalar/marka_model.dart';
 import 'package:takip/features/markalar/marka_provider.dart';
 import 'package:takip/features/markalar/marka_state.dart';
 
@@ -17,5 +18,19 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
     state = state.copyWith(isLoading: true);
     final apiResponse = await ref.read(markaControllerProvider).getMarkas();
     state = state.copyWith(data: apiResponse, isLoading: false);
+  }
+
+  Future<void> selectedMarka(MarkaModel model) async {
+    var _selectedBefore = state.selectedMarka;
+
+    if (_selectedBefore == null) {
+      _selectedBefore = model;
+    } else if (_selectedBefore.name == model.name) {
+      _selectedBefore = null;
+    } else {
+      _selectedBefore = model;
+    }
+
+    state = state.copyWith(selectedMarka: _selectedBefore, isLoading: false);
   }
 }

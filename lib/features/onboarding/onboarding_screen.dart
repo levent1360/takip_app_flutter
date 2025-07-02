@@ -5,7 +5,6 @@ import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/onboarding/onboarding_notifier.dart';
 import 'package:takip/features/splash_screen/splash_screen.dart';
-import 'onboarding_page_model.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -26,36 +25,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   final PageController _controller = PageController();
   int _currentIndex = 0;
-
-  // final List<OnboardingPageModel> pages = [
-  //   OnboardingPageModel(
-  //     id: 1,
-  //     resim: 'assets/images/strict_part_1.png',
-  //     baslik: 'İndirimleri Kaçırma!',
-  //     description:
-  //         'Sevdiğin markalardaki ürünleri takip et, fiyat düşünce hemen haberdar ol.',
-  //   ),
-  //   OnboardingPageModel(
-  //     id: 2,
-  //     resim: 'assets/images/strict_part_2.png',
-  //     baslik: 'Sadece Linki Paylaş',
-  //     description:
-  //         'Beğendiğin ürünün bağlantısını kopyala, uygulamaya yapıştır – işte bu kadar!',
-  //   ),
-  //   OnboardingPageModel(
-  //     id: 3,
-  //     resim: 'assets/images/strict_part_3.png',
-  //     baslik: 'Fiyat Düşünce Bildirim Al',
-  //     description:
-  //         'İndirim olduğunda seni hemen bilgilendiriyoruz, her zaman avantajlı alışveriş yap.',
-  //   ),
-  //   OnboardingPageModel(
-  //     id: 4,
-  //     resim: 'assets/images/strict_part_4.png',
-  //     baslik: 'Hazırsın!',
-  //     description: 'Hemen favori ürünlerini akle, avantajları kaçırma.',
-  //   ),
-  // ];
 
   void _nextPage(int length) {
     if (_currentIndex < length - 1) {
