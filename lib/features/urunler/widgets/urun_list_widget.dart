@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
@@ -68,20 +69,19 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           itemBuilder: (context, index) {
             final urun = allItems[index];
 
-            return ProductCard(
-              delete: () =>
-                  urun.isIslendi ? delete(urun.id) : hataliSil(urun.link),
-              refresh: () => refresh(urun.link),
-              bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
-              urun: urun,
-              isIslendi: urun.isIslendi,
-              image: urun.eImg!,
-              title: urun.isIslendi ? urun.name ?? '' : urun.link,
-              firstPrice: urun.firstPrice ?? 0,
-              lastPrice: urun.lastPrice ?? 0,
-              url: urun.link,
-              markaLogo: urun.markaIcon ?? '',
-            );
+            if (urun.isIslendi) {
+              return ProductCard(
+                delete: () => delete(urun.id),
+                bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
+                urun: urun,
+              );
+            } else {
+              return ErrorProductCard(
+                urun: urun,
+                delete: () => hataliSil(urun.link),
+                refresh: () => refresh(urun.link),
+              );
+            }
           },
         );
       },

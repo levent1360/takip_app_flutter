@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProductCard extends StatelessWidget {
+class ErrorProductCard extends StatelessWidget {
   final UrunModel urun;
   final VoidCallback delete;
-  final VoidCallback bildirimAc;
+  final VoidCallback refresh;
 
-  const ProductCard({
+  const ErrorProductCard({
     super.key,
     required this.urun,
     required this.delete,
-    required this.bildirimAc,
+    required this.refresh,
   });
 
   Future<void> launchMyUrl(String url) async {
@@ -41,6 +40,7 @@ class ProductCard extends StatelessWidget {
         children: [
           Stack(
             children: [
+              Positioned(left: 5, top: 5, child: Badge(label: Text('Hatalı'))),
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20),
@@ -51,22 +51,6 @@ class ProductCard extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   width: double.infinity,
                   fit: BoxFit.contain,
-                ),
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: GestureDetector(
-                    onTap: bildirimAc,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white12,
-                      child: urun.isBildirimAcik
-                          ? Icon(Icons.notifications_active, color: Colors.teal)
-                          : Icon(Icons.notifications, color: Colors.grey),
-                    ),
-                  ),
                 ),
               ),
             ],
@@ -80,27 +64,7 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  "${urun.lastPrice} ₺",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 5),
-                urun.lastPrice != urun.firstPrice
-                    ? Text(
-                        "${urun.firstPrice} ₺",
-                        style: const TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey,
-                        ),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-          ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -112,9 +76,18 @@ class ProductCard extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 15,
-                          child: NetworkImageWithLoader(urun.markaIcon!),
+                        GestureDetector(
+                          onTap: refresh,
+                          child: const Align(
+                            alignment: Alignment.bottomRight,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white12,
+                              child: Icon(
+                                Icons.refresh,
+                                color: Colors.lightBlue,
+                              ),
+                            ),
+                          ),
                         ),
                         CircleAvatar(
                           backgroundColor: Colors.white12,
