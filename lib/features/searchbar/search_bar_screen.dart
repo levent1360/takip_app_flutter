@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
@@ -12,17 +14,46 @@ class SearchBarScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
+  Timer? _debounce;
+  final searchController = TextEditingController();
+  late FocusNode _searchFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: TextField(
+            focusNode: _searchFocusNode,
+            controller: searchController,
             onChanged: (value) {
-              ref.read(urunNotifierProvider.notifier).filterProducts(value);
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 300), () {
+                ref.read(urunNotifierProvider.notifier).filterProducts(value);
+              });
             },
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  searchController.clear();
+                  FocusScope.of(context).unfocus();
+                  ref.read(urunNotifierProvider.notifier).resetFilter();
+                },
+              ),
               hintText: 'Ara ...',
               filled: true,
               fillColor: Colors.grey[200],
@@ -46,10 +77,10 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Colors.teal,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.qr_code_scanner),
+            child: const Icon(Icons.add, color: Colors.white),
           ),
         ),
         const SizedBox(width: 5),

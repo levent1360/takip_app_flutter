@@ -82,7 +82,14 @@ class UrunNotifier extends StateNotifier<UrunState> {
     final apiResponse = await ref.read(urunControllerProvider).urunSil(id);
     if (apiResponse >= 200 && apiResponse < 300) {
       final updatedData = state.data.where((item) => item.id != id).toList();
-      state = state.copyWith(isLoading: false, data: updatedData);
+      final updatedFilteredData = state.filteredData
+          .where((item) => item.id != id)
+          .toList();
+      state = state.copyWith(
+        isLoading: false,
+        data: updatedData,
+        filteredData: updatedFilteredData,
+      );
     }
     state = state.copyWith(isLoading: false);
   }
@@ -99,6 +106,12 @@ class UrunNotifier extends StateNotifier<UrunState> {
         }
         return item;
       }).toList();
+      final updatedFilteredData = state.filteredData.map((item) {
+        if (item.id == id) {
+          return item.copyWith(isBildirimAcik: !deger);
+        }
+        return item;
+      }).toList();
 
       if (deger) {
         showSuccessSnackBar(message: 'Bu ürün için bildirimler kapatıldı');
@@ -106,7 +119,11 @@ class UrunNotifier extends StateNotifier<UrunState> {
         showSuccessSnackBar(message: 'Bu ürün için bildirimler açıldı');
       }
 
-      state = state.copyWith(isLoading: false, data: updatedData);
+      state = state.copyWith(
+        isLoading: false,
+        data: updatedData,
+        filteredData: updatedFilteredData,
+      );
     }
     state = state.copyWith(isLoading: false);
   }
@@ -118,7 +135,14 @@ class UrunNotifier extends StateNotifier<UrunState> {
       final updatedData = state.data
           .where((item) => item.isIslendi != false && item.link != url)
           .toList();
-      state = state.copyWith(isLoading: false, data: updatedData);
+      final updatedFilteredData = state.filteredData
+          .where((item) => item.isIslendi != false && item.link != url)
+          .toList();
+      state = state.copyWith(
+        isLoading: false,
+        data: updatedData,
+        filteredData: updatedFilteredData,
+      );
     }
     state = state.copyWith(isLoading: false);
   }

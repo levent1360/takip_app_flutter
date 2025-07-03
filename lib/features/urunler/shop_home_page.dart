@@ -86,7 +86,10 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                AnimationPleaseWaitContainerWidget(isLoading: state1.isLoading),
+                AnimationPleaseWaitContainerWidget(
+                  isLoading: state1.isLoading,
+                  metin: state1.metin,
+                ),
                 UrunListWidget(),
               ],
             ),
