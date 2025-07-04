@@ -64,11 +64,12 @@ class UrunServiceImpl implements UrunService {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
 
+    final String uri = Uri.encodeComponent(url!);
+
     final result = await _apiService.get<bool>(
-      ApiEndpoints.takipLink(token!, url!),
+      ApiEndpoints.takipLink(token!, uri),
       fromJsonT: (json) => json as bool,
     );
-    print('Kayıt Sonucu:  $result');
     return result;
   }
 
