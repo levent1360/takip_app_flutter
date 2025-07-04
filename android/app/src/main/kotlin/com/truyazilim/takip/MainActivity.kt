@@ -30,6 +30,10 @@ public class MainActivity : FlutterActivity() {
                 .invokeMethod("onNewSharedText", sharedText)
         }
     }
+    override fun onResume() {
+        super.onResume()
+        handleIntent(intent) // Arka plandan döndüğünde intent'i kontrol et
+    }
 
     private fun handleSendIntent(intent: Intent) {
         val action = intent.action
@@ -38,17 +42,45 @@ public class MainActivity : FlutterActivity() {
         if (Intent.ACTION_SEND == action && type == "text/plain") {
             sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
         }
+        // // Flutter'a veriyi gönderdikten sonra sıfırla
+        // flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+        //     MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", sharedText)
+        //     sharedText = null // İşlem bitti, sıfırla
+        // }
     }
     private fun handleIntent(intent: Intent?) {
-    if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
-        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-        if (!sharedText.isNullOrEmpty()) {
-            flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
-                MethodChannel(messenger, CHANNEL).invokeMethod("getSharedText", sharedText)
+        // if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+        //     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
+        //     if (!sharedText.isNullOrEmpty()) {
+        //         flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+        //             MethodChannel(messenger, CHANNEL).invokeMethod("getSharedText", sharedText)
+        //         }
+        //     }
+        // }
+
+        intent ?: return
+    
+        when {
+            intent.action == Intent.ACTION_SEND && intent.type == "text/plain" -> {
+                handleSendIntent(intent)
+                // // Intent'i işlendikten sonra temizle (opsiyonel)
+                // intent.replaceExtras(Bundle.EMPTY)
+                // intent.action = ""
+            }
+            intent.action == Intent.ACTION_VIEW -> {
+                // URL yakalama için
+                val data = intent.dataString
+                data?.let {
+                    flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+                        MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", it)
+                    }
+                    //  // URL işlendikten sonra temizle
+                    // intent.data = null
+                    // intent.action = ""
+                }
             }
         }
     }
-}
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

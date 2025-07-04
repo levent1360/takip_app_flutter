@@ -31,14 +31,13 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
       return;
     }
 
-    await ref
-        .read(urunKaydetNotifierProvider.notifier)
-        .getUrlProducts(controller.text);
-
     // Sayfa geçişi işlemden sonra
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+    await ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .getUrlProducts(controller.text);
   }
 
   @override

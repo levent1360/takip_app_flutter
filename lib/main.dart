@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +6,7 @@ import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/onboarding/onboarding_screen.dart';
+import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,44 +30,63 @@ class TakipApp extends ConsumerStatefulWidget {
 
 class _TakipAppState extends ConsumerState<TakipApp>
     with WidgetsBindingObserver {
-  StreamSubscription<Uri>? _linkSubscription;
+  static const platform = MethodChannel('app.channel.shared.data');
+  String? _sharedText;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _initDeepLinks();
+    _setupIntentListener();
+    _initSharedText();
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    platform.setMethodCallHandler(null); // Handler'ı temizle
-    _linkSubscription?.cancel();
-    super.dispose();
-  }
+  Future<void> _initSharedText() async {
+    try {
+      final String? sharedText = await platform.invokeMethod('getSharedText');
+      if (sharedText != null) {
+        setState(() {
+          _sharedText = sharedText;
+        });
 
-  Future<void> _initDeepLinks() async {
-    final appLinks = AppLinks();
+        await ref
+            .read(urunKaydetNotifierProvider.notifier)
+            .getUrlProducts(_sharedText);
 
-    // Uygulama kapalıyken açılırsa (cold start)
-    final initialUri = await appLinks.getInitialLink();
-    if (initialUri != null) {
-      _handleDeepLink(initialUri);
+        await Future.delayed(Duration(seconds: 2));
+        setState(() {
+          _sharedText = null;
+        });
+      }
+    } on PlatformException catch (e) {
+      print("Hata: ${e.message}");
     }
+  }
 
-    // Uygulama açık/arkada çalışırken gelen linkler
-    appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        _handleDeepLink(uri);
+  void _setupIntentListener() {
+    platform.setMethodCallHandler((call) async {
+      if (call.method == 'onNewSharedText') {
+        setState(() {
+          _sharedText = call.arguments;
+        });
+
+        print('------------------------------------');
+        print('onNewSharedText     : $_sharedText');
+        print('------------------------------------');
       }
     });
   }
 
-  void _handleDeepLink(Uri uri) {
-    // URL'yi Riverpod'a kaydet
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initSharedText(); // Uygulama arka plandan döndüğünde kontrol et
+    }
+  }
 
-    print(uri);
+  @override
+  void dispose() {
+    platform.setMethodCallHandler(null); // Handler'ı temizle
+    super.dispose();
   }
 
   // This widget is the root of your application.

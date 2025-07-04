@@ -44,7 +44,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
     state = state.copyWith(
       isLoading: true,
       result: apiResponse,
-      metin: 'Ürünleriniz Kaydediliyor... Sayfayı kapatmayınız.',
+      metin: 'Ürünleriniz Kaydediliyor... ',
     );
 
     // Ürünler filtrelenip listeye eklenecek
@@ -56,8 +56,6 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       await urunNotifier.getProducts();
 
       final currentLength = ref.read(urunNotifierProvider).data.length;
-      print('beforeLength $beforeLength');
-      print('currentLength $currentLength');
       if (currentLength > beforeLength) {
         break;
       }

@@ -51,7 +51,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
                         .selectedMarka(marka);
                     await ref
                         .read(urunNotifierProvider.notifier)
-                        .filterByMarkaProducts();
+                        .getProducts(ismarka: true);
                   },
                 );
               }

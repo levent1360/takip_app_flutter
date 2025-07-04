@@ -41,7 +41,9 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
             onChanged: (value) {
               if (_debounce?.isActive ?? false) _debounce!.cancel();
               _debounce = Timer(const Duration(milliseconds: 300), () {
-                ref.read(urunNotifierProvider.notifier).filterProducts(value);
+                ref
+                    .read(urunNotifierProvider.notifier)
+                    .getProducts(query: value);
               });
             },
             decoration: InputDecoration(
@@ -51,7 +53,7 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
                 onPressed: () {
                   searchController.clear();
                   FocusScope.of(context).unfocus();
-                  ref.read(urunNotifierProvider.notifier).resetFilter();
+                  ref.read(urunNotifierProvider.notifier).getProducts();
                 },
               ),
               hintText: 'Ara ...',

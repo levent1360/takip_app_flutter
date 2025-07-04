@@ -17,65 +17,86 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
   UrunNotifier(this.ref) : super(UrunState.initial()) {}
 
-  Future<void> getProducts() async {
+  Future<void> getProducts({String query = '', bool ismarka = false}) async {
     state = state.copyWith(isLoading: true);
-    final apiResponse = await ref.read(urunControllerProvider).getProducts();
-    await ref.read(urunControllerProvider).urunGoruldu();
+
+    final urunController = ref.read(urunControllerProvider);
+    final apiResponse = await urunController.getProducts();
+    await urunController.urunGoruldu();
+
+    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
+    final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
+
+    List<UrunModel> filtered = apiResponse.where((product) {
+      final productName = normalizeTurkishCharacters(
+        product.name?.toLowerCase() ?? '',
+      );
+      final matchesQuery = query.isEmpty
+          ? true
+          : productName.contains(normalizedQuery);
+      final matchesMarka = !ismarka
+          ? true
+          : (selectedMarka == null
+                ? true
+                : product.siteMarka == selectedMarka.name);
+
+      return matchesQuery && matchesMarka;
+    }).toList();
 
     state = state.copyWith(
       data: apiResponse,
-      filteredData: apiResponse,
+      filteredData: filtered,
       isLoading: false,
     );
   }
 
-  Future<void> getFilteredProducts() async {
-    state = state.copyWith(isLoading: true);
+  // Future<void> getFilteredProducts() async {
+  //   state = state.copyWith(isLoading: true);
 
-    state = state.copyWith(
-      data: state.data,
-      filteredData: state.filteredData,
-      isLoading: false,
-    );
-  }
+  //   state = state.copyWith(
+  //     data: state.data,
+  //     filteredData: state.filteredData,
+  //     isLoading: false,
+  //   );
+  // }
 
-  void filterProducts(String query) {
-    state = state.copyWith(isLoading: true);
-    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
+  // void filterProducts(String query) {
+  //   state = state.copyWith(isLoading: true);
+  //   final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
 
-    final filtered = state.data.where((q) {
-      final normalizedName = normalizeTurkishCharacters(q.name!.toLowerCase());
-      return normalizedName.contains(normalizedQuery);
-    }).toList();
+  //   final filtered = state.data.where((q) {
+  //     final normalizedName = normalizeTurkishCharacters(q.name!.toLowerCase());
+  //     return normalizedName.contains(normalizedQuery);
+  //   }).toList();
 
-    state = state.copyWith(filteredData: filtered, isLoading: false);
-  }
+  //   state = state.copyWith(filteredData: filtered, isLoading: false);
+  // }
 
-  Future<void> filterByMarkaProducts() async {
-    state = state.copyWith(isLoading: true);
+  // Future<void> filterByMarkaProducts() async {
+  //   state = state.copyWith(isLoading: true);
 
-    // Marka state'ini almak için read kullanıyoruz
-    final markaState = ref.read(markaNotifierProvider);
+  //   // Marka state'ini almak için read kullanıyoruz
+  //   final markaState = ref.read(markaNotifierProvider);
 
-    List<UrunModel> filtered = [];
+  //   List<UrunModel> filtered = [];
 
-    // Eğer selectedMarka null ise, tüm verileri filteredData'ya ekliyoruz
-    if (markaState.selectedMarka == null) {
-      filtered = state.data.isEmpty ? [] : state.data;
-    } else {
-      // Eğer selectedMarka varsa, veri filtreleme işlemi yapıyoruz
-      filtered = state.data
-          .where((q) => q.siteMarka == markaState.selectedMarka?.name)
-          .toList();
-    }
+  //   // Eğer selectedMarka null ise, tüm verileri filteredData'ya ekliyoruz
+  //   if (markaState.selectedMarka == null) {
+  //     filtered = state.data.isEmpty ? [] : state.data;
+  //   } else {
+  //     // Eğer selectedMarka varsa, veri filtreleme işlemi yapıyoruz
+  //     filtered = state.data
+  //         .where((q) => q.siteMarka == markaState.selectedMarka?.name)
+  //         .toList();
+  //   }
 
-    // filteredData'yı güncelliyoruz ve loading'i false yapıyoruz
-    state = state.copyWith(filteredData: filtered, isLoading: false);
-  }
+  //   // filteredData'yı güncelliyoruz ve loading'i false yapıyoruz
+  //   state = state.copyWith(filteredData: filtered, isLoading: false);
+  // }
 
-  void resetFilter() {
-    state = state.copyWith(filteredData: state.data);
-  }
+  // void resetFilter() {
+  //   state = state.copyWith(filteredData: state.data);
+  // }
 
   Future<void> urunSil(int id) async {
     state = state.copyWith(isLoading: true);

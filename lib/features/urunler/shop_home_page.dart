@@ -25,7 +25,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
   }
 
   Future<void> refresh() async {
-    ref.read(urunNotifierProvider.notifier).getFilteredProducts();
+    ref.read(urunNotifierProvider.notifier).getProducts();
   }
 
   Future<void> deleteOnboardingSeen() async {
