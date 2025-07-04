@@ -47,6 +47,11 @@ class _TakipAppState extends ConsumerState<TakipApp>
         setState(() {
           _sharedText = sharedText;
         });
+        final String uri = Uri.encodeComponent(_sharedText!);
+        print('------------------------------------');
+        print('getSharedText     : $_sharedText');
+        print('getSharedText  uri   : $uri');
+        print('------------------------------------');
 
         await ref
             .read(urunKaydetNotifierProvider.notifier)
@@ -69,9 +74,20 @@ class _TakipAppState extends ConsumerState<TakipApp>
           _sharedText = call.arguments;
         });
 
+        final String uri = Uri.encodeComponent(_sharedText!);
+
         print('------------------------------------');
         print('onNewSharedText     : $_sharedText');
+        print('onNewSharedText   uri  : $uri');
         print('------------------------------------');
+        await ref
+            .read(urunKaydetNotifierProvider.notifier)
+            .getUrlProducts(_sharedText);
+
+        await Future.delayed(Duration(seconds: 2));
+        setState(() {
+          _sharedText = null;
+        });
       }
     });
   }

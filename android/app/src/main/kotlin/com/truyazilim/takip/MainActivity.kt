@@ -10,75 +10,71 @@ import io.flutter.plugin.common.MethodChannel
 public class MainActivity : FlutterActivity() {
     private var sharedText: String? = null
     private val CHANNEL = "app.channel.shared.data"
+    private var lastProcessedUrl: String? = null // Son işlenen URL'yi takip etmek için
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        handleSendIntent(intent)
+        handleIntent(intent, isFromOnCreate = true)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-
-        val action = intent.action
-        val type = intent.type
-
-        if (Intent.ACTION_SEND == action && "text/plain" == type) {
-            handleSendIntent(intent)
-
-            MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, CHANNEL)
-                .invokeMethod("onNewSharedText", sharedText)
-        }
+        handleIntent(intent, isFromOnCreate = false)
     }
+
     override fun onResume() {
         super.onResume()
-        handleIntent(intent) // Arka plandan döndüğünde intent'i kontrol et
-    }
-
-    private fun handleSendIntent(intent: Intent) {
-        val action = intent.action
-        val type = intent.type
-
-        if (Intent.ACTION_SEND == action && type == "text/plain") {
-            sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
+        // Arka plandan dönerken yeni bir intent olup olmadığını kontrol et
+        if (intent?.action == Intent.ACTION_VIEW || intent?.action == Intent.ACTION_SEND) {
+            handleIntent(intent, isFromOnCreate = false)
         }
-        // // Flutter'a veriyi gönderdikten sonra sıfırla
-        // flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
-        //     MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", sharedText)
-        //     sharedText = null // İşlem bitti, sıfırla
-        // }
     }
-    private fun handleIntent(intent: Intent?) {
-        // if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
-        //     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-        //     if (!sharedText.isNullOrEmpty()) {
-        //         flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
-        //             MethodChannel(messenger, CHANNEL).invokeMethod("getSharedText", sharedText)
-        //         }
-        //     }
-        // }
 
+    private fun handleIntent(intent: Intent?, isFromOnCreate: Boolean) {
         intent ?: return
-    
+        
         when {
             intent.action == Intent.ACTION_SEND && intent.type == "text/plain" -> {
                 handleSendIntent(intent)
-                // // Intent'i işlendikten sonra temizle (opsiyonel)
-                // intent.replaceExtras(Bundle.EMPTY)
-                // intent.action = ""
             }
             intent.action == Intent.ACTION_VIEW -> {
-                // URL yakalama için
-                val data = intent.dataString
-                data?.let {
-                    flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
-                        MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", it)
-                    }
-                    //  // URL işlendikten sonra temizle
-                    // intent.data = null
-                    // intent.action = ""
+                handleViewIntent(intent, isFromOnCreate)
+            }
+        }
+    }
+
+    private fun handleSendIntent(intent: Intent) {
+        intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+            if (text != lastProcessedUrl) { // Daha önce işlenmemişse
+                lastProcessedUrl = text
+                sendToFlutter(text)
+            }
+        }
+    }
+
+    private fun handleViewIntent(intent: Intent, isFromOnCreate: Boolean) {
+        val fullUrl = intent.data?.toString()
+        Log.d("FULL_URL", "Tam URL: $fullUrl")
+        fullUrl?.let { url ->
+            // onCreate'ten geliyorsa veya yeni bir URL ise işle
+            if (isFromOnCreate || url != lastProcessedUrl) {
+                lastProcessedUrl = url
+                sendToFlutter(url)
+                
+                // Eğer uygulama zaten açıksa, intent'i temizle
+                if (!isFromOnCreate) {
+                    intent.data = null
+                    intent.action = ""
+                    setIntent(intent)
                 }
             }
+        }
+    }
+
+    private fun sendToFlutter(data: String) {
+        flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+            MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", data)
         }
     }
 
@@ -89,7 +85,7 @@ public class MainActivity : FlutterActivity() {
             .setMethodCallHandler { call, result ->
                 if (call.method == "getSharedText") {
                     result.success(sharedText)
-                    sharedText = null // yalnızca bir kere gönder
+                    sharedText = null
                 }
             }
     }
