@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/onboarding/onboarding_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _setupInteractedMessage();
     _setupIntentListener();
     // _initSharedText();
   }
@@ -91,6 +94,24 @@ class _TakipAppState extends ConsumerState<TakipApp>
         });
       }
     });
+  }
+
+  Future<void> _setupInteractedMessage() async {
+    // Uygulama kapalıyken veya arka plandayken açılan bildirim
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance
+        .getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Uygulama arka planda veya öndeyken gelen bildirim
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    // Bildirim tıklandığında API'ye istek at
+    ref.read(urunNotifierProvider.notifier).getProducts();
   }
 
   @override
