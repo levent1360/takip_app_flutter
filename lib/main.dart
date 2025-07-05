@@ -7,6 +7,7 @@ import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/onboarding/onboarding_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
+import 'package:takip/features/urunler/shop_home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _setupIntentListener();
-    _initSharedText();
+    // _initSharedText();
   }
 
   Future<void> _initSharedText() async {
@@ -53,9 +54,9 @@ class _TakipAppState extends ConsumerState<TakipApp>
         print('getSharedText  uri   : $uri');
         print('------------------------------------');
 
-        await ref
-            .read(urunKaydetNotifierProvider.notifier)
-            .getUrlProducts(_sharedText);
+        // await ref
+        //     .read(urunKaydetNotifierProvider.notifier)
+        //     .getUrlProducts(_sharedText);
 
         await Future.delayed(Duration(seconds: 2));
         setState(() {
@@ -95,7 +96,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _initSharedText(); // Uygulama arka plandan döndüğünde kontrol et
+      _setupIntentListener(); // Uygulama arka plandan döndüğünde kontrol et
     }
   }
 
@@ -115,7 +116,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: OnboardingScreen(),
+      home: ShopHomePage(),
     );
   }
 }

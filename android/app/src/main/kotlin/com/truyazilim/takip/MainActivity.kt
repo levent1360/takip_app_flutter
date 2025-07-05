@@ -10,83 +10,112 @@ import io.flutter.plugin.common.MethodChannel
 public class MainActivity : FlutterActivity() {
     private var sharedText: String? = null
     private val CHANNEL = "app.channel.shared.data"
-    private var lastProcessedUrl: String? = null // Son işlenen URL'yi takip etmek için
+    private var lastProcessedUrl: String? = null
+    private var isInitialIntentProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        handleIntent(intent, isFromOnCreate = true)
+        handleInitialIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent, isFromOnCreate = false)
+        handleIncomingIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
-        // Arka plandan dönerken yeni bir intent olup olmadığını kontrol et
-        if (intent?.action == Intent.ACTION_VIEW || intent?.action == Intent.ACTION_SEND) {
-            handleIntent(intent, isFromOnCreate = false)
+        if (!isInitialIntentProcessed) {
+            handleInitialIntent(intent)
         }
     }
 
-    private fun handleIntent(intent: Intent?, isFromOnCreate: Boolean) {
+    private fun handleInitialIntent(intent: Intent?) {
         intent ?: return
-        
+        if (isValidIntent(intent)) {
+            handleIncomingIntent(intent)
+            isInitialIntentProcessed = true
+        }
+    }
+
+    private fun handleIncomingIntent(intent: Intent) {
+        setIntent(intent) // Güncel intent'i ayarla
+
         when {
             intent.action == Intent.ACTION_SEND && intent.type == "text/plain" -> {
                 handleSendIntent(intent)
             }
             intent.action == Intent.ACTION_VIEW -> {
-                handleViewIntent(intent, isFromOnCreate)
+                handleViewIntent(intent)
             }
+        }
+    }
+
+    private fun isValidIntent(intent: Intent): Boolean {
+        return when {
+            intent.action == Intent.ACTION_SEND && intent.type == "text/plain" -> true
+            intent.action == Intent.ACTION_VIEW && intent.data != null -> true
+            else -> false
         }
     }
 
     private fun handleSendIntent(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
-            if (text != lastProcessedUrl) { // Daha önce işlenmemişse
+
+            if (text != lastProcessedUrl) {
                 lastProcessedUrl = text
+                sharedText = text
                 sendToFlutter(text)
             }
         }
     }
 
-    private fun handleViewIntent(intent: Intent, isFromOnCreate: Boolean) {
+    private fun handleViewIntent(intent: Intent) {
         val fullUrl = intent.data?.toString()
-        Log.d("FULL_URL", "Tam URL: $fullUrl")
+
         fullUrl?.let { url ->
-            // onCreate'ten geliyorsa veya yeni bir URL ise işle
-            if (isFromOnCreate || url != lastProcessedUrl) {
+            if (url != lastProcessedUrl) {
                 lastProcessedUrl = url
+                sharedText = url
                 sendToFlutter(url)
-                
-                // Eğer uygulama zaten açıksa, intent'i temizle
-                if (!isFromOnCreate) {
-                    intent.data = null
-                    intent.action = ""
-                    setIntent(intent)
-                }
+                clearIntentIfNeeded(intent)
             }
+        }
+    }
+
+    private fun clearIntentIfNeeded(intent: Intent) {
+        try {
+            intent.data = null
+            intent.action = ""
+            setIntent(intent)
+        } catch (e: Exception) {
         }
     }
 
     private fun sendToFlutter(data: String) {
-        flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
-            MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", data)
+        try {
+            flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+                MethodChannel(messenger, CHANNEL).invokeMethod("onNewSharedText", data)
+            }
+        } catch (e: Exception) {
         }
     }
+
+
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-            .setMethodCallHandler { call, result ->
-                if (call.method == "getSharedText") {
-                    result.success(sharedText)
-                    sharedText = null
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).apply {
+            setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "getSharedText" -> {
+                        result.success(sharedText)
+                        sharedText = null
+                    }
+                    else -> result.notImplemented()
                 }
             }
+        }
     }
 }

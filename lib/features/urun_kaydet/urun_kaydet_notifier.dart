@@ -25,6 +25,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
     // Önceki ürün listesinin uzunluğunu al
     final urunNotifier = ref.read(urunNotifierProvider.notifier);
+    await urunNotifier.getProducts();
     final beforeLength = ref.read(urunNotifierProvider).data.length;
 
     // API çağrısını yap
@@ -40,7 +41,9 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       );
       return;
     }
-
+    print("-----------------------------------");
+    print("state.isLoading: ${state.isLoading}");
+    print("-----------------------------------");
     state = state.copyWith(
       isLoading: true,
       result: apiResponse,
@@ -49,13 +52,18 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
     // Ürünler filtrelenip listeye eklenecek
     int retries = 0;
-    const maxRetries = 10;
+    const maxRetries = 20;
     const delayBetweenTries = Duration(milliseconds: 3000);
 
     while (retries < maxRetries) {
       await urunNotifier.getProducts();
-
       final currentLength = ref.read(urunNotifierProvider).data.length;
+
+      print("-----------------------------------");
+      print("beforeLength: ${beforeLength}");
+      print("currentLength: ${currentLength}");
+      print("-----------------------------------");
+
       if (currentLength > beforeLength) {
         break;
       }
@@ -63,12 +71,18 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       await Future.delayed(delayBetweenTries);
       retries++;
     }
-
+    print("-----------------------------------");
+    print("state.isLoading: ${state.isLoading}");
+    print("retries: $retries");
+    print("-----------------------------------");
     await Future.delayed(Duration(milliseconds: 1000));
     state = state.copyWith(
       isLoading: false,
       result: apiResponse,
       metin: 'Bitti',
     );
+    print("-----------------------------------");
+    print("state.isLoading: ${state.isLoading}");
+    print("-----------------------------------");
   }
 }
