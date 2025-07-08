@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
+import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/markalar/marka_screen.dart';
 import 'package:takip/features/searchbar/search_bar_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
@@ -36,6 +37,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
   @override
   Widget build(BuildContext context) {
     final state1 = ref.watch(urunKaydetNotifierProvider);
+    final stateMarka = ref.watch(markaNotifierProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
@@ -72,7 +74,9 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Ürünleriniz',
+                      stateMarka.selectedMarka != null
+                          ? '${stateMarka.selectedMarka!.orjName} Ürünleriniz'
+                          : 'Tüm Ürünleriniz',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

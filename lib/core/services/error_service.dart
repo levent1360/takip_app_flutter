@@ -16,7 +16,7 @@ class ErrorService {
       return "İnternet bağlantınızı kontrol edin.";
     } else if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.sendTimeout) {
-      return "Sunucuya bağlanılamadı. Lütfen tekrar deneyin.";
+      return "Sunucu bakımda olabilir. Lütfen daha sonra tekrar deneyin.";
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return "Sunucudan yanıt alınamadı.";
     } else if (e.type == DioExceptionType.badResponse) {
