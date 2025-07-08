@@ -15,8 +15,7 @@ class ErrorService {
     if (e.error is SocketException) {
       return "İnternet bağlantınızı kontrol edin.";
     } else if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.sendTimeout ||
-        e.type == DioExceptionType.receiveTimeout) {
+        e.type == DioExceptionType.sendTimeout) {
       return "Sunucuya bağlanılamadı. Lütfen tekrar deneyin.";
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return "Sunucudan yanıt alınamadı.";

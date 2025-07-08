@@ -53,7 +53,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
     // Ürünler filtrelenip listeye eklenecek
     int retries = 0;
     const maxRetries = 20;
-    const delayBetweenTries = Duration(milliseconds: 3000);
+    const delayBetweenTries = Duration(milliseconds: 2000);
 
     while (retries < maxRetries) {
       await urunNotifier.getProducts();
