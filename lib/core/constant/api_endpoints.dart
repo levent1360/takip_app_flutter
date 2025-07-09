@@ -11,6 +11,10 @@ class ApiEndpoints {
     return 'takip/link/$token?linktext=$url';
   }
 
+  static String urunKaydet2(String token, String url) {
+    return 'takip/link2/$token?linktext=$url';
+  }
+
   static String takipSil(String token, int id) {
     return 'takip/sil/$token/$id';
   }

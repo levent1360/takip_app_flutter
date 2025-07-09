@@ -8,6 +8,7 @@ import 'package:takip/features/urunler/urun_model.dart';
 abstract class UrunService {
   Future<List<UrunModel>> getProducts();
   Future<bool> getUrlProducts(String? url);
+  Future<String?> urunKaydet2(String? url);
   Future urunGoruldu();
   Future<int> urunSil(int id);
   Future<int> hataliSil(String link);
@@ -69,6 +70,19 @@ class UrunServiceImpl implements UrunService {
     final result = await _apiService.get<bool>(
       ApiEndpoints.takipLink(token!, uri),
       fromJsonT: (json) => json as bool,
+    );
+    return result;
+  }
+
+  Future<String?> urunKaydet2(String? url) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+
+    final String uri = Uri.encodeComponent(url!);
+
+    final result = await _apiService.get<String?>(
+      ApiEndpoints.urunKaydet2(token!, uri),
+      fromJsonT: (json) => json as String?,
     );
     return result;
   }

@@ -13,7 +13,29 @@ class BaseApiService {
   }) async {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
-      return fromJsonT(response.data);
+
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        final data = response.data;
+        if (data is List) {
+          return fromJsonT(response.data);
+        } else {
+          throw DioException(
+            requestOptions: response.requestOptions,
+            error:
+                'API, liste yerine başka bir format döndü: ${data.runtimeType}',
+            type: DioExceptionType.badResponse,
+          );
+        }
+      } else {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          error: 'Sunucu hatası: ${response.statusMessage}',
+          type: DioExceptionType.badResponse,
+        );
+      }
     } on DioException {
       rethrow; // Interceptor işini yapar
     } catch (e) {
