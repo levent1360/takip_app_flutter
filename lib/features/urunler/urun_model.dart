@@ -1,5 +1,6 @@
 class UrunModel {
   final int id;
+  final String iden;
   final String phoneCode;
   final String link;
   final String? eImg;
@@ -18,6 +19,7 @@ class UrunModel {
 
   UrunModel({
     required this.id,
+    required this.iden,
     required this.phoneCode,
     required this.link,
     this.eImg,
@@ -37,25 +39,45 @@ class UrunModel {
 
   factory UrunModel.fromJson(Map<String, dynamic> json) => UrunModel(
     id: json["id"],
+    iden: json["iden"],
     phoneCode: json["phoneCode"],
     link: json["link"],
     eImg: json["eImg"] as String?,
     markaIcon: json["markaIcon"] as String?,
     prices: json["prices"] as String?,
-    firstPrice: json["firstPrice"]?.toDouble(),
-    lastPrice: json["lastPrice"]?.toDouble(),
+    firstPrice: _toDouble(json["firstPrice"]),
+    lastPrice: _toDouble(json["lastPrice"]),
     siteMarka: json["siteMarka"] as String?,
     isBilidirimBasarisiz: json["isBilidirimBasarisiz"] as bool?,
     isGosterildi: json["isGosterildi"] as bool?,
     isDeleted: json["isDeleted"] as bool?,
-    isIslendi: json["isIslendi"],
-    isBildirimAcik: json["isBildirimAcik"],
-    updateDate: DateTime.parse(json["updateDate"]),
+    isIslendi: json["isIslendi"] == true,
+    isBildirimAcik: json["isBildirimAcik"] == true,
+    updateDate: _parseDate(json["updateDate"]),
     name: json["name"] as String?,
   );
 
+  // Yardımcı metotlar:
+  static double? _toDouble(dynamic value) {
+    if (value == null) return null;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
+  }
+
+  static DateTime _parseDate(dynamic value) {
+    if (value == null) return DateTime.fromMillisecondsSinceEpoch(0);
+    try {
+      return DateTime.parse(value);
+    } catch (e) {
+      return DateTime.fromMillisecondsSinceEpoch(0); // fallback değer
+    }
+  }
+
   UrunModel copyWith({
     int? id,
+    String? iden,
     String? phoneCode,
     String? link,
     String? eImg,
@@ -74,6 +96,7 @@ class UrunModel {
   }) {
     return UrunModel(
       id: id ?? this.id,
+      iden: iden ?? this.iden,
       phoneCode: phoneCode ?? this.phoneCode,
       link: link ?? this.link,
       eImg: eImg ?? this.eImg,

@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_provider.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_state.dart';
+import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/urun_provider.dart';
 
 final urunKaydetNotifierProvider =
     StateNotifierProvider<UrunKaydetNotifier, UrunKaydetState>((ref) {
@@ -33,7 +35,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         .read(urunKaydetControllerProvider)
         .getUrlProducts(url);
 
-    if (!apiResponse) {
+    if (apiResponse == null && !apiResponse!) {
       showErrorSnackBar(message: 'Geçerli bir ürün linki gönderiniz.');
       state = state.copyWith(
         isLoading: false,
@@ -87,27 +89,15 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
   }
 
   Future<void> urunKaydet2(String? url) async {
-    print("-----------------------------------");
-    print("URL alındı: $url");
-    print("-----------------------------------");
     state = state.copyWith(
       isLoading: true,
       metin: 'Kontrol Ediliyor... Bekleyiniz',
     );
 
-    // Önceki ürün listesinin uzunluğunu al
-    final urunNotifier = ref.read(urunNotifierProvider.notifier);
-    await urunNotifier.getProducts();
-    final beforeLength = ref.read(urunNotifierProvider).data.length;
-
     // API çağrısını yap
     final apiResponse = await ref
         .read(urunKaydetControllerProvider)
         .urunKaydet2(url);
-
-    print("-----------------------------------");
-    print("apiResponse: ${apiResponse}");
-    print("-----------------------------------");
 
     if (apiResponse == null) {
       showErrorSnackBar(message: 'Geçerli bir ürün linki gönderiniz.');
@@ -118,9 +108,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       );
       return;
     }
-    print("-----------------------------------");
-    print("state.isLoading: ${state.isLoading}");
-    print("-----------------------------------");
+
     state = state.copyWith(
       isLoading: true,
       result: true,
@@ -133,26 +121,22 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
     const maxRetries = 20;
     const delayBetweenTries = Duration(milliseconds: 2000);
 
+    UrunModel? urunModel;
+
     while (retries < maxRetries) {
-      await urunNotifier.getProducts();
-      final currentLength = ref.read(urunNotifierProvider).data.length;
+      urunModel = await ref
+          .read(urunControllerProvider)
+          .getUrunByGuidId(apiResponse);
 
-      print("-----------------------------------");
-      print("beforeLength: ${beforeLength}");
-      print("currentLength: ${currentLength}");
-      print("-----------------------------------");
-
-      if (currentLength > beforeLength) {
+      if (urunModel != null) {
+        ref.read(urunNotifierProvider.notifier).urunEkle(urunModel);
         break;
       }
 
       await Future.delayed(delayBetweenTries);
       retries++;
     }
-    print("-----------------------------------");
-    print("state.isLoading: ${state.isLoading}");
-    print("retries: $retries");
-    print("-----------------------------------");
+
     await Future.delayed(Duration(milliseconds: 1000));
     state = state.copyWith(
       isLoading: false,
@@ -160,8 +144,5 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       guidId: apiResponse,
       metin: 'Bitti',
     );
-    print("-----------------------------------");
-    print("state.isLoading: ${state.isLoading}");
-    print("-----------------------------------");
   }
 }

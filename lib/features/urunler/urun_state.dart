@@ -25,17 +25,4 @@ class UrunState {
       filteredData: filteredData ?? this.filteredData,
     );
   }
-
-  UrunState urunEkle(UrunState mevcutState, UrunModel yeniUrun) {
-    final yeniDataListesi = List<UrunModel>.from(mevcutState.data)
-      ..insert(0, yeniUrun);
-    final yeniFilteredDataListesi = List<UrunModel>.from(
-      mevcutState.filteredData,
-    )..insert(0, yeniUrun);
-
-    return mevcutState.copyWith(
-      data: yeniDataListesi,
-      filteredData: yeniFilteredDataListesi,
-    );
-  }
 }

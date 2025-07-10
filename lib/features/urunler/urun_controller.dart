@@ -25,4 +25,8 @@ class UrunController {
   Future hataliSil(String url) async {
     return await _urunService.hataliSil(url);
   }
+
+  Future<UrunModel?> getUrunByGuidId(String? id) async {
+    return await _urunService.getUrunByGuidId(id);
+  }
 }

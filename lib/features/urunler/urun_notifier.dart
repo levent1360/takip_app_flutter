@@ -167,4 +167,16 @@ class UrunNotifier extends StateNotifier<UrunState> {
     }
     state = state.copyWith(isLoading: false);
   }
+
+  void urunEkle(UrunModel yeniUrun) {
+    final yeniDataListesi = List<UrunModel>.from(state.data)
+      ..insert(0, yeniUrun);
+    final yeniFilteredDataListesi = List<UrunModel>.from(state.filteredData)
+      ..insert(0, yeniUrun);
+
+    state = state.copyWith(
+      data: yeniDataListesi,
+      filteredData: yeniFilteredDataListesi,
+    );
+  }
 }

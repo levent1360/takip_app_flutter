@@ -85,7 +85,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
         print('------------------------------------');
         await ref
             .read(urunKaydetNotifierProvider.notifier)
-            .getUrlProducts(_sharedText);
+            .urunKaydet2(_sharedText);
 
         await Future.delayed(Duration(seconds: 2));
         setState(() {

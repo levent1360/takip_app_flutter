@@ -37,7 +37,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
     await ref
         .read(urunKaydetNotifierProvider.notifier)
-        .getUrlProducts(controller.text);
+        .urunKaydet2(controller.text);
   }
 
   @override
