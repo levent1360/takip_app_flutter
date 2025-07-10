@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
+import 'package:takip/core/utils/format_money.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,12 +46,12 @@ class ProductCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20),
                 ),
-                child: Image.network(
+                child: NetworkImageWithLoader(
                   urun.eImg!,
-                  height: 120,
-                  alignment: Alignment.topCenter,
-                  width: double.infinity,
                   fit: BoxFit.contain,
+                  width: 200,
+                  height: 120,
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
               Positioned(
@@ -85,16 +86,21 @@ class ProductCard extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "${urun.lastPrice} ₺",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  formatMoneyManual(urun.lastPrice!),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: (urun.lastPrice != urun.firstPrice)
+                        ? Colors.teal
+                        : Colors.black,
+                  ),
                 ),
                 const SizedBox(width: 5),
                 urun.lastPrice != urun.firstPrice
                     ? Text(
-                        "${urun.firstPrice} ₺",
+                        formatMoneyManual(urun.firstPrice!),
                         style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
-                          color: Colors.grey,
+                          color: Colors.red,
                         ),
                       )
                     : SizedBox(),
@@ -140,7 +146,7 @@ class ProductCard extends StatelessWidget {
                     delete();
                   }
                 },
-                icon: Icon(Icons.remove_shopping_cart),
+                icon: Icon(Icons.delete),
                 color: Colors.redAccent,
               ),
             ],
