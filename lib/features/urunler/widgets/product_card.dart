@@ -31,6 +31,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final imageWidth = screenWidth * 0.4; // %40 genişlik
+    final imageHeight = imageWidth * 0.6; // oranlı yükseklik
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -49,8 +53,8 @@ class ProductCard extends StatelessWidget {
                 child: NetworkImageWithLoader(
                   urun.eImg!,
                   fit: BoxFit.contain,
-                  width: 200,
-                  height: 120,
+                  width: imageWidth,
+                  height: imageHeight,
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
@@ -119,15 +123,17 @@ class ProductCard extends StatelessWidget {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: 15,
+                          radius: screenWidth * 0.04, // ekran oranına göre
                           child: NetworkImageWithLoader(urun.markaIcon!),
                         ),
+                        SizedBox(width: 4),
                         CircleAvatar(
                           backgroundColor: Colors.white12,
-                          radius: 15,
+                          radius: screenWidth * 0.04,
                           child: Icon(
                             Icons.shopping_cart_checkout,
                             color: Colors.teal,
+                            size: screenWidth * 0.05,
                           ),
                         ),
                       ],
