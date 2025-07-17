@@ -12,7 +12,8 @@ class UrunModel {
   final bool? isBilidirimBasarisiz;
   final bool? isGosterildi;
   final bool? isDeleted;
-  final bool isIslendi;
+  final bool isHatali;
+  final bool isTestData;
   final bool isBildirimAcik;
   final DateTime updateDate;
   final String? name;
@@ -31,7 +32,8 @@ class UrunModel {
     this.isBilidirimBasarisiz,
     this.isGosterildi,
     this.isDeleted,
-    required this.isIslendi,
+    required this.isHatali,
+    required this.isTestData,
     required this.isBildirimAcik,
     required this.updateDate,
     this.name,
@@ -51,7 +53,8 @@ class UrunModel {
     isBilidirimBasarisiz: json["isBilidirimBasarisiz"] as bool?,
     isGosterildi: json["isGosterildi"] as bool?,
     isDeleted: json["isDeleted"] as bool?,
-    isIslendi: json["isIslendi"] == true,
+    isHatali: json["isHatali"],
+    isTestData: json["isTestData"],
     isBildirimAcik: json["isBildirimAcik"] == true,
     updateDate: _parseDate(json["updateDate"]),
     name: json["name"] as String?,
@@ -89,7 +92,8 @@ class UrunModel {
     bool? isBilidirimBasarisiz,
     bool? isGosterildi,
     bool? isDeleted,
-    bool? isIslendi,
+    bool? isHatali,
+    bool? isTestData,
     bool? isBildirimAcik,
     DateTime? updateDate,
     String? name,
@@ -108,7 +112,8 @@ class UrunModel {
       isBilidirimBasarisiz: isBilidirimBasarisiz ?? this.isBilidirimBasarisiz,
       isGosterildi: isGosterildi ?? this.isGosterildi,
       isDeleted: isDeleted ?? this.isDeleted,
-      isIslendi: isIslendi ?? this.isIslendi,
+      isHatali: isHatali ?? this.isHatali,
+      isTestData: isTestData ?? this.isTestData,
       isBildirimAcik: isBildirimAcik ?? this.isBildirimAcik,
       updateDate: updateDate ?? this.updateDate,
       name: name ?? this.name,

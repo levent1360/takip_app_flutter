@@ -45,8 +45,8 @@ class ErrorProductCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20),
                 ),
-                child: Image.network(
-                  urun.eImg!,
+                child: Image.asset(
+                  'assets/images/no_item.png',
                   height: 120,
                   alignment: Alignment.topCenter,
                   width: double.infinity,
@@ -58,8 +58,8 @@ class ErrorProductCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              urun.name!,
-              maxLines: 2,
+              urun.link,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),

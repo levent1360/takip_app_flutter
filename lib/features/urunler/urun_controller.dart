@@ -14,16 +14,12 @@ class UrunController {
     return await _urunService.urunGoruldu();
   }
 
-  Future urunSil(int id) async {
-    return await _urunService.urunSil(id);
+  Future urunSil(String guidId) async {
+    return await _urunService.urunSil(guidId);
   }
 
   Future bildirimAc(int id, bool deger) async {
     return await _urunService.bildirimAc(id, deger);
-  }
-
-  Future hataliSil(String url) async {
-    return await _urunService.hataliSil(url);
   }
 
   Future<UrunModel?> getUrunByGuidId(String? id) async {

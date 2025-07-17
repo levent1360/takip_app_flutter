@@ -11,8 +11,7 @@ abstract class UrunService {
   Future<List<UrunModel>> getProducts();
   Future<String?> urunKaydet2(String? url);
   Future urunGoruldu();
-  Future<int> urunSil(int id);
-  Future<int> hataliSil(String link);
+  Future<int> urunSil(String guidId);
   Future<List<HataliKayitModel>> hataliKayitlar();
   Future<int> bildirimAc(int id, bool deger);
   Future<UrunModel?> getUrunByGuidId(String? id);
@@ -38,20 +37,11 @@ class UrunServiceImpl implements UrunService {
     await await _apiService.getBasic('${ApiEndpoints.goruldu}/$token');
   }
 
-  Future<int> urunSil(int id) async {
+  Future<int> urunSil(String guidId) async {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
     final result = await _apiService.getBasic(
-      ApiEndpoints.takipSil(token!, id),
-    );
-    return result.statusCode as int;
-  }
-
-  Future<int> hataliSil(String link) async {
-    final localDataSource = sl<LocalDataSource>();
-    final token = await localDataSource.getDeviceToken();
-    final result = await _apiService.getBasic(
-      ApiEndpoints.hataliSil(token!, link),
+      ApiEndpoints.urunSil(token!, guidId),
     );
     return result.statusCode as int;
   }

@@ -26,16 +26,12 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
     ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(link);
   }
 
-  Future<void> delete(int id) async {
-    ref.read(urunNotifierProvider.notifier).urunSil(id);
+  Future<void> delete(String guidId) async {
+    ref.read(urunNotifierProvider.notifier).urunSil(guidId);
   }
 
   Future<void> bildirimAc(int id, bool deger) async {
     ref.read(urunNotifierProvider.notifier).bildirimAc(id, deger);
-  }
-
-  Future<void> hataliSil(String url) async {
-    ref.read(urunNotifierProvider.notifier).hataliSil(url);
   }
 
   @override
@@ -69,16 +65,16 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           itemBuilder: (context, index) {
             final urun = allItems[index];
 
-            if (urun.isIslendi) {
+            if (!urun.isHatali) {
               return ProductCard(
-                delete: () => delete(urun.id),
+                delete: () => delete(urun.iden),
                 bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
                 urun: urun,
               );
             } else {
               return ErrorProductCard(
                 urun: urun,
-                delete: () => hataliSil(urun.link),
+                delete: () => delete(urun.iden),
                 refresh: () => refresh(urun.link),
               );
             }

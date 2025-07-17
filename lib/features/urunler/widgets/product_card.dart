@@ -97,30 +97,19 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
               ),
-              // widget.urun.lastPrice != widget.urun.firstPrice
-              //     ? Positioned(
-              //         left: 5,
-              //         top: 5,
-              //         child: Badge(
-              //           label: Row(
-              //             mainAxisSize: MainAxisSize.min, // Sıkıştırılmış boyut
-              //             children: [
-              //               Icon(
-              //                 widget.urun.lastPrice! < widget.urun.firstPrice!
-              //                     ? Icons.arrow_downward
-              //                     : Icons.arrow_upward,
-              //                 size: 14,
-              //                 color: Colors.white,
-              //               ),
-              //             ],
-              //           ),
-              //           backgroundColor:
-              //               widget.urun.lastPrice! < widget.urun.firstPrice!
-              //               ? Colors.teal
-              //               : Colors.orangeAccent,
-              //         ),
-              //       )
-              //     : SizedBox.shrink(),
+              widget.urun.isTestData
+                  ? Positioned(
+                      left: 5,
+                      top: 5,
+                      child: Badge(
+                        label: Text(
+                          'Test Verisi',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        backgroundColor: Colors.orangeAccent,
+                      ),
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
           Padding(
