@@ -50,7 +50,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                 const SizedBox(height: 10),
                 // Search Bar
                 SearchBarScreen(),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
 
                 // Shop Markets
                 Row(
@@ -66,9 +66,9 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                     // Text('Hepsi', style: TextStyle(color: Colors.grey)),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 MarkaScreen(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 // Popular Items
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,6 +95,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   metin: state1.metin,
                 ),
                 UrunListWidget(),
+                const SizedBox(height: 30),
               ],
             ),
           ),

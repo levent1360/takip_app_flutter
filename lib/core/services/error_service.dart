@@ -20,7 +20,11 @@ class ErrorService {
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return "Sunucudan yanıt alınamadı.";
     } else if (e.type == DioExceptionType.badResponse) {
-      return "Sunucu hatası: ${e.response?.statusCode}";
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 400) {
+        return e.response?.data;
+      }
+      return "Sunucu hatası: ${e.response?.data}";
     } else if (e.type == DioExceptionType.cancel) {
       return "İstek iptal edildi.";
     } else {

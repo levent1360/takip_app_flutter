@@ -7,10 +7,6 @@ class ApiEndpoints {
   static const String hatalisil = 'takip/hatalisil';
   static const String onboarding = 'takip/sunum';
 
-  static String takipLink(String token, String url) {
-    return 'takip/link/$token?linktext=$url';
-  }
-
   static String urunKaydet2(String token, String url) {
     return 'takip/link2/$token?linktext=$url';
   }

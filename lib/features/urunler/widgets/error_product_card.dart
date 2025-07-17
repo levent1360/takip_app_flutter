@@ -113,7 +113,7 @@ class ErrorProductCard extends StatelessWidget {
                     delete();
                   }
                 },
-                icon: Icon(Icons.remove_shopping_cart),
+                icon: Icon(Icons.delete),
                 color: Colors.redAccent,
               ),
             ],

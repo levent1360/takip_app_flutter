@@ -25,7 +25,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).getUrlProducts(link);
+    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(link);
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));

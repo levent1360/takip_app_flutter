@@ -43,32 +43,32 @@ class _TakipAppState extends ConsumerState<TakipApp>
     // _initSharedText();
   }
 
-  Future<void> _initSharedText() async {
-    try {
-      final String? sharedText = await platform.invokeMethod('getSharedText');
-      if (sharedText != null) {
-        setState(() {
-          _sharedText = sharedText;
-        });
-        final String uri = Uri.encodeComponent(_sharedText!);
-        print('------------------------------------');
-        print('getSharedText     : $_sharedText');
-        print('getSharedText  uri   : $uri');
-        print('------------------------------------');
+  // Future<void> _initSharedText() async {
+  //   try {
+  //     final String? sharedText = await platform.invokeMethod('getSharedText');
+  //     if (sharedText != null) {
+  //       setState(() {
+  //         _sharedText = sharedText;
+  //       });
+  //       final String uri = Uri.encodeComponent(_sharedText!);
+  //       print('------------------------------------');
+  //       print('getSharedText     : $_sharedText');
+  //       print('getSharedText  uri   : $uri');
+  //       print('------------------------------------');
 
-        // await ref
-        //     .read(urunKaydetNotifierProvider.notifier)
-        //     .getUrlProducts(_sharedText);
+  //       // await ref
+  //       //     .read(urunKaydetNotifierProvider.notifier)
+  //       //     .getUrlProducts(_sharedText);
 
-        await Future.delayed(Duration(seconds: 2));
-        setState(() {
-          _sharedText = null;
-        });
-      }
-    } on PlatformException catch (e) {
-      print("Hata: ${e.message}");
-    }
-  }
+  //       await Future.delayed(Duration(seconds: 2));
+  //       setState(() {
+  //         _sharedText = null;
+  //       });
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print("Hata: ${e.message}");
+  //   }
+  // }
 
   void _setupIntentListener() {
     platform.setMethodCallHandler((call) async {

@@ -5,10 +5,6 @@ class UrunKaydetController {
 
   UrunKaydetController(this._urunService);
 
-  Future<bool?> getUrlProducts(String? url) async {
-    return await _urunService.getUrlProducts(url);
-  }
-
   Future<String?> urunKaydet2(String? url) async {
     return await _urunService.urunKaydet2(url);
   }

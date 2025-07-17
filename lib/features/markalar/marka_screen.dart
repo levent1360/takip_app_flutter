@@ -32,7 +32,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         }
 
         return SizedBox(
-          height: 90,
+          height: 120,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: state.isLoading ? 5 : allItems.length,

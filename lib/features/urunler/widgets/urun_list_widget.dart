@@ -23,7 +23,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).getUrlProducts(link);
+    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(link);
   }
 
   Future<void> delete(int id) async {
