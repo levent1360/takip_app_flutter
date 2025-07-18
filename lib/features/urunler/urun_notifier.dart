@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/utils/normalizeTurkishCharacters.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/urun_model.dart';
@@ -155,6 +154,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
       return deger;
     }
     state = state.copyWith(isLoading: false);
+    return null;
   }
 
   void urunEkle(UrunModel yeniUrun) {
