@@ -6,6 +6,7 @@ class UrunModel {
   final String? eImg;
   final String? markaIcon;
   final String? prices;
+  final String? pricesDates;
   final double? firstPrice;
   final double? lastPrice;
   final String? siteMarka;
@@ -18,6 +19,9 @@ class UrunModel {
   final DateTime updateDate;
   final String? name;
 
+  late final List<String> priceList;
+  late final List<String> priceDateList;
+
   UrunModel({
     required this.id,
     required this.iden,
@@ -26,6 +30,7 @@ class UrunModel {
     this.eImg,
     this.markaIcon,
     this.prices,
+    this.pricesDates,
     this.firstPrice,
     this.lastPrice,
     this.siteMarka,
@@ -37,7 +42,10 @@ class UrunModel {
     required this.isBildirimAcik,
     required this.updateDate,
     this.name,
-  });
+  }) {
+    priceList = prices?.split('>') ?? [];
+    priceDateList = pricesDates?.split('>') ?? [];
+  }
 
   factory UrunModel.fromJson(Map<String, dynamic> json) => UrunModel(
     id: json["id"],
@@ -47,6 +55,7 @@ class UrunModel {
     eImg: json["eImg"] as String?,
     markaIcon: json["markaIcon"] as String?,
     prices: json["prices"] as String?,
+    pricesDates: json["pricesDates"] as String?,
     firstPrice: _toDouble(json["firstPrice"]),
     lastPrice: _toDouble(json["lastPrice"]),
     siteMarka: json["siteMarka"] as String?,
@@ -86,6 +95,7 @@ class UrunModel {
     String? eImg,
     String? markaIcon,
     String? prices,
+    String? pricesDates,
     double? firstPrice,
     double? lastPrice,
     String? siteMarka,
@@ -106,6 +116,7 @@ class UrunModel {
       eImg: eImg ?? this.eImg,
       markaIcon: markaIcon ?? this.markaIcon,
       prices: prices ?? this.prices,
+      pricesDates: pricesDates ?? this.pricesDates,
       firstPrice: firstPrice ?? this.firstPrice,
       lastPrice: lastPrice ?? this.lastPrice,
       siteMarka: siteMarka ?? this.siteMarka,
@@ -126,6 +137,7 @@ class UrunModel {
     "link": link,
     "eImg": eImg,
     "prices": prices,
+    "pricesDates": pricesDates,
     "firstPrice": firstPrice,
     "lastPrice": lastPrice,
     "siteMarka": siteMarka,

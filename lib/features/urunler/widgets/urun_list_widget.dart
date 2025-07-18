@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/env.dart';
+import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
+import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view.dart';
@@ -27,7 +30,14 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
   }
 
   Future<void> delete(String guidId) async {
-    ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+    final result = await showConfirmDialog(
+      title: Env.silBaslik,
+      content: Env.silMetin,
+    );
+
+    if (result == true) {
+      ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+    }
   }
 
   Future<void> bildirimAc(int id, bool deger) async {
@@ -68,6 +78,15 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
             if (!urun.isHatali) {
               return ProductCard(
                 delete: () => delete(urun.iden),
+                showDetail: () {
+                  ref
+                      .read(urunNotifierProvider.notifier)
+                      .setSelectedProduct(urun.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ProductDetailPage()),
+                  );
+                },
                 bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
                 urun: urun,
               );

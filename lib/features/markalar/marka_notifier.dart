@@ -33,4 +33,16 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
 
     state = state.copyWith(selectedMarka: _selectedBefore, isLoading: false);
   }
+
+  String getMarkaName(String name) {
+    final data = state.data;
+    if (data == null) return 'Bilinmiyor';
+
+    try {
+      final brand = data.firstWhere((x) => x.name == name);
+      return brand.orjName;
+    } catch (e) {
+      return 'Bilinmiyor';
+    }
+  }
 }

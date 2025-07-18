@@ -20,7 +20,7 @@ void main() async {
   runApp(ProviderScope(child: const TakipApp()));
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final navigatorKey = ErrorService().navigatorKey;
 const platform = MethodChannel("app.channel.shared.data");
 
 class TakipApp extends ConsumerStatefulWidget {
@@ -83,6 +83,13 @@ class _TakipAppState extends ConsumerState<TakipApp>
         print('onNewSharedText     : $_sharedText');
         print('onNewSharedText   uri  : $uri');
         print('------------------------------------');
+
+        // Önce ProductScreen'e dön (gerekirse tüm stack'i temizle)
+        navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => ShopHomePage()),
+          (route) => false,
+        );
+
         await ref
             .read(urunKaydetNotifierProvider.notifier)
             .urunKaydet2(_sharedText);

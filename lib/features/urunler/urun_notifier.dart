@@ -50,6 +50,11 @@ class UrunNotifier extends StateNotifier<UrunState> {
     );
   }
 
+  void setSelectedProduct(int id) {
+    final product = state.data.firstWhere((e) => e.id == id);
+    state = state.copyWith(selectedProduct: product);
+  }
+
   // Future<void> getFilteredProducts() async {
   //   state = state.copyWith(isLoading: true);
 
@@ -136,6 +141,11 @@ class UrunNotifier extends StateNotifier<UrunState> {
         return item;
       }).toList();
 
+      // selectedProduct'ı da kontrol edip gerekirse güncelle
+      final updatedSelectedProduct = (state.selectedProduct?.id == id)
+          ? state.selectedProduct!.copyWith(isBildirimAcik: !deger)
+          : state.selectedProduct;
+
       if (deger) {
         showSuccessSnackBar(message: 'Bu ürün için bildirimler kapatıldı');
       } else {
@@ -146,6 +156,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
         isLoading: false,
         data: updatedData,
         filteredData: updatedFilteredData,
+        selectedProduct: updatedSelectedProduct,
       );
     }
     state = state.copyWith(isLoading: false);
