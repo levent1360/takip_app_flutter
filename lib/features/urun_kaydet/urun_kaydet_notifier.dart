@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
-import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_provider.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_state.dart';
 import 'package:takip/features/urunler/urun_model.dart';
@@ -19,11 +17,15 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
   UrunKaydetNotifier(this.ref) : super(UrunKaydetState.initial()) {}
 
-  Future<void> urunKaydet2(BuildContext context, String? url) async {
-    state = state.copyWith(
-      isLoading: true,
-      metin: LocalizationHelper.of(context).urunkontrol,
-    );
+  Future<void> urunKaydet2(
+    String? url, {
+    required String checkingText,
+    required String gecerliGonderText,
+    required String urunkaydediliyorText,
+    required String bittiText,
+    required String hataText,
+  }) async {
+    state = state.copyWith(isLoading: true, metin: checkingText);
 
     try {
       // API çağrısını yap
@@ -32,13 +34,11 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
           .urunKaydet2(url);
 
       if (apiResponse == null) {
-        showErrorSnackBar(
-          message: LocalizationHelper.of(context).gecerligonder,
-        );
+        showErrorSnackBar(message: gecerliGonderText);
         state = state.copyWith(
           isLoading: false,
           result: false,
-          metin: LocalizationHelper.of(context).gecerligonder,
+          metin: gecerliGonderText,
         );
         return;
       }
@@ -47,7 +47,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         isLoading: true,
         result: true,
         guidId: apiResponse,
-        metin: LocalizationHelper.of(context).urunkaydediliyor,
+        metin: urunkaydediliyorText,
       );
 
       // Ürünler filtrelenip listeye eklenecek
@@ -76,17 +76,13 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         isLoading: false,
         result: true,
         guidId: apiResponse,
-        metin: LocalizationHelper.of(context).bitti,
+        metin: bittiText,
       );
     } on DioException {
       // final errorMessage = ErrorService().parseDioError(e);
       // showErrorSnackBar(message: errorMessage);
 
-      state = state.copyWith(
-        isLoading: false,
-        result: false,
-        metin: LocalizationHelper.of(context).hata,
-      );
+      state = state.copyWith(isLoading: false, result: false, metin: hataText);
     }
   }
 }

@@ -18,7 +18,7 @@ class NoBildirimView extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Text(
-          LocalizationHelper.of(context).bildirimbulunamadi,
+          LocalizationHelper.l10n.bildirimbulunamadi,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -27,7 +27,7 @@ class NoBildirimView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          LocalizationHelper.of(context).bildirimbulunamadimetin,
+          LocalizationHelper.l10n.bildirimbulunamadimetin,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.black54),
         ),

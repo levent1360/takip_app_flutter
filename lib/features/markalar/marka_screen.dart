@@ -30,7 +30,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
 
         if (!state.isLoading && allItems.length == 0) {
           return Center(
-            child: Text(LocalizationHelper.of(context).herhangiveribulunamadi),
+            child: Text(LocalizationHelper.l10n.herhangiveribulunamadi),
           );
         }
 

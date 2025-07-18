@@ -22,18 +22,27 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
 
     // Notifier üzerinden veri çek
     Future.microtask(() {
-      ref.read(urunNotifierProvider.notifier).getProducts();
+      ref.read(urunNotifierProvider.notifier).getProducts(forceRefresh: true);
     });
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(context, link);
+    ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .urunKaydet2(
+          link,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
   }
 
   Future<void> delete(String guidId) async {
     final result = await showConfirmDialog(
-      title: LocalizationHelper.of(context).silmebaslik,
-      content: LocalizationHelper.of(context).silmemetin,
+      title: LocalizationHelper.l10n.silmebaslik,
+      content: LocalizationHelper.l10n.silmemetin,
     );
 
     if (result == true) {
@@ -47,13 +56,9 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
         .bildirimAc(id, deger);
     if (result == null) return;
     if (result) {
-      showSuccessSnackBar(
-        message: LocalizationHelper.of(context).bildirimkapatildi,
-      );
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimkapatildi);
     } else {
-      showSuccessSnackBar(
-        message: LocalizationHelper.of(context).bildirimacildi,
-      );
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimacildi);
     }
   }
 

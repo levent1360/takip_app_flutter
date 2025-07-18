@@ -106,8 +106,8 @@ class ErrorProductCard extends StatelessWidget {
               IconButton(
                 onPressed: () async {
                   final result = await showConfirmDialog(
-                    title: LocalizationHelper.of(context).silmebaslik,
-                    content: LocalizationHelper.of(context).silmemetin,
+                    title: LocalizationHelper.l10n.silmebaslik,
+                    content: LocalizationHelper.l10n.silmemetin,
                   );
 
                   if (result == true) {

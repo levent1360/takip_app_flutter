@@ -26,7 +26,16 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(context, link);
+    ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .urunKaydet2(
+          link,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
@@ -43,7 +52,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          LocalizationHelper.of(context).bildirimler,
+          LocalizationHelper.l10n.bildirimler,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),

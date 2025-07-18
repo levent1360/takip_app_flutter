@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
@@ -94,7 +95,14 @@ class _TakipAppState extends ConsumerState<TakipApp>
 
         await ref
             .read(urunKaydetNotifierProvider.notifier)
-            .urunKaydet2(context, _sharedText);
+            .urunKaydet2(
+              _sharedText,
+              checkingText: LocalizationHelper.l10n.urunkontrol,
+              gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+              urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+              bittiText: LocalizationHelper.l10n.bitti,
+              hataText: LocalizationHelper.l10n.hata,
+            );
 
         await Future.delayed(Duration(seconds: 2));
         setState(() {

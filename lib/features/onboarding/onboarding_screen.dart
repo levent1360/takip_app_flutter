@@ -76,9 +76,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               }
               if (!state.isLoading && allItems.length == 0) {
                 return Center(
-                  child: Text(
-                    LocalizationHelper.of(context).herhangiveribulunamadi,
-                  ),
+                  child: Text(LocalizationHelper.l10n.herhangiveribulunamadi),
                 );
               }
 
@@ -158,7 +156,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                               ),
                             ),
                             child: Text(
-                              LocalizationHelper.of(context).ileri,
+                              LocalizationHelper.l10n.ileri,
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -184,7 +182,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           ),
                         ),
                         child: Text(
-                          LocalizationHelper.of(context).basla,
+                          LocalizationHelper.l10n.basla,
                           style: TextStyle(fontSize: 16),
                         ),
                       ),

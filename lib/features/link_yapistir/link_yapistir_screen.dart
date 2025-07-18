@@ -28,7 +28,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
 
   Future<void> _gonder() async {
     if (controller.text.isEmpty) {
-      showErrorSnackBar(message: 'Boş gönderilemez');
+      showErrorSnackBar(message: LocalizationHelper.l10n.bosgonderilemez);
       return;
     }
 
@@ -38,7 +38,14 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
     await ref
         .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(context, controller.text);
+        .urunKaydet2(
+          controller.text,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
   }
 
   @override
@@ -53,7 +60,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          LocalizationHelper.of(context).linkgonder,
+          LocalizationHelper.l10n.linkgonder,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -74,7 +81,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                   height: 100,
                   child: Center(
                     child: Text(
-                      LocalizationHelper.of(context).takipyapistirmetin,
+                      LocalizationHelper.l10n.takipyapistirmetin,
                       maxLines: 3,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.black54, fontSize: 20),
@@ -85,7 +92,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                 TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hintText: LocalizationHelper.of(context).yapistirmetin,
+                    hintText: LocalizationHelper.l10n.yapistirmetin,
                     filled: true,
                     fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
@@ -102,7 +109,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                           controller.text = clipboardData.text ?? '';
                         }
                       },
-                      child: Text(LocalizationHelper.of(context).yapistir),
+                      child: Text(LocalizationHelper.l10n.yapistir),
                     ),
                   ),
                 ),
@@ -112,7 +119,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                   child: ElevatedButton.icon(
                     onPressed: state1.isLoading ? null : _gonder,
                     icon: Icon(Icons.send),
-                    label: Text(LocalizationHelper.of(context).gonder),
+                    label: Text(LocalizationHelper.l10n.gonder),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {

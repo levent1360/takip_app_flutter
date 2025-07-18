@@ -21,7 +21,7 @@ class NotificationTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            LocalizationHelper.of(context).hatalikayitislemi,
+            LocalizationHelper.l10n.hatalikayitislemi,
             style: TextStyle(color: Colors.redAccent, fontSize: 16),
           ),
           if (message.isNotEmpty) Text(message),

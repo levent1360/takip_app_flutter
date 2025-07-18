@@ -31,8 +31,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
   Future<void> delete(String guidId) async {
     final result = await showConfirmDialog(
-      title: LocalizationHelper.of(context).silmebaslik,
-      content: LocalizationHelper.of(context).silmemetin,
+      title: LocalizationHelper.l10n.silmebaslik,
+      content: LocalizationHelper.l10n.silmemetin,
     );
 
     if (result == true) {
@@ -50,13 +50,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
     if (result == null) return;
     if (result) {
-      showSuccessSnackBar(
-        message: LocalizationHelper.of(context).bildirimkapatildi,
-      );
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimkapatildi);
     } else {
-      showSuccessSnackBar(
-        message: LocalizationHelper.of(context).bildirimacildi,
-      );
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimacildi);
     }
   }
 
@@ -164,7 +160,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               color: Colors.teal,
                             ),
                           ),
-                          Text(LocalizationHelper.of(context).guncelfiyat),
+                          Text(LocalizationHelper.l10n.guncelfiyat),
                         ],
                       ),
                     ],
@@ -204,7 +200,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                             ),
                           ),
                           child: Text(
-                            LocalizationHelper.of(context).siteyegit,
+                            LocalizationHelper.l10n.siteyegit,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -221,7 +217,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    LocalizationHelper.of(context).fiyatgecmisi,
+                    LocalizationHelper.l10n.fiyatgecmisi,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   ListView.builder(
@@ -259,7 +255,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                       label: Text(
-                                        LocalizationHelper.of(context).ilkfiyat,
+                                        LocalizationHelper.l10n.ilkfiyat,
                                       ),
                                       backgroundColor: Color(0xFFE8F5E9),
                                       labelStyle: TextStyle(color: Colors.teal),

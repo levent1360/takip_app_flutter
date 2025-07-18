@@ -27,7 +27,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
   }
 
   Future<void> refresh() async {
-    ref.read(urunNotifierProvider.notifier).getProducts();
+    ref.read(urunNotifierProvider.notifier).getProducts(forceRefresh: true);
   }
 
   Future<void> deleteOnboardingSeen() async {
@@ -58,7 +58,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      LocalizationHelper.of(context).markalar,
+                      LocalizationHelper.l10n.markalar,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -76,8 +76,8 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   children: [
                     Text(
                       stateMarka.selectedMarka != null
-                          ? '${stateMarka.selectedMarka!.orjName} ${LocalizationHelper.of(context).urunleriniz}'
-                          : LocalizationHelper.of(context).tumurunler,
+                          ? '${stateMarka.selectedMarka!.orjName} ${LocalizationHelper.l10n.urunleriniz}'
+                          : LocalizationHelper.l10n.tumurunler,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

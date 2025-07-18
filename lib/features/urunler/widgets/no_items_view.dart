@@ -18,7 +18,7 @@ class NoItemsView extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Text(
-          LocalizationHelper.of(context).urunbulunamadi,
+          LocalizationHelper.l10n.urunbulunamadi,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -27,7 +27,7 @@ class NoItemsView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          LocalizationHelper.of(context).urunbulunamadimetin,
+          LocalizationHelper.l10n.urunbulunamadimetin,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.black54),
         ),

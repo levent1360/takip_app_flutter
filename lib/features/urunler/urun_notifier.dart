@@ -16,17 +16,30 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
   UrunNotifier(this.ref) : super(UrunState.initial()) {}
 
-  Future<void> getProducts({String query = '', bool ismarka = false}) async {
+  Future<void> getProducts({
+    String query = '',
+    bool ismarka = false,
+    bool forceRefresh = false,
+  }) async {
     state = state.copyWith(isLoading: true);
 
-    final urunController = ref.read(urunControllerProvider);
-    final apiResponse = await urunController.getProducts();
-    await urunController.urunGoruldu();
+    // final urunController = ref.read(urunControllerProvider);
+    // final apiResponse = await urunController.getProducts();
+    // await urunController.urunGoruldu();
+    if (forceRefresh) {
+      state = state.copyWith(isLoading: true);
+
+      final urunController = ref.read(urunControllerProvider);
+      final apiResponse = await urunController.getProducts();
+      await urunController.urunGoruldu();
+
+      state = state.copyWith(data: apiResponse, isLoading: false);
+    }
 
     final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
     final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
 
-    List<UrunModel> filtered = apiResponse.where((product) {
+    List<UrunModel> filtered = state.data.where((product) {
       final productName = normalizeTurkishCharacters(
         product.name?.toLowerCase() ?? '',
       );
@@ -43,7 +56,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
     }).toList();
 
     state = state.copyWith(
-      data: apiResponse,
+      data: state.data,
       filteredData: filtered,
       isLoading: false,
     );

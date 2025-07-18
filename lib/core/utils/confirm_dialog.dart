@@ -24,7 +24,7 @@ Future<bool?> showConfirmDialog({
               children: [
                 Icon(Icons.info),
                 Text(
-                  title ?? LocalizationHelper.of(context).defaultOnay,
+                  title ?? LocalizationHelper.l10n.defaultOnay,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ Future<bool?> showConfirmDialog({
             const SizedBox(height: 20),
 
             /// Placeholder metin simülasyonu (görseldeki gri çizgiler)
-            Text(content ?? LocalizationHelper.of(context).defaultOnayMetin),
+            Text(content ?? LocalizationHelper.l10n.defaultOnayMetin),
             const SizedBox(height: 30),
 
             /// Butonlar
@@ -53,7 +53,7 @@ Future<bool?> showConfirmDialog({
                     ),
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(
-                      cancelText ?? LocalizationHelper.of(context).iptal,
+                      cancelText ?? LocalizationHelper.l10n.iptal,
                       style: TextStyle(color: Colors.redAccent),
                     ),
                   ),
@@ -72,7 +72,7 @@ Future<bool?> showConfirmDialog({
                       ),
                     ),
                     child: Text(
-                      confirmText ?? LocalizationHelper.of(context).evet,
+                      confirmText ?? LocalizationHelper.l10n.evet,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

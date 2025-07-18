@@ -57,7 +57,7 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
                   ref.read(urunNotifierProvider.notifier).getProducts();
                 },
               ),
-              hintText: '${LocalizationHelper.of(context).ara} ...',
+              hintText: '${LocalizationHelper.l10n.ara} ...',
               filled: true,
               fillColor: Colors.grey[200],
               border: OutlineInputBorder(
