@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
@@ -57,7 +58,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Markalar',
+                      LocalizationHelper.of(context).markalar,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -75,8 +76,8 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
                   children: [
                     Text(
                       stateMarka.selectedMarka != null
-                          ? '${stateMarka.selectedMarka!.orjName} Ürünleriniz'
-                          : 'Tüm Ürünleriniz',
+                          ? '${stateMarka.selectedMarka!.orjName} ${LocalizationHelper.of(context).urunleriniz}'
+                          : LocalizationHelper.of(context).tumurunler,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

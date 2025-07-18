@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/onboarding/onboarding_notifier.dart';
@@ -74,8 +75,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 );
               }
               if (!state.isLoading && allItems.length == 0) {
-                return const Center(
-                  child: Text("Herhangi bir veri bulunamadı"),
+                return Center(
+                  child: Text(
+                    LocalizationHelper.of(context).herhangiveribulunamadi,
+                  ),
                 );
               }
 
@@ -154,8 +157,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 vertical: 12,
                               ),
                             ),
-                            child: const Text(
-                              'İleri',
+                            child: Text(
+                              LocalizationHelper.of(context).ileri,
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
@@ -180,8 +183,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             vertical: 12,
                           ),
                         ),
-                        child: const Text(
-                          'Başla',
+                        child: Text(
+                          LocalizationHelper.of(context).basla,
                           style: TextStyle(fontSize: 16),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/notification/bildiirim_notifier.dart';
 import 'package:takip/features/notification/widgets/no_bildirim_view.dart';
 import 'package:takip/features/notification/widgets/notification_tile.dart';
@@ -25,7 +26,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(link);
+    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(context, link);
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
@@ -42,7 +43,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          'Bildirimler',
+          LocalizationHelper.of(context).bildirimler,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -105,8 +106,8 @@ class ErrorProductCard extends StatelessWidget {
               IconButton(
                 onPressed: () async {
                   final result = await showConfirmDialog(
-                    title: 'Silme Onayı',
-                    content: 'Bu ürünü silmek istediğinize emin misiniz?',
+                    title: LocalizationHelper.of(context).silmebaslik,
+                    content: LocalizationHelper.of(context).silmemetin,
                   );
 
                   if (result == true) {

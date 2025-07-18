@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_provider.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_state.dart';
 import 'package:takip/features/urunler/urun_model.dart';
@@ -17,10 +19,10 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
   UrunKaydetNotifier(this.ref) : super(UrunKaydetState.initial()) {}
 
-  Future<void> urunKaydet2(String? url) async {
+  Future<void> urunKaydet2(BuildContext context, String? url) async {
     state = state.copyWith(
       isLoading: true,
-      metin: 'Kontrol Ediliyor... Bekleyiniz',
+      metin: LocalizationHelper.of(context).urunkontrol,
     );
 
     try {
@@ -30,11 +32,13 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
           .urunKaydet2(url);
 
       if (apiResponse == null) {
-        showErrorSnackBar(message: 'Geçerli bir ürün linki gönderiniz.');
+        showErrorSnackBar(
+          message: LocalizationHelper.of(context).gecerligonder,
+        );
         state = state.copyWith(
           isLoading: false,
           result: false,
-          metin: 'Geçerli bir ürün linki gönderiniz.',
+          metin: LocalizationHelper.of(context).gecerligonder,
         );
         return;
       }
@@ -43,7 +47,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         isLoading: true,
         result: true,
         guidId: apiResponse,
-        metin: 'Ürünleriniz Kaydediliyor... ',
+        metin: LocalizationHelper.of(context).urunkaydediliyor,
       );
 
       // Ürünler filtrelenip listeye eklenecek
@@ -72,13 +76,17 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
         isLoading: false,
         result: true,
         guidId: apiResponse,
-        metin: 'Bitti',
+        metin: LocalizationHelper.of(context).bitti,
       );
     } on DioException {
       // final errorMessage = ErrorService().parseDioError(e);
       // showErrorSnackBar(message: errorMessage);
 
-      state = state.copyWith(isLoading: false, result: false, metin: 'Hata');
+      state = state.copyWith(
+        isLoading: false,
+        result: false,
+        metin: LocalizationHelper.of(context).hata,
+      );
     }
   }
 }

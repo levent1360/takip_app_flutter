@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 
 class NoItemsView extends StatelessWidget {
@@ -16,8 +17,8 @@ class NoItemsView extends StatelessWidget {
           child: Lottie.asset(LottieFiles.noitem, fit: BoxFit.contain),
         ),
         const SizedBox(height: 32),
-        const Text(
-          'Ürün Bulunamadı',
+        Text(
+          LocalizationHelper.of(context).urunbulunamadi,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -25,8 +26,8 @@ class NoItemsView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Seçilen markalardan takip edilmesini istediğiniz ürünün bağlantı adresini paylaşın.',
+        Text(
+          LocalizationHelper.of(context).urunbulunamadimetin,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.black54),
         ),

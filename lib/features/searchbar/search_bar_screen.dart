@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
 import 'package:takip/features/notification/bildirim_screen.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
@@ -56,7 +57,7 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
                   ref.read(urunNotifierProvider.notifier).getProducts();
                 },
               ),
-              hintText: 'Ara ...',
+              hintText: '${LocalizationHelper.of(context).ara} ...',
               filled: true,
               fillColor: Colors.grey[200],
               border: OutlineInputBorder(

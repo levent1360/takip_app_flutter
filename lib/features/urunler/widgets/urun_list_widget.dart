@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/core/constant/env.dart';
+import 'package:takip/components/snackbar/success_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
@@ -26,13 +27,13 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(link);
+    ref.read(urunKaydetNotifierProvider.notifier).urunKaydet2(context, link);
   }
 
   Future<void> delete(String guidId) async {
     final result = await showConfirmDialog(
-      title: Env.silBaslik,
-      content: Env.silMetin,
+      title: LocalizationHelper.of(context).silmebaslik,
+      content: LocalizationHelper.of(context).silmemetin,
     );
 
     if (result == true) {
@@ -41,7 +42,19 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
   }
 
   Future<void> bildirimAc(int id, bool deger) async {
-    ref.read(urunNotifierProvider.notifier).bildirimAc(id, deger);
+    final result = await ref
+        .read(urunNotifierProvider.notifier)
+        .bildirimAc(id, deger);
+    if (result == null) return;
+    if (result) {
+      showSuccessSnackBar(
+        message: LocalizationHelper.of(context).bildirimkapatildi,
+      );
+    } else {
+      showSuccessSnackBar(
+        message: LocalizationHelper.of(context).bildirimacildi,
+      );
+    }
   }
 
   @override

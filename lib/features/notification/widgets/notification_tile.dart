@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 
 class NotificationTile extends StatelessWidget {
   final String message;
@@ -20,7 +21,7 @@ class NotificationTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hatalı Kayıt İşlemi",
+            LocalizationHelper.of(context).hatalikayitislemi,
             style: TextStyle(color: Colors.redAccent, fontSize: 16),
           ),
           if (message.isNotEmpty) Text(message),

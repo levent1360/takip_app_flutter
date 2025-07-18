@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
@@ -9,6 +10,7 @@ import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,7 +94,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
 
         await ref
             .read(urunKaydetNotifierProvider.notifier)
-            .urunKaydet2(_sharedText);
+            .urunKaydet2(context, _sharedText);
 
         await Future.delayed(Duration(seconds: 2));
         setState(() {
@@ -140,6 +142,13 @@ class _TakipAppState extends ConsumerState<TakipApp>
       title: 'Fiyat Takip',
       debugShowCheckedModeBanner: false,
       navigatorKey: ErrorService().navigatorKey,
+      supportedLocales: const [Locale('en'), Locale('tr')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),

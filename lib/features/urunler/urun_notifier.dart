@@ -122,7 +122,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
     state = state.copyWith(isLoading: false);
   }
 
-  Future<void> bildirimAc(int id, bool deger) async {
+  Future<bool?> bildirimAc(int id, bool deger) async {
     state = state.copyWith(isLoading: true);
     final apiResponse = await ref
         .read(urunControllerProvider)
@@ -146,18 +146,13 @@ class UrunNotifier extends StateNotifier<UrunState> {
           ? state.selectedProduct!.copyWith(isBildirimAcik: !deger)
           : state.selectedProduct;
 
-      if (deger) {
-        showSuccessSnackBar(message: 'Bu ürün için bildirimler kapatıldı');
-      } else {
-        showSuccessSnackBar(message: 'Bu ürün için bildirimler açıldı');
-      }
-
       state = state.copyWith(
         isLoading: false,
         data: updatedData,
         filteredData: updatedFilteredData,
         selectedProduct: updatedSelectedProduct,
       );
+      return deger;
     }
     state = state.copyWith(isLoading: false);
   }

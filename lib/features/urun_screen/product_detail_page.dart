@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
-import 'package:takip/core/constant/env.dart';
+import 'package:takip/components/snackbar/success_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
@@ -30,8 +31,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
   Future<void> delete(String guidId) async {
     final result = await showConfirmDialog(
-      title: Env.silBaslik,
-      content: Env.silMetin,
+      title: LocalizationHelper.of(context).silmebaslik,
+      content: LocalizationHelper.of(context).silmemetin,
     );
 
     if (result == true) {
@@ -43,7 +44,20 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   }
 
   Future<void> bildirimAc(int id, bool deger) async {
-    ref.read(urunNotifierProvider.notifier).bildirimAc(id, deger);
+    final result = await ref
+        .read(urunNotifierProvider.notifier)
+        .bildirimAc(id, deger);
+
+    if (result == null) return;
+    if (result) {
+      showSuccessSnackBar(
+        message: LocalizationHelper.of(context).bildirimkapatildi,
+      );
+    } else {
+      showSuccessSnackBar(
+        message: LocalizationHelper.of(context).bildirimacildi,
+      );
+    }
   }
 
   @override
@@ -150,7 +164,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               color: Colors.teal,
                             ),
                           ),
-                          Text('Güncel Fiyat'),
+                          Text(LocalizationHelper.of(context).guncelfiyat),
                         ],
                       ),
                     ],
@@ -189,8 +203,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Text(
-                            'Siteye Git',
+                          child: Text(
+                            LocalizationHelper.of(context).siteyegit,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -207,7 +221,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    "Fiyat Geçmişi",
+                    LocalizationHelper.of(context).fiyatgecmisi,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   ListView.builder(
@@ -244,7 +258,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                                   ? Chip(
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
-                                      label: Text('İlk Fiyat'),
+                                      label: Text(
+                                        LocalizationHelper.of(context).ilkfiyat,
+                                      ),
                                       backgroundColor: Color(0xFFE8F5E9),
                                       labelStyle: TextStyle(color: Colors.teal),
                                     )

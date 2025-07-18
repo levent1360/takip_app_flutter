@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 
 class NoBildirimView extends StatelessWidget {
@@ -16,8 +17,8 @@ class NoBildirimView extends StatelessWidget {
           child: Lottie.asset(LottieFiles.no_notification, fit: BoxFit.contain),
         ),
         const SizedBox(height: 32),
-        const Text(
-          'Bildirim Bulunamadı',
+        Text(
+          LocalizationHelper.of(context).bildirimbulunamadi,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -25,8 +26,8 @@ class NoBildirimView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Bildirimlerinizi burada görüntüleyebilirsiniz',
+        Text(
+          LocalizationHelper.of(context).bildirimbulunamadimetin,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.black54),
         ),

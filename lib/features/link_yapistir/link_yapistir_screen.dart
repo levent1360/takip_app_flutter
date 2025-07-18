@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page.dart';
@@ -37,7 +38,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
     await ref
         .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(controller.text);
+        .urunKaydet2(context, controller.text);
   }
 
   @override
@@ -52,7 +53,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          'Link Gönder',
+          LocalizationHelper.of(context).linkgonder,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -73,8 +74,8 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                   height: 100,
                   child: Center(
                     child: Text(
-                      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve gönderiniz.',
-                      maxLines: 2,
+                      LocalizationHelper.of(context).takipyapistirmetin,
+                      maxLines: 3,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.black54, fontSize: 20),
                     ),
@@ -84,7 +85,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                 TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hintText: 'Link buraya yapıştırın',
+                    hintText: LocalizationHelper.of(context).yapistirmetin,
                     filled: true,
                     fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
@@ -101,7 +102,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                           controller.text = clipboardData.text ?? '';
                         }
                       },
-                      child: const Text("Yapıştır"),
+                      child: Text(LocalizationHelper.of(context).yapistir),
                     ),
                   ),
                 ),
@@ -111,7 +112,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                   child: ElevatedButton.icon(
                     onPressed: state1.isLoading ? null : _gonder,
                     icon: Icon(Icons.send),
-                    label: Text("Gönder"),
+                    label: Text(LocalizationHelper.of(context).gonder),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {
