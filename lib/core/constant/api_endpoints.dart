@@ -9,6 +9,10 @@ class ApiEndpoints {
   static const String hatalisil = 'takip/hatalisil';
   static const String onboarding = 'takip/sunum';
 
+  static String getUrunsPage(String token, int pageNumber) {
+    return 'takip/urunlerpage/$token?pageNumber=$pageNumber';
+  }
+
   static String urunKaydet2(String token, String url) {
     final isTest = kDebugMode ? true : false;
     return 'takip/link2/$token?linktext=$url&isTestData=$isTest';

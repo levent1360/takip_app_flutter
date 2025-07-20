@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:takip/core/constant/api_endpoints.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
+import 'package:takip/data/models/paginated_response_model.dart';
 import 'package:takip/data/services/base_api_service.dart';
 import 'package:takip/features/notification/models/hatali_kayit_model.dart';
 import 'package:takip/features/urunler/urun_model.dart';
@@ -29,6 +30,23 @@ class UrunServiceImpl implements UrunService {
       '${ApiEndpoints.urunler}/$token',
       fromJsonT: (json) => UrunModel.fromJson(json),
     );
+  }
+
+  Future<PaginatedResponseModel<UrunModel>> getProductsPage([
+    int pageNumber = 1,
+  ]) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+
+    final result = await _apiService.get<PaginatedResponseModel<UrunModel>>(
+      ApiEndpoints.getUrunsPage(token!, pageNumber),
+      fromJsonT: (json) => PaginatedResponseModel<UrunModel>.fromJson(
+        json as Map<String, dynamic>,
+        (item) => UrunModel.fromJson(item),
+      ),
+    );
+
+    return result!; // Burada null olmadığını garanti ediyorsun
   }
 
   Future urunGoruldu() async {
