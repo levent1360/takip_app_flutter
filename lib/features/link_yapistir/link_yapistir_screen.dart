@@ -6,7 +6,7 @@ import 'package:takip/components/snackbar/error_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 import 'package:takip/features/urunler/widgets/animation_please_wait_container_widget.dart';
 
 class LinkYapistirScreen extends ConsumerStatefulWidget {
@@ -35,7 +35,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
     // Sayfa geçişi işlemden sonra
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePageScroll()));
     await ref
         .read(urunKaydetNotifierProvider.notifier)
         .urunKaydet2(

@@ -10,11 +10,11 @@ class ErrorProductCard extends StatelessWidget {
   final VoidCallback refresh;
 
   const ErrorProductCard({
-    super.key,
+    Key? key,
     required this.urun,
     required this.delete,
     required this.refresh,
-  });
+  }) : super(key: key);
 
   Future<void> launchMyUrl(String url) async {
     try {

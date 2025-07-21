@@ -5,7 +5,7 @@ import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,9 +37,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
     if (result == true) {
       ref.read(urunNotifierProvider.notifier).urunSil(guidId);
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => ShopHomePageScroll()),
+      );
     }
   }
 

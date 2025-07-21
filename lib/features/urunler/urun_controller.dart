@@ -1,3 +1,4 @@
+import 'package:takip/data/models/paginated_response_model.dart';
 import 'package:takip/data/services/urun_service.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 
@@ -8,6 +9,12 @@ class UrunController {
 
   Future<List<UrunModel>> getProducts() async {
     return await _urunService.getProducts();
+  }
+
+  Future<PaginatedResponseModel<UrunModel>> getProductsPage(
+    int pageNumber,
+  ) async {
+    return await _urunService.getProductsPage(pageNumber);
   }
 
   Future urunGoruldu() async {

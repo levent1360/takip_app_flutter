@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
+import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
@@ -10,12 +11,13 @@ import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
-class UrunListWidget extends ConsumerStatefulWidget {
+class UrunListSliverWidget extends ConsumerStatefulWidget {
   @override
-  ConsumerState<UrunListWidget> createState() => _UrunListWidgetState();
+  ConsumerState<UrunListSliverWidget> createState() =>
+      _UrunListSliverWidgetState();
 }
 
-class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
+class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
   @override
   void initState() {
     super.initState();
@@ -69,61 +71,61 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, provider, child) {
-        final state = ref.watch(urunNotifierProvider);
-        final allItems = state.filteredData;
+    final state = ref.watch(urunNotifierProvider);
+    final stateMarka = ref.watch(markaNotifierProvider);
+    final allItems = state.filteredData;
 
-        if (state.isLoading && allItems.length == 0) {
-          return const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(child: CircularProgressIndicator()),
+    if (state.isLoading && allItems.isEmpty) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+    if (!state.isLoading && allItems.isEmpty) {
+      return SliverToBoxAdapter(
+        child: Center(
+          child: NoItemsView(selectedMarka: stateMarka.selectedMarka),
+        ),
+      );
+    }
+
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final urun = allItems[index];
+
+        if (!urun.isHatali) {
+          return ProductCard(
+            key: ValueKey(urun.iden),
+            delete: () => delete(urun.iden),
+            showDetail: () {
+              ref
+                  .read(urunNotifierProvider.notifier)
+                  .setSelectedProduct(urun.id);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProductDetailPage()),
+              );
+            },
+            bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
+            urun: urun,
+          );
+        } else {
+          return ErrorProductCard(
+            key: ValueKey(urun.iden),
+            urun: urun,
+            delete: () => delete(urun.iden),
+            refresh: () => refresh(urun.link),
           );
         }
-        if (!state.isLoading && allItems.length == 0) {
-          return Center(child: NoItemsView());
-        }
-
-        return GridView.builder(
-          shrinkWrap: true, // ListView içinde çalışması için şart
-          physics:
-              const NeverScrollableScrollPhysics(), // Scroll'u ListView yapsın
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // satırda kaç kutu olacak
-            childAspectRatio: 0.7, // genişlik / yükseklik oranı
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-          ),
-          padding: const EdgeInsets.all(5),
-          itemCount: allItems.length,
-          itemBuilder: (context, index) {
-            final urun = allItems[index];
-
-            if (!urun.isHatali) {
-              return ProductCard(
-                delete: () => delete(urun.iden),
-                showDetail: () {
-                  ref
-                      .read(urunNotifierProvider.notifier)
-                      .setSelectedProduct(urun.id);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ProductDetailPage()),
-                  );
-                },
-                bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
-                urun: urun,
-              );
-            } else {
-              return ErrorProductCard(
-                urun: urun,
-                delete: () => delete(urun.iden),
-                refresh: () => refresh(urun.link),
-              );
-            }
-          },
-        );
-      },
+      }, childCount: allItems.length),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+      ),
     );
   }
 }

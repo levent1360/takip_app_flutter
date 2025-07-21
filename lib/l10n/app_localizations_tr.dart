@@ -128,4 +128,31 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get basla => 'Başla';
+
+  @override
+  String get markabulunamadi => 'Seçili marka bulunamadı';
+
+  @override
+  String get markasiteyegit => 'sitesine git ve linki paylaş';
+
+  @override
+  String get yardimtext1 => 'Linkleri nasıl paylaşabilirim?';
+
+  @override
+  String get yardimtext2 => '1. Browserdan \'Paylaş\' Seçeneğini Kullanarak:';
+
+  @override
+  String get yardimtext3 =>
+      'Kullandığınız tarayıcıda paylaş simgesine tıklayarak linki kolayca paylaşabilirsiniz.';
+
+  @override
+  String get yardimtext4 => '2. Kopyala-Yapıştır Yöntemiyle:';
+
+  @override
+  String get yardimtext5 =>
+      'Not: Linkler çalışmıyorsa doğru şekilde kopyaladığınızdan emin olun.';
+
+  @override
+  String get yardimtext6 =>
+      'Note: If the links don\'t work, make sure you copied them correctly.';
 }

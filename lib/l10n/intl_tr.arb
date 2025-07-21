@@ -37,5 +37,13 @@
   "defaultOnayMetin" : "Bu işlemi yapmak istediğinizden emin misiniz?",
   "ileri": "İleri",
   "geri": "Geri",
-  "basla": "Başla"
+  "basla": "Başla",
+  "markabulunamadi": "Seçili marka bulunamadı",
+  "markasiteyegit": "sitesine git ve linki paylaş",
+  "yardimtext1": "Linkleri nasıl paylaşabilirim?",
+  "yardimtext2": "1. Browserdan 'Paylaş' Seçeneğini Kullanarak:",
+  "yardimtext3": "Kullandığınız tarayıcıda paylaş simgesine tıklayarak linki kolayca paylaşabilirsiniz.",
+  "yardimtext4": "2. Kopyala-Yapıştır Yöntemiyle:",
+  "yardimtext5": "Adres çubuğundaki linki kopyalayarak uygulamaya yapıştırabilirsiniz.",
+  "yardimtext5": "Not: Linkler çalışmıyorsa doğru şekilde kopyaladığınızdan emin olun."
 }

@@ -37,5 +37,13 @@
   "defaultOnayMetin": "Are you sure you want to perform this action?",
   "ileri": "Next",
   "geri": "Back",
-  "basla": "Start"
+  "basla": "Start",
+  "markabulunamadi": "Selected brand not found",
+  "markasiteyegit": "Go to the brand's website and share the link",
+  "yardimtext1": "How can I share links?",
+  "yardimtext2": "1. By using the 'Share' option from the browser:",
+  "yardimtext3": "You can easily share the link by clicking the share icon in your browser.",
+  "yardimtext4": "2. Using the Copy-Paste method:",
+  "yardimtext5": "Copy the link from the address bar and paste it into the app.",
+  "yardimtext6": "Note: If the links don't work, make sure you copied them correctly."
 }

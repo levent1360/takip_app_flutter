@@ -27,6 +27,7 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
 
   @override
   void dispose() {
+    _searchFocusNode.unfocus();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -44,19 +45,22 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
               _debounce = Timer(const Duration(milliseconds: 300), () {
                 ref
                     .read(urunNotifierProvider.notifier)
-                    .getProducts(query: value);
+                    .filterData(query: value);
               });
             },
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: () {
-                  searchController.clear();
-                  FocusScope.of(context).unfocus();
-                  ref.read(urunNotifierProvider.notifier).getProducts();
-                },
-              ),
+              suffixIcon: searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.clear();
+                        _searchFocusNode.unfocus();
+                        FocusScope.of(context).unfocus();
+                        ref.read(urunNotifierProvider.notifier).filterData();
+                      },
+                    )
+                  : SizedBox.shrink(),
               hintText: '${LocalizationHelper.l10n.ara} ...',
               filled: true,
               fillColor: Colors.grey[200],

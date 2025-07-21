@@ -10,6 +10,7 @@ import 'package:takip/features/urunler/urun_model.dart';
 
 abstract class UrunService {
   Future<List<UrunModel>> getProducts();
+  Future<PaginatedResponseModel<UrunModel>> getProductsPage(int pageNumber);
   Future<String?> urunKaydet2(String? url);
   Future urunGoruldu();
   Future<int> urunSil(String guidId);

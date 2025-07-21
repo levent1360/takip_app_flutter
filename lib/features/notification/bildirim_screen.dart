@@ -5,7 +5,7 @@ import 'package:takip/features/notification/bildiirim_notifier.dart';
 import 'package:takip/features/notification/widgets/no_bildirim_view.dart';
 import 'package:takip/features/notification/widgets/notification_tile.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 
 class BildirimScreen extends ConsumerStatefulWidget {
   const BildirimScreen({super.key});
@@ -38,7 +38,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
         );
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePageScroll()));
   }
 
   @override

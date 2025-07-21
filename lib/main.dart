@@ -9,7 +9,7 @@ import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/l10n/app_localizations.dart';
 
@@ -89,7 +89,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
 
         // Önce ProductScreen'e dön (gerekirse tüm stack'i temizle)
         navigatorKey.currentState?.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => ShopHomePage()),
+          MaterialPageRoute(builder: (context) => ShopHomePageScroll()),
           (route) => false,
         );
 
@@ -127,7 +127,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
 
   void _handleMessage(RemoteMessage message) {
     // Bildirim tıklandığında API'ye istek at
-    ref.read(urunNotifierProvider.notifier).getProducts();
+    ref.read(urunNotifierProvider.notifier).initData();
   }
 
   @override
@@ -160,7 +160,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ShopHomePage(),
+      home: ShopHomePageScroll(), //ShopHomePage(),
     );
   }
 }

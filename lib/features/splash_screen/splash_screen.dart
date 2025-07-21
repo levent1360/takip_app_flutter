@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:takip/core/constant/lottie_files.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
 import 'dart:async';
+
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -32,9 +33,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   Future<void> checkSharedText() async {
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => ShopHomePageScroll()),
+      );
     });
   }
 

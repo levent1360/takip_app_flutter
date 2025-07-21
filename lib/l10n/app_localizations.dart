@@ -331,6 +331,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start'**
   String get basla;
+
+  /// No description provided for @markabulunamadi.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected brand not found'**
+  String get markabulunamadi;
+
+  /// No description provided for @markasiteyegit.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the brand\'s website and share the link'**
+  String get markasiteyegit;
+
+  /// No description provided for @yardimtext1.
+  ///
+  /// In en, this message translates to:
+  /// **'How can I share links?'**
+  String get yardimtext1;
+
+  /// No description provided for @yardimtext2.
+  ///
+  /// In en, this message translates to:
+  /// **'1. By using the \'Share\' option from the browser:'**
+  String get yardimtext2;
+
+  /// No description provided for @yardimtext3.
+  ///
+  /// In en, this message translates to:
+  /// **'You can easily share the link by clicking the share icon in your browser.'**
+  String get yardimtext3;
+
+  /// No description provided for @yardimtext4.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Using the Copy-Paste method:'**
+  String get yardimtext4;
+
+  /// No description provided for @yardimtext5.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the link from the address bar and paste it into the app.'**
+  String get yardimtext5;
+
+  /// No description provided for @yardimtext6.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: If the links don\'t work, make sure you copied them correctly.'**
+  String get yardimtext6;
 }
 
 class _AppLocalizationsDelegate

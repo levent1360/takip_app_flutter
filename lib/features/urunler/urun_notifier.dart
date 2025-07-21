@@ -24,7 +24,6 @@ class UrunNotifier extends StateNotifier<UrunState> {
     state = state.copyWith(isLoading: true);
 
     // final urunController = ref.read(urunControllerProvider);
-    // final apiResponse = await urunController.getProducts();
     // await urunController.urunGoruldu();
     if (forceRefresh) {
       state = state.copyWith(isLoading: true);
@@ -60,6 +59,71 @@ class UrunNotifier extends StateNotifier<UrunState> {
       filteredData: filtered,
       isLoading: false,
     );
+  }
+
+  Future<void> initData() async {
+    state = state.copyWith(isLoading: true);
+
+    final urunController = ref.read(urunControllerProvider);
+    final apiResponse = await urunController.getProductsPage(1);
+    await urunController.urunGoruldu();
+
+    state = state.copyWith(
+      data: apiResponse.data,
+      pageNumber: apiResponse.pageNumber,
+      isLoading: false,
+      totalCount: apiResponse.totalCount,
+    );
+
+    filterData(); // filtreleme işlemi yapılır
+  }
+
+  Future<void> nextData() async {
+    // Son sayfaya gelindiyse tekrar yükleme yapılmasın
+    final alreadyFetchedCount = state.data.length;
+    if (state.isNextLoading || alreadyFetchedCount >= state.totalCount) return;
+
+    state = state.copyWith(isLoading: true, isNextLoading: true);
+
+    final urunController = ref.read(urunControllerProvider);
+    final nextPage = state.pageNumber + 1;
+    final apiResponse = await urunController.getProductsPage(nextPage);
+    await urunController.urunGoruldu();
+
+    final updatedData = [...state.data, ...apiResponse.data];
+
+    state = state.copyWith(
+      data: updatedData,
+      pageNumber: nextPage,
+      isLoading: false,
+      isNextLoading: false,
+      totalCount: apiResponse.totalCount, // <- önemli
+    );
+
+    filterData();
+  }
+
+  void filterData({String query = '', bool ismarka = false}) {
+    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
+    final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
+
+    List<UrunModel> filtered = state.data.where((product) {
+      final productName = normalizeTurkishCharacters(
+        product.name?.toLowerCase() ?? '',
+      );
+      final matchesQuery = query.isEmpty
+          ? true
+          : productName.contains(normalizedQuery);
+      final matchesMarka = !ismarka
+          ? true
+          : (selectedMarka == null
+                ? true
+                : product.siteMarka == selectedMarka.name);
+
+      return matchesQuery && matchesMarka;
+    }).toList();
+
+    state = state.copyWith(filteredData: filtered);
   }
 
   void setSelectedProduct(int id) {

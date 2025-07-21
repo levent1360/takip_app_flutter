@@ -129,4 +129,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get basla => 'Start';
+
+  @override
+  String get markabulunamadi => 'Selected brand not found';
+
+  @override
+  String get markasiteyegit => 'Go to the brand\'s website and share the link';
+
+  @override
+  String get yardimtext1 => 'How can I share links?';
+
+  @override
+  String get yardimtext2 =>
+      '1. By using the \'Share\' option from the browser:';
+
+  @override
+  String get yardimtext3 =>
+      'You can easily share the link by clicking the share icon in your browser.';
+
+  @override
+  String get yardimtext4 => '2. Using the Copy-Paste method:';
+
+  @override
+  String get yardimtext5 =>
+      'Copy the link from the address bar and paste it into the app.';
+
+  @override
+  String get yardimtext6 =>
+      'Note: If the links don\'t work, make sure you copied them correctly.';
 }
