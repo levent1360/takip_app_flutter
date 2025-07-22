@@ -24,7 +24,7 @@ void main() async {
 }
 
 final navigatorKey = ErrorService().navigatorKey;
-const platform = MethodChannel("app.channel.shared.data");
+// const platform = MethodChannel("app.channel.shared.data");
 
 class TakipApp extends ConsumerStatefulWidget {
   const TakipApp({super.key});
@@ -81,12 +81,6 @@ class _TakipAppState extends ConsumerState<TakipApp>
         });
 
         final String uri = Uri.encodeComponent(_sharedText!);
-
-        print('------------------------------------');
-        print('onNewSharedText     : $_sharedText');
-        print('onNewSharedText   uri  : $uri');
-        print('------------------------------------');
-
         // Önce ProductScreen'e dön (gerekirse tüm stack'i temizle)
         navigatorKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => ShopHomePageScroll()),
