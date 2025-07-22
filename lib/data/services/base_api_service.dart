@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 class BaseApiService {
@@ -6,16 +8,43 @@ class BaseApiService {
   BaseApiService(this._dio);
 
   // Eğer GET de eklersen:
-  Future<T> get<T>(
+  Future<T?> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
-    required T Function(dynamic json) fromJsonT,
+    required T? Function(dynamic json) fromJsonT,
   }) async {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
-      return fromJsonT(response.data);
+
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        dynamic data = response.data;
+
+        // Boş string kontrolü
+        if (data is String && data.isEmpty) {
+          return fromJsonT(null); // veya uygun bir değer
+        }
+        // String gelirse ve T Map değilse decode et
+        if (data is String && T != String) {
+          try {
+            data = jsonDecode(data); // JSON'a çevir
+          } catch (_) {
+            // Decode edilemezse olduğu gibi bırak
+          }
+        }
+
+        return fromJsonT(data);
+      } else {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          error: 'Sunucu hatası: ${response.statusMessage}',
+          type: DioExceptionType.badResponse,
+        );
+      }
     } on DioException {
-      rethrow; // Interceptor işini yapar
+      rethrow;
     } catch (e) {
       throw DioException(
         requestOptions: RequestOptions(path: path),

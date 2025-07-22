@@ -1,14 +1,17 @@
-import 'dart:async';
-
-import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
-import 'package:takip/features/onboarding/onboarding_screen.dart';
+import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +23,8 @@ void main() async {
   runApp(ProviderScope(child: const TakipApp()));
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
-const platform = MethodChannel("app.channel.shared.data");
+final navigatorKey = ErrorService().navigatorKey;
+// const platform = MethodChannel("app.channel.shared.data");
 
 class TakipApp extends ConsumerStatefulWidget {
   const TakipApp({super.key});
@@ -32,44 +35,106 @@ class TakipApp extends ConsumerStatefulWidget {
 
 class _TakipAppState extends ConsumerState<TakipApp>
     with WidgetsBindingObserver {
-  StreamSubscription<Uri>? _linkSubscription;
+  static const platform = MethodChannel('app.channel.shared.data');
+  String? _sharedText;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _initDeepLinks();
+    _setupInteractedMessage();
+    _setupIntentListener();
+    // _initSharedText();
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    platform.setMethodCallHandler(null); // Handler'ı temizle
-    _linkSubscription?.cancel();
-    super.dispose();
-  }
+  // Future<void> _initSharedText() async {
+  //   try {
+  //     final String? sharedText = await platform.invokeMethod('getSharedText');
+  //     if (sharedText != null) {
+  //       setState(() {
+  //         _sharedText = sharedText;
+  //       });
+  //       final String uri = Uri.encodeComponent(_sharedText!);
+  //       print('------------------------------------');
+  //       print('getSharedText     : $_sharedText');
+  //       print('getSharedText  uri   : $uri');
+  //       print('------------------------------------');
 
-  Future<void> _initDeepLinks() async {
-    final appLinks = AppLinks();
+  //       // await ref
+  //       //     .read(urunKaydetNotifierProvider.notifier)
+  //       //     .getUrlProducts(_sharedText);
 
-    // Uygulama kapalıyken açılırsa (cold start)
-    final initialUri = await appLinks.getInitialLink();
-    if (initialUri != null) {
-      _handleDeepLink(initialUri);
-    }
+  //       await Future.delayed(Duration(seconds: 2));
+  //       setState(() {
+  //         _sharedText = null;
+  //       });
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print("Hata: ${e.message}");
+  //   }
+  // }
 
-    // Uygulama açık/arkada çalışırken gelen linkler
-    appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        _handleDeepLink(uri);
+  void _setupIntentListener() {
+    platform.setMethodCallHandler((call) async {
+      if (call.method == 'onNewSharedText') {
+        setState(() {
+          _sharedText = call.arguments;
+        });
+
+        final String uri = Uri.encodeComponent(_sharedText!);
+        // Önce ProductScreen'e dön (gerekirse tüm stack'i temizle)
+        navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => ShopHomePageScroll()),
+          (route) => false,
+        );
+
+        await ref
+            .read(urunKaydetNotifierProvider.notifier)
+            .urunKaydet2(
+              _sharedText,
+              checkingText: LocalizationHelper.l10n.urunkontrol,
+              gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+              urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+              bittiText: LocalizationHelper.l10n.bitti,
+              hataText: LocalizationHelper.l10n.hata,
+            );
+
+        await Future.delayed(Duration(seconds: 2));
+        setState(() {
+          _sharedText = null;
+        });
       }
     });
   }
 
-  void _handleDeepLink(Uri uri) {
-    // URL'yi Riverpod'a kaydet
+  Future<void> _setupInteractedMessage() async {
+    // Uygulama kapalıyken veya arka plandayken açılan bildirim
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance
+        .getInitialMessage();
 
-    print(uri);
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Uygulama arka planda veya öndeyken gelen bildirim
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    // Bildirim tıklandığında API'ye istek at
+    ref.read(urunNotifierProvider.notifier).initData();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _setupIntentListener(); // Uygulama arka plandan döndüğünde kontrol et
+    }
+  }
+
+  @override
+  void dispose() {
+    platform.setMethodCallHandler(null); // Handler'ı temizle
+    super.dispose();
   }
 
   // This widget is the root of your application.
@@ -79,10 +144,17 @@ class _TakipAppState extends ConsumerState<TakipApp>
       title: 'Fiyat Takip',
       debugShowCheckedModeBanner: false,
       navigatorKey: ErrorService().navigatorKey,
+      supportedLocales: const [Locale('en'), Locale('tr')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: OnboardingScreen(),
+      home: ShopHomePageScroll(), //ShopHomePage(),
     );
   }
 }

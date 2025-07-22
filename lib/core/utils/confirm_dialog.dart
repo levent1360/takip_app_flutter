@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/services/error_service.dart';
 
 Future<bool?> showConfirmDialog({
-  String title = 'Onayla',
-  String content = 'Bu işlemi yapmak istediğinizden emin misiniz?',
-  String cancelText = 'İptal',
-  String confirmText = 'Evet',
+  String? title,
+  String? content,
+  String? cancelText,
+  String? confirmText,
 }) {
   final context = ErrorService().navigatorKey.currentContext;
   return showDialog<bool>(
@@ -23,7 +24,7 @@ Future<bool?> showConfirmDialog({
               children: [
                 Icon(Icons.info),
                 Text(
-                  title,
+                  title ?? LocalizationHelper.l10n.defaultOnay,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ Future<bool?> showConfirmDialog({
             const SizedBox(height: 20),
 
             /// Placeholder metin simülasyonu (görseldeki gri çizgiler)
-            Text(content),
+            Text(content ?? LocalizationHelper.l10n.defaultOnayMetin),
             const SizedBox(height: 30),
 
             /// Butonlar
@@ -52,7 +53,7 @@ Future<bool?> showConfirmDialog({
                     ),
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(
-                      cancelText,
+                      cancelText ?? LocalizationHelper.l10n.iptal,
                       style: TextStyle(color: Colors.redAccent),
                     ),
                   ),
@@ -71,7 +72,7 @@ Future<bool?> showConfirmDialog({
                       ),
                     ),
                     child: Text(
-                      confirmText,
+                      confirmText ?? LocalizationHelper.l10n.evet,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/notification/bildiirim_notifier.dart';
 import 'package:takip/features/notification/widgets/no_bildirim_view.dart';
 import 'package:takip/features/notification/widgets/notification_tile.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 
 class BildirimScreen extends ConsumerStatefulWidget {
   const BildirimScreen({super.key});
@@ -25,10 +26,19 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).getUrlProducts(link);
+    ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .urunKaydet2(
+          link,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePageScroll()));
   }
 
   @override
@@ -42,7 +52,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          'Bildirimler',
+          LocalizationHelper.l10n.bildirimler,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),

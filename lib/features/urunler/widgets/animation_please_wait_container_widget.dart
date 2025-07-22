@@ -4,9 +4,11 @@ import 'package:takip/core/constant/lottie_files.dart';
 
 class AnimationPleaseWaitContainerWidget extends StatefulWidget {
   final bool isLoading;
+  final String? metin;
   const AnimationPleaseWaitContainerWidget({
     super.key,
     required this.isLoading,
+    this.metin,
   });
 
   @override
@@ -52,12 +54,18 @@ class _AnimationPleaseWaitContainerWidgetState
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Center(
-                      child: Text(
-                        'Ürünleriniz Kaydediliyor...',
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 12, 71, 123),
-                          fontSize: 18,
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: Text(
+                            widget.metin!,
+                            softWrap: true,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 12, 71, 123),
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),

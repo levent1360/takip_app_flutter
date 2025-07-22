@@ -18,14 +18,13 @@ class MarkaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
-      margin: const EdgeInsets.only(right: 12),
+      width: 75,
       child: GestureDetector(
         onTap: () => onTap(marka),
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -48,6 +47,8 @@ class MarkaWidget extends StatelessWidget {
             const SizedBox(height: 5),
             Text(
               marka.orjName,
+              maxLines: 1,
+              overflow: TextOverflow.fade,
               style: TextStyle(
                 fontSize: 12,
                 color: isFiltered

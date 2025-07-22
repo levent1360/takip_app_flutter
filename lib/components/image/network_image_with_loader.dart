@@ -3,21 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:takip/components/skeleton/skelton.dart';
 
 class NetworkImageWithLoader extends StatelessWidget {
+  final String src;
   final BoxFit fit;
+  final double? width;
+  final double? height;
+  final BorderRadius? borderRadius;
 
   const NetworkImageWithLoader(
     this.src, {
     super.key,
     this.fit = BoxFit.contain,
+    this.width,
+    this.height,
+    this.borderRadius,
   });
-
-  final String src;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      // borderRadius: BorderRadius.all(Radius.circular(radius)),
+      borderRadius: borderRadius ?? BorderRadius.zero,
       child: CachedNetworkImage(
+        width: width,
+        height: height,
         fit: fit,
         imageUrl: src,
         imageBuilder: (context, imageProvider) => Container(
@@ -26,7 +33,10 @@ class NetworkImageWithLoader extends StatelessWidget {
           ),
         ),
         placeholder: (context, url) => const Skeleton(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+        errorWidget: (context, url, error) => Container(
+          color: Colors.grey[200],
+          child: const Icon(Icons.error, color: Colors.red),
+        ),
       ),
     );
   }

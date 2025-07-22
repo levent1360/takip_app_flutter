@@ -5,7 +5,7 @@ description: "Seçtiğiniz ürünlerin indirimlerini sizin için takip eden uygu
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.3+1
+version: 1.0.8+9
 
 environment:
   sdk: ^3.8.1
@@ -26,8 +26,10 @@ dependencies:
   url_launcher: ^6.3.1
   lottie: ^3.3.1
   cached_network_image: ^3.4.1
-  app_links: ^6.4.0
   smooth_page_indicator: ^1.2.1
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

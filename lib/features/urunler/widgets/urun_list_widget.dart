@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/components/snackbar/success_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
+import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
+import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
@@ -17,24 +22,49 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
 
     // Notifier üzerinden veri çek
     Future.microtask(() {
-      ref.read(urunNotifierProvider.notifier).getProducts();
+      ref.read(urunNotifierProvider.notifier).initData();
     });
   }
 
   Future<void> refresh(String link) async {
-    ref.read(urunKaydetNotifierProvider.notifier).getUrlProducts(link);
+    ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .urunKaydet2(
+          link,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
   }
 
-  Future<void> delete(int id) async {
-    ref.read(urunNotifierProvider.notifier).urunSil(id);
+  Future<void> delete(String guidId) async {
+    final result = await showConfirmDialog(
+      title: LocalizationHelper.l10n.silmebaslik,
+      content: LocalizationHelper.l10n.silmemetin,
+    );
+
+    if (result == true) {
+      ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+    }
   }
 
   Future<void> bildirimAc(int id, bool deger) async {
-    ref.read(urunNotifierProvider.notifier).bildirimAc(id, deger);
+    final result = await ref
+        .read(urunNotifierProvider.notifier)
+        .bildirimAc(id, deger);
+    if (result == null) return;
+    if (result) {
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimkapatildi);
+    } else {
+      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimacildi);
+    }
   }
 
-  Future<void> hataliSil(String url) async {
-    ref.read(urunNotifierProvider.notifier).hataliSil(url);
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -51,12 +81,13 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           );
         }
         if (!state.isLoading && allItems.length == 0) {
-          return const Center(child: NoItemsView());
+          return Center(child: NoItemsView());
         }
 
         return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true, // ListView içinde çalışması için şart
+          physics:
+              const NeverScrollableScrollPhysics(), // Scroll'u ListView yapsın
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // satırda kaç kutu olacak
             childAspectRatio: 0.7, // genişlik / yükseklik oranı
@@ -68,20 +99,28 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           itemBuilder: (context, index) {
             final urun = allItems[index];
 
-            return ProductCard(
-              delete: () =>
-                  urun.isIslendi ? delete(urun.id) : hataliSil(urun.link),
-              refresh: () => refresh(urun.link),
-              bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
-              urun: urun,
-              isIslendi: urun.isIslendi,
-              image: urun.eImg!,
-              title: urun.isIslendi ? urun.name ?? '' : urun.link,
-              firstPrice: urun.firstPrice ?? 0,
-              lastPrice: urun.lastPrice ?? 0,
-              url: urun.link,
-              markaLogo: urun.markaIcon ?? '',
-            );
+            if (!urun.isHatali) {
+              return ProductCard(
+                delete: () => delete(urun.iden),
+                showDetail: () {
+                  ref
+                      .read(urunNotifierProvider.notifier)
+                      .setSelectedProduct(urun.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ProductDetailPage()),
+                  );
+                },
+                bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
+                urun: urun,
+              );
+            } else {
+              return ErrorProductCard(
+                urun: urun,
+                delete: () => delete(urun.iden),
+                refresh: () => refresh(urun.link),
+              );
+            }
           },
         );
       },

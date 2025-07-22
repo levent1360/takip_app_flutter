@@ -1,6 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/components/snackbar/error_snackbar_component.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_provider.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_state.dart';
+import 'package:takip/features/urunler/urun_model.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/urun_provider.dart';
 
 final urunKaydetNotifierProvider =
     StateNotifierProvider<UrunKaydetNotifier, UrunKaydetState>((ref) {
@@ -12,16 +17,72 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
   UrunKaydetNotifier(this.ref) : super(UrunKaydetState.initial()) {}
 
-  Future<void> getUrlProducts(String? url) async {
-    print("-----------------------------------");
-    print("URL alındı: $url");
-    print("-----------------------------------");
-    state = state.copyWith(isLoading: true);
-    final apiResponse = await ref
-        .read(urunKaydetControllerProvider)
-        .getUrlProducts(url);
+  Future<void> urunKaydet2(
+    String? url, {
+    required String checkingText,
+    required String gecerliGonderText,
+    required String urunkaydediliyorText,
+    required String bittiText,
+    required String hataText,
+  }) async {
+    state = state.copyWith(isLoading: true, metin: checkingText);
 
-    await Future.delayed(Duration(seconds: 10));
-    state = state.copyWith(isLoading: false, result: apiResponse);
+    try {
+      // API çağrısını yap
+      final apiResponse = await ref
+          .read(urunKaydetControllerProvider)
+          .urunKaydet2(url);
+
+      if (apiResponse == null) {
+        showErrorSnackBar(message: gecerliGonderText);
+        state = state.copyWith(
+          isLoading: false,
+          result: false,
+          metin: gecerliGonderText,
+        );
+        return;
+      }
+
+      state = state.copyWith(
+        isLoading: true,
+        result: true,
+        guidId: apiResponse,
+        metin: urunkaydediliyorText,
+      );
+
+      // Ürünler filtrelenip listeye eklenecek
+      int retries = 0;
+      const maxRetries = 20;
+      const delayBetweenTries = Duration(milliseconds: 2000);
+
+      UrunModel? urunModel;
+
+      while (retries < maxRetries) {
+        urunModel = await ref
+            .read(urunControllerProvider)
+            .getUrunByGuidId(apiResponse);
+
+        if (urunModel != null) {
+          ref.read(urunNotifierProvider.notifier).urunEkle(urunModel);
+          break;
+        }
+
+        await Future.delayed(delayBetweenTries);
+        retries++;
+      }
+
+      await Future.delayed(Duration(milliseconds: 1000));
+      state = state.copyWith(
+        isLoading: false,
+        result: true,
+        guidId: apiResponse,
+        metin: bittiText,
+      );
+    } on DioException {
+      // final errorMessage = ErrorService().parseDioError(e);
+      // showErrorSnackBar(message: errorMessage);
+
+      state = state.copyWith(isLoading: false, result: false, metin: hataText);
+    }
   }
 }

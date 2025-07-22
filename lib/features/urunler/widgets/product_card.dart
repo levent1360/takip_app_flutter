@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
-import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/urunler/urun_model.dart';
+import 'package:takip/features/urunler/widgets/full_image_page_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final UrunModel urun;
   final VoidCallback delete;
-  final VoidCallback refresh;
   final VoidCallback bildirimAc;
+  final VoidCallback showDetail;
 
-  final String image;
-  final String title;
-  final double firstPrice;
-  final String markaLogo;
-  final double lastPrice;
-  final String url;
-  final bool isIslendi;
   const ProductCard({
-    super.key,
+    Key? key,
     required this.urun,
-    required this.image,
-    required this.title,
-    required this.firstPrice,
-    required this.lastPrice,
-    required this.url,
-    required this.markaLogo,
     required this.delete,
-    required this.isIslendi,
-    required this.refresh,
     required this.bildirimAc,
-  });
+    required this.showDetail,
+  }) : super(key: key);
 
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
   Future<void> launchMyUrl(String url) async {
     try {
       final Uri uri = Uri.parse(Uri.encodeFull(url));
@@ -45,151 +36,179 @@ class ProductCard extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.grey[100],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Stack(
-            children: [
-              !isIslendi
-                  ? Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Badge(label: Text('Hatalı')),
-                    )
-                  : SizedBox.shrink(),
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-                child: Image.network(
-                  image,
-                  height: 120,
-                  alignment: Alignment.topCenter,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              isIslendi
-                  ? Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: GestureDetector(
-                          onTap: bildirimAc,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white12,
-                            child: urun.isBildirimAcik
-                                ? Icon(
-                                    Icons.notifications_active,
-                                    color: Colors.teal,
-                                  )
-                                : Icon(Icons.notifications, color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              '$title',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-          ),
-          isIslendi
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        "$lastPrice ₺",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5),
-                      lastPrice != firstPrice
-                          ? Text(
-                              "$firstPrice ₺",
-                              style: const TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.grey,
-                              ),
-                            )
-                          : SizedBox(),
-                    ],
+    final screenWidth = MediaQuery.of(context).size.width;
+    final imageWidth = screenWidth * 0.4; // %40 genişlik
+    final imageHeight = imageWidth * 0.6; // oranlı yükseklik
+
+    return GestureDetector(
+      onTap: widget.showDetail,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.grey[100],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
                   ),
-                )
-              : SizedBox(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () => launchMyUrl(url),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Row(
-                      children: [
-                        isIslendi
-                            ? CircleAvatar(
-                                radius: 15,
-                                child: NetworkImageWithLoader(markaLogo),
-                              )
-                            : GestureDetector(
-                                onTap: refresh,
-                                child: const Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white12,
-                                    child: Icon(
-                                      Icons.refresh,
-                                      color: Colors.lightBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                        CircleAvatar(
-                          backgroundColor: Colors.white12,
-                          radius: 15,
-                          child: Icon(
-                            Icons.shopping_cart_checkout,
-                            color: Colors.teal,
-                          ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              FullScreenImagePage(imageUrl: widget.urun.eImg!),
                         ),
-                      ],
+                      );
+                    },
+                    child: NetworkImageWithLoader(
+                      widget.urun.eImg!,
+                      fit: BoxFit.contain,
+                      width: imageWidth,
+                      height: imageHeight,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: GestureDetector(
+                      onTap: widget.bildirimAc,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white12,
+                        child: widget.urun.isBildirimAcik
+                            ? Icon(
+                                Icons.notifications_active,
+                                color: Colors.teal,
+                              )
+                            : Icon(Icons.notifications, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+                widget.urun.isTestData
+                    ? Positioned(
+                        left: 5,
+                        top: 5,
+                        child: Badge(
+                          label: Text('Test', style: TextStyle(fontSize: 12)),
+                          backgroundColor: Colors.red.shade400,
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.urun.name!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
-              IconButton(
-                onPressed: () async {
-                  final result = await showConfirmDialog(
-                    title: 'Silme Onayı',
-                    content: 'Bu ürünü silmek istediğinize emin misiniz?',
-                  );
-
-                  if (result == true) {
-                    delete();
-                  }
-                },
-                icon: Icon(Icons.remove_shopping_cart),
-                color: Colors.redAccent,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      widget.urun.lastPrice != widget.urun.firstPrice
+                          ? Text(
+                              widget.urun.firstPrice!.toString(),
+                              // formatMoneyManual(widget.urun.firstPrice!),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.red,
+                              ),
+                            )
+                          : SizedBox(),
+                      Text(
+                        widget.urun.lastPrice!.toString(),
+                        // formatMoneyManual(widget.urun.lastPrice!),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color:
+                              (widget.urun.lastPrice != widget.urun.firstPrice)
+                              ? Colors.teal
+                              : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                    ],
+                  ),
+                  widget.urun.priceList.length > 1
+                      ? IconButton(
+                          onPressed: widget.showDetail,
+                          icon: Icon(Icons.history),
+                          color: Colors.deepPurpleAccent,
+                        )
+                      : SizedBox.shrink(),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () => launchMyUrl(widget.urun.link),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: screenWidth * 0.04, // ekran oranına göre
+                            child: NetworkImageWithLoader(
+                              widget.urun.markaIcon!,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          CircleAvatar(
+                            backgroundColor: Colors.white12,
+                            radius: screenWidth * 0.04,
+                            child: Icon(
+                              Icons.shopping_cart_checkout,
+                              color: Colors.teal,
+                              size: screenWidth * 0.05,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: widget.delete,
+                  icon: Icon(Icons.delete),
+                  color: Colors.redAccent,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

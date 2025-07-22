@@ -15,13 +15,16 @@ class ErrorService {
     if (e.error is SocketException) {
       return "İnternet bağlantınızı kontrol edin.";
     } else if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.sendTimeout ||
-        e.type == DioExceptionType.receiveTimeout) {
-      return "Sunucuya bağlanılamadı. Lütfen tekrar deneyin.";
+        e.type == DioExceptionType.sendTimeout) {
+      return "Sunucu bakımda olabilir. Lütfen daha sonra tekrar deneyin.";
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return "Sunucudan yanıt alınamadı.";
     } else if (e.type == DioExceptionType.badResponse) {
-      return "Sunucu hatası: ${e.response?.statusCode}";
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 400) {
+        return e.response?.data;
+      }
+      return "Sunucu hatası: ${e.response?.data}";
     } else if (e.type == DioExceptionType.cancel) {
       return "İstek iptal edildi.";
     } else {

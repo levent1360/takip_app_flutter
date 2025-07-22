@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/markalar/widgets/marka_loading_widget.dart';
 import 'package:takip/features/markalar/widgets/shop_category.dart';
@@ -28,11 +29,13 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         final selectedItem = state.selectedMarka;
 
         if (!state.isLoading && allItems.length == 0) {
-          return const Center(child: Text("Herhangi bir veri bulunamadı"));
+          return Center(
+            child: Text(LocalizationHelper.l10n.herhangiveribulunamadi),
+          );
         }
 
         return SizedBox(
-          height: 90,
+          height: 120,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: state.isLoading ? 5 : allItems.length,
@@ -49,9 +52,9 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
                     await ref
                         .read(markaNotifierProvider.notifier)
                         .selectedMarka(marka);
-                    await ref
+                    ref
                         .read(urunNotifierProvider.notifier)
-                        .filterByMarkaProducts();
+                        .filterData(ismarka: true);
                   },
                 );
               }

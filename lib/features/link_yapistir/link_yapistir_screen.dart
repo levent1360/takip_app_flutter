@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/constant/lottie_files.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page.dart';
+import 'package:takip/features/urunler/shop_home_page_scroll.dart';
+import 'package:takip/features/urunler/widgets/animation_please_wait_container_widget.dart';
 
 class LinkYapistirScreen extends ConsumerStatefulWidget {
   const LinkYapistirScreen({super.key});
@@ -16,26 +18,39 @@ class LinkYapistirScreen extends ConsumerStatefulWidget {
 
 class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
   final TextEditingController controller = TextEditingController();
+  bool isCountCorrect = false;
+  bool isResult = false;
+
   @override
   void initState() {
     super.initState();
   }
 
   Future<void> _gonder() async {
-    if (controller.text.isNotEmpty) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePage()));
-      await ref
-          .read(urunKaydetNotifierProvider.notifier)
-          .getUrlProducts(controller.text);
-    } else {
-      showErrorSnackBar(message: 'Boş gönderilemez');
+    if (controller.text.isEmpty) {
+      showErrorSnackBar(message: LocalizationHelper.l10n.bosgonderilemez);
+      return;
     }
+
+    // Sayfa geçişi işlemden sonra
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePageScroll()));
+    await ref
+        .read(urunKaydetNotifierProvider.notifier)
+        .urunKaydet2(
+          controller.text,
+          checkingText: LocalizationHelper.l10n.urunkontrol,
+          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
+          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
+          bittiText: LocalizationHelper.l10n.bitti,
+          hataText: LocalizationHelper.l10n.hata,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
+    final state1 = ref.watch(urunKaydetNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -45,7 +60,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          'Link Gönder',
+          LocalizationHelper.l10n.linkgonder,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -66,7 +81,8 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                   height: 100,
                   child: Center(
                     child: Text(
-                      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve gönderiniz.',
+                      LocalizationHelper.l10n.takipyapistirmetin,
+                      maxLines: 3,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.black54, fontSize: 20),
                     ),
@@ -76,7 +92,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                 TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hintText: 'Link buraya yapıştırın',
+                    hintText: LocalizationHelper.l10n.yapistirmetin,
                     filled: true,
                     fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
@@ -93,7 +109,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                           controller.text = clipboardData.text ?? '';
                         }
                       },
-                      child: const Text("Yapıştır"),
+                      child: Text(LocalizationHelper.l10n.yapistir),
                     ),
                   ),
                 ),
@@ -101,18 +117,44 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
                 Container(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: _gonder,
+                    onPressed: state1.isLoading ? null : _gonder,
                     icon: Icon(Icons.send),
-                    label: Text("Gönder"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    label: Text(LocalizationHelper.l10n.gonder),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.disabled)) {
+                            return Colors
+                                .grey; // disabled durumu için arka plan rengi
+                          }
+                          return Colors.teal; // normal durumda arka plan rengi
+                        },
+                      ),
+                      foregroundColor: MaterialStateProperty.resolveWith<Color>((
+                        Set<MaterialState> states,
+                      ) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Colors
+                              .black38; // disabled durumu için yazı ve ikon rengi
+                        }
+                        return Colors
+                            .white; // normal durumda yazı ve ikon rengi
+                      }),
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(height: 10),
+                AnimationPleaseWaitContainerWidget(
+                  isLoading: state1.isLoading,
+                  metin: state1.metin,
                 ),
                 const SizedBox(height: 30),
               ],
