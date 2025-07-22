@@ -158,11 +158,13 @@ class _ProductCardState extends State<ProductCard> {
                       const SizedBox(width: 5),
                     ],
                   ),
-                  IconButton(
-                    onPressed: widget.showDetail,
-                    icon: Icon(Icons.history),
-                    color: Colors.deepPurpleAccent,
-                  ),
+                  widget.urun.priceList.length > 1
+                      ? IconButton(
+                          onPressed: widget.showDetail,
+                          icon: Icon(Icons.history),
+                          color: Colors.deepPurpleAccent,
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),
