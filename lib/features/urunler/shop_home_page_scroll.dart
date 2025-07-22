@@ -59,6 +59,7 @@ class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
         child: SafeArea(
           child: CustomScrollView(
             controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(

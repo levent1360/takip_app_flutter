@@ -22,6 +22,9 @@ class UrunModel {
   late final List<String> priceList;
   late final List<String> priceDateList;
 
+  bool get isSonBirSaat =>
+      DateTime.now().difference(updateDate).inMinutes <= 60;
+
   UrunModel({
     required this.id,
     required this.iden,

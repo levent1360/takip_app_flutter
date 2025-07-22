@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takip/components/cards/blink_animation_component.dart';
 import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
@@ -96,7 +97,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
         final urun = allItems[index];
 
         if (!urun.isHatali) {
-          return ProductCard(
+          final productCard = ProductCard(
             key: ValueKey(urun.iden),
             delete: () => delete(urun.iden),
             showDetail: () {
@@ -111,6 +112,26 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
             bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
             urun: urun,
           );
+
+          return urun.isSonBirSaat
+              ? BlinkingCard(widget: productCard)
+              : productCard;
+
+          // ProductCard(
+          //   key: ValueKey(urun.iden),
+          //   delete: () => delete(urun.iden),
+          //   showDetail: () {
+          //     ref
+          //         .read(urunNotifierProvider.notifier)
+          //         .setSelectedProduct(urun.id);
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (_) => ProductDetailPage()),
+          //     );
+          //   },
+          //   bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
+          //   urun: urun,
+          // );
         } else {
           return ErrorProductCard(
             key: ValueKey(urun.iden),
