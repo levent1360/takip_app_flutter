@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import FirebaseCore
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,10 +11,14 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+
+    // Firebase başlatılıyor
+    FirebaseApp.configure()
+
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
 
     let methodChannel = FlutterMethodChannel(name: channelName, binaryMessenger: controller.binaryMessenger)
-    
+
     methodChannel.setMethodCallHandler { [weak self] (call, result) in
       if call.method == "getSharedText" {
         result(self?.sharedText)
@@ -22,7 +27,7 @@ import Flutter
         result(FlutterMethodNotImplemented)
       }
     }
-    
+
     // Launch options içindeki URL veya paylaşılan metin kontrolü
     if let url = launchOptions?[.url] as? URL {
       sharedText = url.absoluteString
@@ -38,12 +43,13 @@ import Flutter
   // Uygulama açılırken URL yakalama
   override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     sharedText = url.absoluteString
-    
+
     if let controller = window?.rootViewController as? FlutterViewController {
       let methodChannel = FlutterMethodChannel(name: channelName, binaryMessenger: controller.binaryMessenger)
       methodChannel.invokeMethod("onNewSharedText", arguments: sharedText)
     }
-    
+
     return true
   }
 }
+
