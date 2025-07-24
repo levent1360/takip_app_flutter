@@ -5,7 +5,7 @@ description: "Seçtiğiniz ürünlerin indirimlerini sizin için takip eden uygu
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.8+9
+version: 1.0.11+12
 
 environment:
   sdk: ^3.8.1
