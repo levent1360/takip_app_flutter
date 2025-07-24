@@ -22,6 +22,10 @@ class UrunModel {
   late final List<String> priceList;
   late final List<String> priceDateList;
 
+  bool get isIndirim => lastPrice! < firstPrice!;
+  bool get isZamli => lastPrice! > firstPrice!;
+  bool get isFiyatAyni => lastPrice! == firstPrice!;
+
   bool get isSonBirSaat =>
       DateTime.now().difference(updateDate).inMinutes <= 60;
 

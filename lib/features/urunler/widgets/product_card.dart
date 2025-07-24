@@ -131,31 +131,38 @@ class _ProductCardState extends State<ProductCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  Row(
                     children: [
-                      widget.urun.lastPrice != widget.urun.firstPrice
-                          ? Text(
-                              widget.urun.firstPrice!.toString(),
-                              // formatMoneyManual(widget.urun.firstPrice!),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.red,
-                              ),
-                            )
-                          : SizedBox(),
-                      Text(
-                        widget.urun.lastPrice!.toString(),
-                        // formatMoneyManual(widget.urun.lastPrice!),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color:
-                              (widget.urun.lastPrice != widget.urun.firstPrice)
-                              ? Colors.teal
-                              : Colors.black,
-                        ),
+                      Column(
+                        children: [
+                          !widget.urun.isFiyatAyni
+                              ? Text(
+                                  widget.urun.firstPrice!.toString(),
+                                  // formatMoneyManual(widget.urun.firstPrice!),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.red,
+                                  ),
+                                )
+                              : SizedBox(),
+                          Text(
+                            widget.urun.lastPrice!.toString(),
+                            // formatMoneyManual(widget.urun.lastPrice!),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: (widget.urun.isIndirim)
+                                  ? Colors.teal
+                                  : Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                        ],
                       ),
-                      const SizedBox(width: 5),
+                      if (widget.urun.isIndirim)
+                        Icon(Icons.arrow_downward, color: Colors.teal),
+                      if (widget.urun.isZamli)
+                        Icon(Icons.arrow_upward, color: Colors.red),
                     ],
                   ),
                   widget.urun.priceList.length > 1
