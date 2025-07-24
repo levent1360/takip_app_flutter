@@ -159,10 +159,6 @@ class _ProductCardState extends State<ProductCard> {
                           const SizedBox(width: 5),
                         ],
                       ),
-                      if (widget.urun.isIndirim)
-                        Icon(Icons.arrow_downward, color: Colors.teal),
-                      if (widget.urun.isZamli)
-                        Icon(Icons.arrow_upward, color: Colors.red),
                     ],
                   ),
                   widget.urun.priceList.length > 1
