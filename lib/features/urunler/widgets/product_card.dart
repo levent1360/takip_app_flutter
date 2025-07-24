@@ -58,61 +58,80 @@ class _ProductCardState extends State<ProductCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              FullScreenImagePage(imageUrl: widget.urun.eImg!),
+            SizedBox(
+              height: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    // Arka plan görsel
+                    Positioned.fill(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => FullScreenImagePage(
+                                imageUrl: widget.urun.eImg!,
+                              ),
+                            ),
+                          );
+                        },
+                        child: NetworkImageWithLoader(
+                          widget.urun.eImg!,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                          height: 200,
+                          borderRadius:
+                              BorderRadius.zero, // ClipRRect zaten yuvarlıyor
                         ),
-                      );
-                    },
-                    child: NetworkImageWithLoader(
-                      widget.urun.eImg!,
-                      fit: BoxFit.contain,
-                      width: imageWidth,
-                      height: imageHeight,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: GestureDetector(
-                      onTap: widget.bildirimAc,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white12,
-                        child: widget.urun.isBildirimAcik
-                            ? Icon(
-                                Icons.notifications_active,
-                                color: Colors.teal,
-                              )
-                            : Icon(Icons.notifications, color: Colors.grey),
                       ),
                     ),
-                  ),
-                ),
-                widget.urun.isTestData
-                    ? Positioned(
-                        left: 5,
-                        top: 5,
-                        child: Badge(
-                          label: Text('Test', style: TextStyle(fontSize: 12)),
-                          backgroundColor: Colors.red.shade400,
+
+                    // Sol üst köşede Test etiketi
+                    if (widget.urun.isTestData)
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade400,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text(
+                            'Test',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      )
-                    : SizedBox.shrink(),
-              ],
+                      ),
+
+                    // Sağ üst köşede bildirim ikonu (tam sağda!)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: widget.bildirimAc,
+                        child: Icon(
+                          widget.urun.isBildirimAcik
+                              ? Icons.notifications_active
+                              : Icons.notifications_none,
+                          color: Colors.teal,
+                          size: 28,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -126,12 +145,12 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
                     children: [
                       Column(
                         children: [
@@ -159,17 +178,17 @@ class _ProductCardState extends State<ProductCard> {
                           const SizedBox(width: 5),
                         ],
                       ),
+                      widget.urun.priceList.length > 1
+                          ? IconButton(
+                              onPressed: widget.showDetail,
+                              icon: Icon(Icons.history),
+                              color: Colors.deepPurpleAccent,
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
-                  widget.urun.priceList.length > 1
-                      ? IconButton(
-                          onPressed: widget.showDetail,
-                          icon: Icon(Icons.history),
-                          color: Colors.deepPurpleAccent,
-                        )
-                      : SizedBox.shrink(),
-                ],
-              ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,20 +201,22 @@ class _ProductCardState extends State<ProductCard> {
                       alignment: Alignment.bottomRight,
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: screenWidth * 0.04, // ekran oranına göre
-                            child: NetworkImageWithLoader(
-                              widget.urun.markaIcon!,
+                          Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.lightBlueAccent,
+                                // Border rengini burada belirliyoruz
+                                width:
+                                    2, // Border'ın kalınlığını ayarlayabilirsiniz
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 4),
-                          CircleAvatar(
-                            backgroundColor: Colors.white12,
-                            radius: screenWidth * 0.04,
-                            child: Icon(
-                              Icons.shopping_cart_checkout,
-                              color: Colors.teal,
-                              size: screenWidth * 0.05,
+                            child: CircleAvatar(
+                              radius: screenWidth * 0.04, // ekran oranına göre
+                              child: NetworkImageWithLoader(
+                                widget.urun.markaIcon!,
+                              ),
                             ),
                           ),
                         ],
