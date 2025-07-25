@@ -157,4 +157,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get yardimtext6 =>
       'Note: If the links don\'t work, make sure you copied them correctly.';
+
+  @override
+  String get uruneklememetni => 'Click the ‘+’ button above to add a product.';
+
+  @override
+  String get uruneklememetni2 =>
+      'Click the ‘+’ button above to add the product.';
+
+  @override
+  String uruneklememetni_markali(String brand) {
+    return 'Click the ‘+’ button above to add the $brand product.';
+  }
 }

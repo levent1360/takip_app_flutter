@@ -7,7 +7,7 @@ import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/error_product_card.dart';
-import 'package:takip/features/urunler/widgets/no_items_view.dart';
+import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
 class UrunListWidget extends ConsumerStatefulWidget {
@@ -81,7 +81,7 @@ class _UrunListWidgetState extends ConsumerState<UrunListWidget> {
           );
         }
         if (!state.isLoading && allItems.length == 0) {
-          return Center(child: NoItemsView());
+          return Center(child: NoItemsViewSimple());
         }
 
         return GridView.builder(

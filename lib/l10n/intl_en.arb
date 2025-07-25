@@ -45,5 +45,15 @@
   "yardimtext3": "You can easily share the link by clicking the share icon in your browser.",
   "yardimtext4": "2. Using the Copy-Paste method:",
   "yardimtext5": "Copy the link from the address bar and paste it into the app.",
-  "yardimtext6": "Note: If the links don't work, make sure you copied them correctly."
+  "yardimtext6": "Note: If the links don't work, make sure you copied them correctly.",
+  "uruneklememetni": "Click the ‘+’ button above to add a product.",
+  "uruneklememetni2": "Click the ‘+’ button above to add the product.",
+  "uruneklememetni_markali": "Click the ‘+’ button above to add the {brand} product.",
+  "@uruneklememetni_markali": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  }
 }
