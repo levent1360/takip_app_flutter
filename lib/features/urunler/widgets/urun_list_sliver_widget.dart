@@ -9,7 +9,7 @@ import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/error_product_card.dart';
-import 'package:takip/features/urunler/widgets/no_items_view.dart';
+import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
@@ -86,9 +86,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     }
     if (!state.isLoading && allItems.isEmpty) {
       return SliverToBoxAdapter(
-        child: Center(
-          child: NoItemsView(selectedMarka: stateMarka.selectedMarka),
-        ),
+        child: NoItemsViewSimple(selectedMarka: stateMarka.selectedMarka),
       );
     }
 

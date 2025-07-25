@@ -379,6 +379,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Note: If the links don\'t work, make sure you copied them correctly.'**
   String get yardimtext6;
+
+  /// No description provided for @uruneklememetni.
+  ///
+  /// In en, this message translates to:
+  /// **'Click the ‘+’ button above to add a product.'**
+  String get uruneklememetni;
+
+  /// No description provided for @uruneklememetni2.
+  ///
+  /// In en, this message translates to:
+  /// **'Click the ‘+’ button above to add the product.'**
+  String get uruneklememetni2;
+
+  /// No description provided for @uruneklememetni_markali.
+  ///
+  /// In en, this message translates to:
+  /// **'Click the ‘+’ button above to add the {brand} product.'**
+  String uruneklememetni_markali(String brand);
 }
 
 class _AppLocalizationsDelegate

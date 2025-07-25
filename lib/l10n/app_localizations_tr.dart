@@ -155,4 +155,17 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get yardimtext6 =>
       'Note: If the links don\'t work, make sure you copied them correctly.';
+
+  @override
+  String get uruneklememetni =>
+      'Ürün eklemek için yukarıdaki ‘+’ butonuna tıklayın.';
+
+  @override
+  String get uruneklememetni2 =>
+      'ürünü eklemek için yukarıdaki ‘+’ butonuna tıklayın.';
+
+  @override
+  String uruneklememetni_markali(String brand) {
+    return '$brand ürünü eklemek için yukarıdaki ‘+’ butonuna tıklayın.';
+  }
 }

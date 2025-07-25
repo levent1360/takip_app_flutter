@@ -44,6 +44,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final imageWidth = screenWidth * 0.4; // %40 genişlik
     final imageHeight = imageWidth * 0.6; // oranlı yükseklik
 
@@ -59,7 +60,7 @@ class _ProductCardState extends State<ProductCard> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(
-              height: 100,
+              height: screenHeight * 0.125,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
@@ -82,7 +83,7 @@ class _ProductCardState extends State<ProductCard> {
                           widget.urun.eImg!,
                           fit: BoxFit.contain,
                           width: double.infinity,
-                          height: 200,
+                          height: screenHeight * 0.25,
                           borderRadius:
                               BorderRadius.zero, // ClipRRect zaten yuvarlıyor
                         ),
