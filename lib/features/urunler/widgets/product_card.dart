@@ -51,6 +51,7 @@ class _ProductCardState extends State<ProductCard> {
     return GestureDetector(
       onTap: widget.showDetail,
       child: Container(
+        height: screenHeight * 0.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.grey[100],
@@ -83,7 +84,6 @@ class _ProductCardState extends State<ProductCard> {
                           widget.urun.eImg!,
                           fit: BoxFit.contain,
                           width: double.infinity,
-                          height: screenHeight * 0.25,
                           borderRadius:
                               BorderRadius.zero, // ClipRRect zaten yuvarlıyor
                         ),
