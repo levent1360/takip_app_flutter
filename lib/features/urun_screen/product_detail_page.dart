@@ -74,7 +74,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: screenHeight * 0.6,
+            expandedHeight: screenHeight * 0.4,
             pinned: true,
             stretch: true,
             backgroundColor: Colors.white,
@@ -116,11 +116,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
-                padding: EdgeInsets.only(top: 0),
+                padding: EdgeInsets.only(top: 32),
                 child: Center(
                   child: NetworkImageWithLoader(
                     product.eImg!,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
