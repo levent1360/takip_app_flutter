@@ -16,7 +16,9 @@ import FirebaseCore
     GeneratedPluginRegistrant.register(with: self)
 
     // Firebase başlatılıyor
-    FirebaseApp.configure()
+    if FirebaseApp.app() == nil {
+        FirebaseApp.configure()
+    }
 
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
 
