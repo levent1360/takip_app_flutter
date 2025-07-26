@@ -63,20 +63,20 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-	<!-- İnternet izinleri için App Transport Security -->
+	<!-- İnternet izinleri -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 
-	<!-- Dosya paylaşımı ve erişim izinleri -->
+	<!-- Dosya paylaşımı -->
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 
-	<!-- Deep link / URL scheme -->
+	<!-- Deep Link / URL Scheme -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -90,8 +90,20 @@
 		</dict>
 	</array>
 
-	<!-- Flutter embedded views preview -->
+	<!-- Flutter embedded views -->
 	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+
+	<!-- 🔔 Firebase Push Notification için eklendi -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
+	<key>NSUserNotificationAlertStyle</key>
+	<string>alert</string>
+
+	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 </dict>
 </plist>
