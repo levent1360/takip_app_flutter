@@ -12,6 +12,9 @@ import FirebaseCore
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
+    // 🔧 Eksik satır eklendi
+    GeneratedPluginRegistrant.register(with: self)
+
     // Firebase başlatılıyor
     FirebaseApp.configure()
 
@@ -28,7 +31,6 @@ import FirebaseCore
       }
     }
 
-    // Launch options içindeki URL veya paylaşılan metin kontrolü
     if let url = launchOptions?[.url] as? URL {
       sharedText = url.absoluteString
     } else if let activityDict = launchOptions?[.userActivityDictionary] as? [AnyHashable: Any],
@@ -40,7 +42,6 @@ import FirebaseCore
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  // Uygulama açılırken URL yakalama
   override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     sharedText = url.absoluteString
 
@@ -52,4 +53,3 @@ import FirebaseCore
     return true
   }
 }
-
