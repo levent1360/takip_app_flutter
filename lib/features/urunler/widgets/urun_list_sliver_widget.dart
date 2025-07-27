@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/cards/blink_animation_component.dart';
+import 'package:takip/components/snackbar/error_snackbar_component.dart';
 import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
+import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
+import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
@@ -11,6 +14,7 @@ import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
 import 'package:takip/features/urunler/widgets/product_card.dart';
+import 'package:takip/features/urunler/widgets/responsive_urun_card_widget.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
   @override
@@ -24,7 +28,13 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     super.initState();
 
     // Notifier üzerinden veri çek
-    Future.microtask(() {
+    Future.microtask(() async {
+      final localDataSource = sl<LocalDataSource>();
+      final token = await localDataSource.getDeviceToken();
+      if (token == null) {
+        showErrorSnackBar(message: 'Bildirimleri açınız');
+        return;
+      }
       ref.read(urunNotifierProvider.notifier).initData();
     });
   }
@@ -95,7 +105,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
         final urun = allItems[index];
 
         if (!urun.isHatali) {
-          final productCard = ProductCard(
+          final productCard = ResponsiveUrunCardWidget(
             key: ValueKey(urun.iden),
             delete: () => delete(urun.iden),
             showDetail: () {
