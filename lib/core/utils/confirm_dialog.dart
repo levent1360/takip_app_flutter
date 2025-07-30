@@ -7,6 +7,7 @@ Future<bool?> showConfirmDialog({
   String? content,
   String? cancelText,
   String? confirmText,
+  Color? confirmColor,
 }) {
   final context = ErrorService().navigatorKey.currentContext;
   return showDialog<bool>(
@@ -60,12 +61,11 @@ Future<bool?> showConfirmDialog({
                 ),
                 const SizedBox(width: 12),
 
-                /// Log out button
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(true),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: confirmColor ?? Colors.redAccent,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

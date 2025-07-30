@@ -397,6 +397,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Click the ‘+’ button above to add the {brand} product.'**
   String uruneklememetni_markali(String brand);
+
+  /// No description provided for @bildirimizinbaslik.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Permission'**
+  String get bildirimizinbaslik;
+
+  /// No description provided for @bildirimizinmetin.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to receive a notification when prices drop? Turn on notifications.'**
+  String get bildirimizinmetin;
+
+  /// No description provided for @bildirimizinayaragit.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Settings'**
+  String get bildirimizinayaragit;
 }
 
 class _AppLocalizationsDelegate

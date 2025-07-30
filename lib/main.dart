@@ -8,6 +8,7 @@ import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
 import 'package:takip/data/services/notification_service.dart';
+import 'package:takip/features/notification/notification_permission_provider.dart';
 import 'package:takip/features/onboarding/onboarding_screen.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page_scroll.dart';
@@ -44,35 +45,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
     WidgetsBinding.instance.addObserver(this);
     _setupInteractedMessage();
     _setupIntentListener();
-    // _initSharedText();
   }
-
-  // Future<void> _initSharedText() async {
-  //   try {
-  //     final String? sharedText = await platform.invokeMethod('getSharedText');
-  //     if (sharedText != null) {
-  //       setState(() {
-  //         _sharedText = sharedText;
-  //       });
-  //       final String uri = Uri.encodeComponent(_sharedText!);
-  //       print('------------------------------------');
-  //       print('getSharedText     : $_sharedText');
-  //       print('getSharedText  uri   : $uri');
-  //       print('------------------------------------');
-
-  //       // await ref
-  //       //     .read(urunKaydetNotifierProvider.notifier)
-  //       //     .getUrlProducts(_sharedText);
-
-  //       await Future.delayed(Duration(seconds: 2));
-  //       setState(() {
-  //         _sharedText = null;
-  //       });
-  //     }
-  //   } on PlatformException catch (e) {
-  //     print("Hata: ${e.message}");
-  //   }
-  // }
 
   void _setupIntentListener() {
     platform.setMethodCallHandler((call) async {
@@ -129,6 +102,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _setupIntentListener(); // Uygulama arka plandan döndüğünde kontrol et
+      ref.read(notificationPermissionProvider.notifier).checkPermission();
     }
   }
 

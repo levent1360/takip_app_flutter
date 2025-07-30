@@ -23,6 +23,9 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
+    searchController.addListener(() {
+      setState(() {}); // Bu sayede suffixIcon güncellenir
+    });
   }
 
   @override
@@ -82,28 +85,28 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
             );
           },
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.teal,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white, size: 36),
           ),
         ),
         const SizedBox(width: 5),
         GestureDetector(
-          onTap: () {
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (_) => const BildirimScreen()));
-          },
+          onTap: () {},
           child: Container(
-            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.notifications),
+            child: Image.asset(
+              'assets/icon/transparent_image.png',
+              width: 44,
+              height: 44,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ],

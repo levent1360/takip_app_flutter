@@ -4,9 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
-import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/onboarding/onboarding_notifier.dart';
-import 'package:takip/features/onboarding/permission_screen.dart';
 import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -20,7 +18,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    _checkTokenAndNavigate();
     _checkOnboarding();
     Future.microtask(() {
       ref.read(onboardingNotifierProvider.notifier).getOnboardingData();
@@ -58,21 +55,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         MaterialPageRoute(builder: (context) => ShopHomePageScroll()),
       );
     }
-  }
-
-  Future<void> _checkTokenAndNavigate() async {
-    await NotificationService.initFCMToken();
-
-    // Token'ı localDataSource'dan oku (örneğin shared_preferences ya da sizin servis)
-    final localDataSource = sl<LocalDataSource>();
-    final token = await localDataSource.getDeviceToken();
-
-    if (token == null || token.isEmpty) {
-      // Token yoksa, login veya izin sayfasına yönlendir
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => PermissionPage()));
-    } else {}
   }
 
   @override

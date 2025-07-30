@@ -5,7 +5,7 @@ description: "Seçtiğiniz ürünlerin indirimlerini sizin için takip eden uygu
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.13+14
+version: 1.0.14+15
 
 environment:
   sdk: ^3.8.1
@@ -31,6 +31,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   assets:
     - assets/lottie/
     - assets/images/
+    - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

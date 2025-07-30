@@ -92,7 +92,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                             color: Colors.teal,
                           )
                         : Icon(
-                            Icons.notifications,
+                            Icons.notifications_off_outlined,
                             size: 36,
                             color: Colors.grey,
                           ),

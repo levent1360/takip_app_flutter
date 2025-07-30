@@ -55,5 +55,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "bildirimizinbaslik": "Bildirim İzni",
+  "bildirimizinmetin": "Fiyatlar düşünce bildirim almak ister misiniz? Bildirimlerinizi açın",
+  "bildirimizinayaragit": "Ayarlara Git"
 }

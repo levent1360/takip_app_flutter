@@ -169,4 +169,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String uruneklememetni_markali(String brand) {
     return 'Click the ‘+’ button above to add the $brand product.';
   }
+
+  @override
+  String get bildirimizinbaslik => 'Notification Permission';
+
+  @override
+  String get bildirimizinmetin =>
+      'Would you like to receive a notification when prices drop? Turn on notifications.';
+
+  @override
+  String get bildirimizinayaragit => 'Go to Settings';
 }

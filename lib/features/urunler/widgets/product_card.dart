@@ -45,8 +45,6 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final imageWidth = screenWidth * 0.4; // %40 genişlik
-    final imageHeight = imageWidth * 0.6; // oranlı yükseklik
 
     return GestureDetector(
       onTap: widget.showDetail,
