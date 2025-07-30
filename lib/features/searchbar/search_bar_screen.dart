@@ -23,6 +23,9 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
+    searchController.addListener(() {
+      setState(() {}); // Bu sayede suffixIcon güncellenir
+    });
   }
 
   @override
@@ -92,21 +95,17 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
         ),
         const SizedBox(width: 5),
         GestureDetector(
-          onTap: () {
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (_) => const BildirimScreen()));
-          },
+          onTap: () {},
           child: Container(
-            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
-              Icons.notifications,
-              size: 36,
-              color: Colors.teal,
+            child: Image.asset(
+              'assets/icon/transparent_image.png',
+              width: 44,
+              height: 44,
+              fit: BoxFit.cover,
             ),
           ),
         ),

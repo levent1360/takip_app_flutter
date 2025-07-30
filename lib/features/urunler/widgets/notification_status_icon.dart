@@ -22,9 +22,13 @@ class NotificationStatusIcon extends ConsumerWidget {
         allowed
             ? isBildirimAcik
                   ? Icons.notifications_active
-                  : Icons.notifications_none
+                  : Icons.notifications_off_outlined
             : Icons.notification_important,
-        color: allowed ? Colors.teal : Colors.redAccent,
+        color: allowed
+            ? isBildirimAcik
+                  ? Colors.teal
+                  : Colors.grey
+            : Colors.redAccent,
         size: size,
       ),
     );
