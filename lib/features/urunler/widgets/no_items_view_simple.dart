@@ -3,8 +3,8 @@ import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/markalar/marka_model.dart';
 
 class NoItemsViewSimple extends StatefulWidget {
-  MarkaModel? selectedMarka;
-  NoItemsViewSimple({super.key, this.selectedMarka});
+  final MarkaModel? selectedMarka;
+  const NoItemsViewSimple({super.key, this.selectedMarka});
 
   @override
   State<NoItemsViewSimple> createState() => _NoItemsViewSimpleState();

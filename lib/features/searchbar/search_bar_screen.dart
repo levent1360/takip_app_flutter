@@ -82,12 +82,12 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
             );
           },
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.teal,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white, size: 36),
           ),
         ),
         const SizedBox(width: 5),
@@ -98,12 +98,16 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
             ).push(MaterialPageRoute(builder: (_) => const BildirimScreen()));
           },
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.notifications),
+            child: const Icon(
+              Icons.notifications,
+              size: 36,
+              color: Colors.teal,
+            ),
           ),
         ),
       ],

@@ -8,8 +8,8 @@ import 'package:takip/features/urun_kaydet/widgets/link_paylasim_yardim_screen.d
 import 'package:url_launcher/url_launcher.dart';
 
 class NoItemsView extends StatefulWidget {
-  MarkaModel? selectedMarka;
-  NoItemsView({super.key, this.selectedMarka});
+  final MarkaModel? selectedMarka;
+  const NoItemsView({super.key, this.selectedMarka});
 
   @override
   State<NoItemsView> createState() => _NoItemsViewState();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/widgets/full_image_page_screen.dart';
+import 'package:takip/features/urunler/widgets/urun_card_notification_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ResponsiveUrunCardWidget extends StatelessWidget {
@@ -21,7 +22,6 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
 
     final fontSizeSmall = isTablet ? 16.0 : 12.0;
@@ -102,19 +102,10 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: GestureDetector(
-                        onTap: bildirimAc,
-                        child: Icon(
-                          urun.isBildirimAcik
-                              ? Icons.notifications_active
-                              : Icons.notifications_none,
-                          color: Colors.teal,
-                          size: iconSize,
-                        ),
-                      ),
+                    UrunCardNotificationWidget(
+                      bildirimAc: bildirimAc,
+                      urun: urun,
+                      iconSize: iconSize,
                     ),
                   ],
                 ),

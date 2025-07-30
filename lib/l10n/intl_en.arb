@@ -55,5 +55,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "bildirimizinbaslik": "Notification Permission",
+  "bildirimizinmetin": "Would you like to receive a notification when prices drop? Turn on notifications.",
+  "bildirimizinayaragit": "Go to Settings"
 }

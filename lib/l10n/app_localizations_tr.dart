@@ -168,4 +168,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String uruneklememetni_markali(String brand) {
     return '$brand ürünü eklemek için yukarıdaki ‘+’ butonuna tıklayın.';
   }
+
+  @override
+  String get bildirimizinbaslik => 'Bildirim İzni';
+
+  @override
+  String get bildirimizinmetin =>
+      'Fiyatlar düşünce bildirim almak ister misiniz? Bildirimlerinizi açın';
+
+  @override
+  String get bildirimizinayaragit => 'Ayarlara Git';
 }
