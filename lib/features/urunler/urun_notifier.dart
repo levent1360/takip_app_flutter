@@ -70,6 +70,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
     state = state.copyWith(
       data: apiResponse.data,
+      filteredData: apiResponse.data,
       pageNumber: apiResponse.pageNumber,
       isLoading: false,
       totalCount: apiResponse.totalCount,
@@ -94,18 +95,24 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
     state = state.copyWith(
       data: updatedData,
+      filteredData: updatedData,
       pageNumber: nextPage,
       isLoading: false,
       isNextLoading: false,
       totalCount: apiResponse.totalCount, // <- önemli
     );
 
-    filterData();
+    filterData(ismarka: true);
   }
 
+  /// Bu method kullanılmıyor. Dikkat Et
   void filterData({String query = '', bool ismarka = false}) {
     final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
     final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
+
+    if (!ismarka) {
+      ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
+    }
 
     List<UrunModel> filtered = state.data.where((product) {
       final productName = normalizeTurkishCharacters(
@@ -122,6 +129,9 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
       return matchesQuery && matchesMarka;
     }).toList();
+
+    final uniqueMarkalar = filtered.map((e) => e.siteMarka).toSet().toList();
+    print(uniqueMarkalar);
 
     state = state.copyWith(filteredData: filtered);
   }
@@ -142,6 +152,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
   // }
 
   // void filterProducts(String query) {
+  //   ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
   //   state = state.copyWith(isLoading: true);
   //   final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
 
@@ -166,7 +177,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
   //     filtered = state.data.isEmpty ? [] : state.data;
   //   } else {
   //     // Eğer selectedMarka varsa, veri filtreleme işlemi yapıyoruz
-  //     filtered = state.data
+  //     filtered = state.filteredData
   //         .where((q) => q.siteMarka == markaState.selectedMarka?.name)
   //         .toList();
   //   }

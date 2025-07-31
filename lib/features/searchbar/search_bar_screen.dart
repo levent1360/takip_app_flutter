@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
-import 'package:takip/features/notification/bildirim_screen.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 
 class SearchBarScreen extends ConsumerStatefulWidget {

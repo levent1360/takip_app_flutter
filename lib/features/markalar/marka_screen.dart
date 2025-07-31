@@ -25,7 +25,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
     return Consumer(
       builder: (context, provider, child) {
         final state = ref.watch(markaNotifierProvider);
-        final allItems = state.data;
+        final allItems = state.filteredData;
         final selectedItem = state.selectedMarka;
 
         if (!state.isLoading && allItems.length == 0) {

@@ -17,7 +17,11 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
   Future<void> getMarkas() async {
     state = state.copyWith(isLoading: true);
     final apiResponse = await ref.read(markaControllerProvider).getMarkas();
-    state = state.copyWith(data: apiResponse, isLoading: false);
+    state = state.copyWith(
+      data: apiResponse,
+      filteredData: apiResponse,
+      isLoading: false,
+    );
   }
 
   Future<void> selectedMarka(MarkaModel model) async {
@@ -32,6 +36,10 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
     }
 
     state = state.copyWith(selectedMarka: _selectedBefore, isLoading: false);
+  }
+
+  void clearSelectedMarka() {
+    state = state.copyWith(selectedMarka: null, isLoading: false);
   }
 
   String getMarkaName(String name) {
