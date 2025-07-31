@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/services/error_service.dart';
+import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/notification/notification_permission_provider.dart';
 import 'package:takip/features/onboarding/onboarding_screen.dart';
@@ -54,7 +55,6 @@ class _TakipAppState extends ConsumerState<TakipApp>
           _sharedText = call.arguments;
         });
 
-        final String uri = Uri.encodeComponent(_sharedText!);
         // Önce ProductScreen'e dön (gerekirse tüm stack'i temizle)
         navigatorKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => ShopHomePageScroll()),
@@ -71,6 +71,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
               bittiText: LocalizationHelper.l10n.bitti,
               hataText: LocalizationHelper.l10n.hata,
             );
+        await bildirimIzinAc();
 
         await Future.delayed(Duration(seconds: 2));
         setState(() {
@@ -96,6 +97,23 @@ class _TakipAppState extends ConsumerState<TakipApp>
   void _handleMessage(RemoteMessage message) {
     // Bildirim tıklandığında API'ye istek at
     ref.read(urunNotifierProvider.notifier).initData();
+  }
+
+  Future<void> bildirimIzinAc() async {
+    final permissionState = ref.watch(notificationPermissionProvider);
+
+    if (permissionState.value == false) {
+      final result = await showConfirmDialog(
+        title: LocalizationHelper.l10n.bildirimizinbaslik,
+        content: LocalizationHelper.l10n.bildirimizinmetin,
+        confirmText: LocalizationHelper.l10n.bildirimizinayaragit,
+        confirmColor: Colors.teal,
+      );
+
+      if (result == true) {
+        NotificationService().ensureNotificationPermission();
+      }
+    }
   }
 
   @override

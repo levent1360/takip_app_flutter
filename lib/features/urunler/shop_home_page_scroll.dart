@@ -78,7 +78,6 @@ class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
                         ),
                       ),
                       MarkaScreen(),
-                      const SizedBox(height: 10),
                       Text(
                         stateMarka.selectedMarka != null
                             ? '${stateMarka.selectedMarka!.orjName} ${LocalizationHelper.l10n.urunleriniz}'

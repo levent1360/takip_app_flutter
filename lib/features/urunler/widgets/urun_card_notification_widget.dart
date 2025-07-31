@@ -5,12 +5,10 @@ import 'package:takip/features/urunler/widgets/notification_status_icon.dart';
 class UrunCardNotificationWidget extends StatelessWidget {
   const UrunCardNotificationWidget({
     super.key,
-    required this.bildirimAc,
     required this.urun,
     required this.iconSize,
   });
 
-  final VoidCallback bildirimAc;
   final UrunModel urun;
   final double iconSize;
 
@@ -19,13 +17,7 @@ class UrunCardNotificationWidget extends StatelessWidget {
     return Positioned(
       top: 8,
       right: 8,
-      child: GestureDetector(
-        onTap: bildirimAc,
-        child: NotificationStatusIcon(
-          isBildirimAcik: urun.isBildirimAcik,
-          size: iconSize,
-        ),
-      ),
+      child: NotificationStatusIcon(urunModel: urun, size: iconSize),
     );
   }
 }

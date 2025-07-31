@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/cards/blink_animation_component.dart';
 import 'package:takip/components/snackbar/error_snackbar_component.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
-import 'package:takip/data/services/notification_service.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/notification/notification_permission_provider.dart';
 import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
-import 'package:takip/features/urunler/widgets/error_product_card.dart';
 import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
+import 'package:takip/features/urunler/widgets/responsive_error_product_card.dart';
 import 'package:takip/features/urunler/widgets/responsive_urun_card_widget.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
@@ -33,7 +30,9 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
       final localDataSource = sl<LocalDataSource>();
       final token = await localDataSource.getDeviceToken();
       if (token == null) {
-        showErrorSnackBar(message: 'Bildirimleri açınız');
+        showErrorSnackBar(
+          message: 'Bir hata oluştu. Uygulamayı yeniden başlatınız.',
+        );
         return;
       }
       ref.read(urunNotifierProvider.notifier).initData();
@@ -61,33 +60,6 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
 
     if (result == true) {
       ref.read(urunNotifierProvider.notifier).urunSil(guidId);
-    }
-  }
-
-  Future<void> bildirimAc(int id, bool deger) async {
-    final permissionState = ref.watch(notificationPermissionProvider);
-
-    if (permissionState.value == false) {
-      final result = await showConfirmDialog(
-        title: LocalizationHelper.l10n.bildirimizinbaslik,
-        content: LocalizationHelper.l10n.bildirimizinmetin,
-        confirmText: LocalizationHelper.l10n.bildirimizinayaragit,
-        confirmColor: Colors.teal,
-      );
-
-      if (result == true) {
-        NotificationService().ensureNotificationPermission();
-      }
-    } else {
-      final result = await ref
-          .read(urunNotifierProvider.notifier)
-          .bildirimAc(id, deger);
-      if (result == null) return;
-      if (result) {
-        showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimkapatildi);
-      } else {
-        showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimacildi);
-      }
     }
   }
 
@@ -133,35 +105,17 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
                 MaterialPageRoute(builder: (_) => ProductDetailPage()),
               );
             },
-            bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
             urun: urun,
           );
 
           return urun.isSonBirSaat
               ? BlinkingCard(widget: productCard)
               : productCard;
-
-          // ProductCard(
-          //   key: ValueKey(urun.iden),
-          //   delete: () => delete(urun.iden),
-          //   showDetail: () {
-          //     ref
-          //         .read(urunNotifierProvider.notifier)
-          //         .setSelectedProduct(urun.id);
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (_) => ProductDetailPage()),
-          //     );
-          //   },
-          //   bildirimAc: () => bildirimAc(urun.id, urun.isBildirimAcik),
-          //   urun: urun,
-          // );
         } else {
-          return ErrorProductCard(
+          return ResponsiveErrorProductCard(
             key: ValueKey(urun.iden),
             urun: urun,
             delete: () => delete(urun.iden),
-            refresh: () => refresh(urun.link),
           );
         }
       }, childCount: allItems.length),

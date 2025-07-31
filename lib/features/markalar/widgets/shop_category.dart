@@ -39,7 +39,7 @@ class MarkaWidget extends StatelessWidget {
               ),
               child: CircleAvatar(
                 backgroundColor:
-                    Colors.deepPurple[isFiltered && isSelected ? 100 : 50],
+                    Colors.blueGrey[isFiltered && isSelected ? 100 : 50],
                 radius: 28,
                 child: NetworkImageWithLoader(marka.link),
               ),
