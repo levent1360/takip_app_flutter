@@ -5,6 +5,8 @@ class UrunState {
   final bool isNextLoading;
   final List<UrunModel> data;
   final List<UrunModel> filteredData;
+  final bool hasQueryFilter;
+  final bool hasMarkaFilter;
   final UrunModel? selectedProduct;
   final int pageNumber;
   final int totalCount;
@@ -13,6 +15,8 @@ class UrunState {
     required this.data,
     required this.filteredData,
     required this.selectedProduct,
+    required this.hasQueryFilter,
+    required this.hasMarkaFilter,
     required this.pageNumber,
     required this.totalCount,
     required this.isLoading,
@@ -23,6 +27,8 @@ class UrunState {
     data: [],
     filteredData: [],
     selectedProduct: null,
+    hasQueryFilter: false,
+    hasMarkaFilter: false,
     pageNumber: 1,
     totalCount: 0,
     isLoading: false,
@@ -32,6 +38,8 @@ class UrunState {
   UrunState copyWith({
     List<UrunModel>? data,
     List<UrunModel>? filteredData,
+    bool? hasQueryFilter,
+    bool? hasMarkaFilter,
     UrunModel? selectedProduct,
     int? pageNumber,
     int? totalCount,
@@ -43,6 +51,8 @@ class UrunState {
       isNextLoading: isNextLoading ?? this.isNextLoading,
       data: data ?? this.data,
       filteredData: filteredData ?? this.filteredData,
+      hasQueryFilter: hasQueryFilter ?? this.hasQueryFilter,
+      hasMarkaFilter: hasMarkaFilter ?? this.hasMarkaFilter,
       pageNumber: pageNumber ?? this.pageNumber,
       totalCount: totalCount ?? this.totalCount,
       selectedProduct: selectedProduct ?? this.selectedProduct,
