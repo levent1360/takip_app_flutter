@@ -8,13 +8,11 @@ import 'package:url_launcher/url_launcher.dart';
 class ResponsiveUrunCardWidget extends StatelessWidget {
   final UrunModel urun;
   final VoidCallback showDetail;
-  final VoidCallback bildirimAc;
   final VoidCallback delete;
 
   const ResponsiveUrunCardWidget({
     required this.urun,
     required this.showDetail,
-    required this.bildirimAc,
     required this.delete,
     super.key,
   });
@@ -102,11 +100,7 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                    UrunCardNotificationWidget(
-                      bildirimAc: bildirimAc,
-                      urun: urun,
-                      iconSize: iconSize,
-                    ),
+                    UrunCardNotificationWidget(urun: urun, iconSize: iconSize),
                   ],
                 ),
               ),
@@ -172,6 +166,7 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
                       ),
                     ),
                     child: CircleAvatar(
+                      backgroundColor: Colors.blueGrey[100],
                       radius: screenWidth * 0.04,
                       child: NetworkImageWithLoader(urun.markaIcon!),
                     ),

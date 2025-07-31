@@ -7,6 +7,7 @@ import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
+import 'package:takip/features/urunler/widgets/notification_status_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget {
@@ -81,23 +82,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: GestureDetector(
-                  onTap: () => bildirimAc(product.id, product.isBildirimAcik),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white12,
-                    child: product.isBildirimAcik
-                        ? Icon(
-                            Icons.notifications_active,
-                            size: 36,
-                            color: Colors.teal,
-                          )
-                        : Icon(
-                            Icons.notifications_off_outlined,
-                            size: 36,
-                            color: Colors.grey,
-                          ),
-                  ),
-                ),
+                child: NotificationStatusIcon(urunModel: product, size: 36),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
