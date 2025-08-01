@@ -29,8 +29,11 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         final selectedItem = state.selectedMarka;
 
         if (!state.isLoading && allItems.length == 0) {
-          return Center(
-            child: Text(LocalizationHelper.l10n.herhangiveribulunamadi),
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(LocalizationHelper.l10n.aramamarkabulunamadi),
+            ),
           );
         }
 
@@ -52,9 +55,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
                     await ref
                         .read(markaNotifierProvider.notifier)
                         .selectedMarka(marka);
-                    ref
-                        .read(urunNotifierProvider.notifier)
-                        .filterData(ismarka: true);
+                    await ref.read(urunNotifierProvider.notifier).filterData();
                   },
                 );
               }

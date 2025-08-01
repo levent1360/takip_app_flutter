@@ -25,6 +25,7 @@ class UrunModel {
   bool get isIndirim => lastPrice! < firstPrice!;
   bool get isZamli => lastPrice! > firstPrice!;
   bool get isFiyatAyni => lastPrice! == firstPrice!;
+  String get filterMarkaNameBirlesik => '$siteMarka $name';
 
   bool get isSonBirSaat =>
       DateTime.now().difference(updateDate).inMinutes <= 60;

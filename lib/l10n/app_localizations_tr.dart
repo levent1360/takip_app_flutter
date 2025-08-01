@@ -133,6 +133,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get markabulunamadi => 'Seçili marka bulunamadı';
 
   @override
+  String get aramamarkabulunamadi => 'Aranan kritere göre marka bulunamadı';
+
+  @override
   String get markasiteyegit => 'sitesine git ve linki paylaş';
 
   @override

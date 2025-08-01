@@ -61,7 +61,7 @@ class UrunNotifier extends StateNotifier<UrunState> {
     );
   }
 
-  Future<void> initData() async {
+  Future<void> initData({bool isClearAll = false}) async {
     state = state.copyWith(isLoading: true);
 
     final urunController = ref.read(urunControllerProvider);
@@ -75,11 +75,14 @@ class UrunNotifier extends StateNotifier<UrunState> {
       isLoading: false,
       totalCount: apiResponse.totalCount,
     );
-
+    if (isClearAll) {
+      await filterData(isClearAll: true);
+      return;
+    }
     filterData(); // filtreleme işlemi yapılır
   }
 
-  Future<void> nextData() async {
+  Future<void> nextData({bool isClearAll = false}) async {
     // Son sayfaya gelindiyse tekrar yükleme yapılmasın
     final alreadyFetchedCount = state.data.length;
     if (state.isNextLoading || alreadyFetchedCount >= state.totalCount) return;
@@ -102,23 +105,45 @@ class UrunNotifier extends StateNotifier<UrunState> {
       totalCount: apiResponse.totalCount, // <- önemli
     );
 
-    filterData(ismarka: true);
+    if (isClearAll) {
+      await filterData(isClearAll: true);
+      return;
+    }
+    if (state.queryText == null) {
+      filterData();
+    } else {
+      filterData(isQuery: true, query: state.queryText!);
+    }
   }
 
-  /// Bu method kullanılmıyor. Dikkat Et
-  void filterData({String query = '', bool ismarka = false}) {
+  Future<void> filterDataEski({
+    bool isQuery = false,
+    String query = '',
+    bool ismarka = false,
+    bool isClearAll = false,
+  }) async {
+    if (isClearAll) {
+      await clearAllfilter();
+      return;
+    }
+
     final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
     final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
 
+    if (isQuery) {
+      setQueryText(query);
+    }
     if (!ismarka) {
       ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
     }
 
+    final _query = state.queryText;
+
     List<UrunModel> filtered = state.data.where((product) {
       final productName = normalizeTurkishCharacters(
-        product.name?.toLowerCase() ?? '',
+        product.filterMarkaNameBirlesik.toLowerCase(),
       );
-      final matchesQuery = query.isEmpty
+      final matchesQuery = _query == null
           ? true
           : productName.contains(normalizedQuery);
       final matchesMarka = !ismarka
@@ -131,14 +156,86 @@ class UrunNotifier extends StateNotifier<UrunState> {
     }).toList();
 
     final uniqueMarkalar = filtered.map((e) => e.siteMarka).toSet().toList();
-    print(uniqueMarkalar);
+    if (isQuery) {
+      await ref
+          .read(markaNotifierProvider.notifier)
+          .setFilterMarkas(uniqueMarkalar);
+    }
 
+    state = state.copyWith(filteredData: filtered);
+  }
+
+  Future<void> filterData({
+    bool isQuery = false,
+    String? query,
+    bool isClearAll = false,
+  }) async {
+    // 1. Filtreleri sıfırlamak istenirse
+    if (isClearAll) {
+      await clearAllfilter();
+      return;
+    }
+
+    // 2. Arama metni normalize edilir
+    final normalizedQuery = query != null
+        ? normalizeTurkishCharacters(query.toLowerCase())
+        : null;
+
+    // 3. Eğer query varsa, setQueryText çalışsın ve marka temizlensin
+    if (isQuery) {
+      setQueryText(query ?? '');
+      ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
+    }
+
+    // 4. En güncel filtre bilgilerini oku
+    final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
+    final currentQuery = state.queryText?.toLowerCase() ?? '';
+
+    // 5. Filtreyi uygula
+    final filtered = state.data.where((product) {
+      final productName = normalizeTurkishCharacters(
+        product.filterMarkaNameBirlesik.toLowerCase(),
+      );
+
+      final matchesQuery = currentQuery.isEmpty
+          ? true
+          : productName.contains(currentQuery);
+
+      final matchesMarka = selectedMarka == null
+          ? true
+          : product.siteMarka == selectedMarka.name;
+
+      return matchesQuery && matchesMarka;
+    }).toList();
+
+    // 6. Eğer arama varsa, filtre markaları güncelle
+    if (isQuery) {
+      final uniqueMarkalar = filtered.map((e) => e.siteMarka).toSet().toList();
+      await ref
+          .read(markaNotifierProvider.notifier)
+          .setFilterMarkas(uniqueMarkalar);
+    }
+
+    // 7. State güncelle
     state = state.copyWith(filteredData: filtered);
   }
 
   void setSelectedProduct(int id) {
     final product = state.data.firstWhere((e) => e.id == id);
     state = state.copyWith(selectedProduct: product);
+  }
+
+  void setQueryText(String? text) {
+    state = state.copyWith(queryText: text);
+  }
+
+  void clearQueryText() {
+    state = state.copyWith(queryText: null);
+  }
+
+  Future<void> clearAllfilter() async {
+    state = state.copyWith(filteredData: state.data, queryText: null);
+    await ref.read(markaNotifierProvider.notifier).clearFilterMarkas();
   }
 
   // Future<void> getFilteredProducts() async {

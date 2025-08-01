@@ -39,6 +39,7 @@
   "geri": "Back",
   "basla": "Start",
   "markabulunamadi": "Selected brand not found",
+  "aramamarkabulunamadi": "No brand found matching the search criteria.",
   "markasiteyegit": "Go to the brand's website and share the link",
   "yardimtext1": "How can I share links?",
   "yardimtext2": "1. By using the 'Share' option from the browser:",

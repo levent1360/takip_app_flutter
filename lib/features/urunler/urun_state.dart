@@ -6,6 +6,7 @@ class UrunState {
   final List<UrunModel> data;
   final List<UrunModel> filteredData;
   final bool hasQueryFilter;
+  final String? queryText;
   final bool hasMarkaFilter;
   final UrunModel? selectedProduct;
   final int pageNumber;
@@ -16,6 +17,7 @@ class UrunState {
     required this.filteredData,
     required this.selectedProduct,
     required this.hasQueryFilter,
+    this.queryText,
     required this.hasMarkaFilter,
     required this.pageNumber,
     required this.totalCount,
@@ -28,6 +30,7 @@ class UrunState {
     filteredData: [],
     selectedProduct: null,
     hasQueryFilter: false,
+    queryText: null,
     hasMarkaFilter: false,
     pageNumber: 1,
     totalCount: 0,
@@ -39,6 +42,7 @@ class UrunState {
     List<UrunModel>? data,
     List<UrunModel>? filteredData,
     bool? hasQueryFilter,
+    String? queryText,
     bool? hasMarkaFilter,
     UrunModel? selectedProduct,
     int? pageNumber,
@@ -52,6 +56,7 @@ class UrunState {
       data: data ?? this.data,
       filteredData: filteredData ?? this.filteredData,
       hasQueryFilter: hasQueryFilter ?? this.hasQueryFilter,
+      queryText: queryText ?? this.queryText,
       hasMarkaFilter: hasMarkaFilter ?? this.hasMarkaFilter,
       pageNumber: pageNumber ?? this.pageNumber,
       totalCount: totalCount ?? this.totalCount,

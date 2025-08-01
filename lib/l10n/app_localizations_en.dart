@@ -134,6 +134,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markabulunamadi => 'Selected brand not found';
 
   @override
+  String get aramamarkabulunamadi =>
+      'No brand found matching the search criteria.';
+
+  @override
   String get markasiteyegit => 'Go to the brand\'s website and share the link';
 
   @override

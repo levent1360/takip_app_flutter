@@ -39,6 +39,7 @@
   "geri": "Geri",
   "basla": "Başla",
   "markabulunamadi": "Seçili marka bulunamadı",
+  "aramamarkabulunamadi": "Aranan kritere göre marka bulunamadı",
   "markasiteyegit": "sitesine git ve linki paylaş",
   "yardimtext1": "Linkleri nasıl paylaşabilirim?",
   "yardimtext2": "1. Browserdan 'Paylaş' Seçeneğini Kullanarak:",

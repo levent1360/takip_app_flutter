@@ -338,6 +338,12 @@ abstract class AppLocalizations {
   /// **'Selected brand not found'**
   String get markabulunamadi;
 
+  /// No description provided for @aramamarkabulunamadi.
+  ///
+  /// In en, this message translates to:
+  /// **'No brand found matching the search criteria.'**
+  String get aramamarkabulunamadi;
+
   /// No description provided for @markasiteyegit.
   ///
   /// In en, this message translates to:

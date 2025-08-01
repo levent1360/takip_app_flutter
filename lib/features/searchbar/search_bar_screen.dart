@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/core/constant/localization_helper.dart';
@@ -7,7 +6,8 @@ import 'package:takip/features/link_yapistir/link_yapistir_screen.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 
 class SearchBarScreen extends ConsumerStatefulWidget {
-  const SearchBarScreen({super.key});
+  final void Function(VoidCallback clearFunction) onInitClearCallback;
+  const SearchBarScreen({super.key, required this.onInitClearCallback});
 
   @override
   ConsumerState<SearchBarScreen> createState() => _SearchBarScreenState();
@@ -15,20 +15,28 @@ class SearchBarScreen extends ConsumerStatefulWidget {
 
 class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
   Timer? _debounce;
-  final searchController = TextEditingController();
+  late final TextEditingController _searchController;
   late FocusNode _searchFocusNode;
 
   @override
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
-    searchController.addListener(() {
+    _searchController = TextEditingController();
+
+    /// Clear fonksiyonunu parent’a ver
+    widget.onInitClearCallback(() {
+      _searchController.clear();
+      _searchFocusNode.unfocus();
+    });
+    _searchController.addListener(() {
       setState(() {}); // Bu sayede suffixIcon güncellenir
     });
   }
 
   @override
   void dispose() {
+    _searchController.dispose();
     _searchFocusNode.unfocus();
     _searchFocusNode.dispose();
     super.dispose();
@@ -41,25 +49,27 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
         Expanded(
           child: TextField(
             focusNode: _searchFocusNode,
-            controller: searchController,
-            onChanged: (value) {
+            controller: _searchController,
+            onChanged: (value) async {
               if (_debounce?.isActive ?? false) _debounce!.cancel();
-              _debounce = Timer(const Duration(milliseconds: 300), () {
-                ref
+              _debounce = Timer(const Duration(milliseconds: 500), () async {
+                await ref
                     .read(urunNotifierProvider.notifier)
-                    .filterData(query: value);
+                    .filterData(isQuery: true, query: value);
               });
             },
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
-              suffixIcon: searchController.text.isNotEmpty
+              suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
                       icon: Icon(Icons.clear),
-                      onPressed: () {
-                        searchController.clear();
+                      onPressed: () async {
+                        _searchController.clear();
                         _searchFocusNode.unfocus();
                         FocusScope.of(context).unfocus();
-                        ref.read(urunNotifierProvider.notifier).filterData();
+                        await ref
+                            .read(urunNotifierProvider.notifier)
+                            .filterData(isClearAll: true);
                       },
                     )
                   : SizedBox.shrink(),
