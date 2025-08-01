@@ -59,5 +59,9 @@
   },
   "bildirimizinbaslik": "Notification Permission",
   "bildirimizinmetin": "Would you like to receive a notification when prices drop? Turn on notifications.",
-  "bildirimizinayaragit": "Go to Settings"
+  "bildirimizinayaragit": "Go to Settings",
+  "urunlinkinipaylas": "Share Your Product Link",
+  "urunsitesinegit": "Shop",
+  "dahafazlabilgi" : "Show More Information",
+  "dahaaz" : "Show Less"
 }

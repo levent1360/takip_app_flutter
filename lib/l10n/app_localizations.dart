@@ -421,6 +421,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to Settings'**
   String get bildirimizinayaragit;
+
+  /// No description provided for @urunlinkinipaylas.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Product Link'**
+  String get urunlinkinipaylas;
+
+  /// No description provided for @urunsitesinegit.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get urunsitesinegit;
+
+  /// No description provided for @dahafazlabilgi.
+  ///
+  /// In en, this message translates to:
+  /// **'Show More Information'**
+  String get dahafazlabilgi;
+
+  /// No description provided for @dahaaz.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Less'**
+  String get dahaaz;
 }
 
 class _AppLocalizationsDelegate

@@ -183,4 +183,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bildirimizinayaragit => 'Go to Settings';
+
+  @override
+  String get urunlinkinipaylas => 'Share Your Product Link';
+
+  @override
+  String get urunsitesinegit => 'Shop';
+
+  @override
+  String get dahafazlabilgi => 'Show More Information';
+
+  @override
+  String get dahaaz => 'Show Less';
 }

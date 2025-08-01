@@ -59,5 +59,9 @@
   },
   "bildirimizinbaslik": "Bildirim İzni",
   "bildirimizinmetin": "Fiyatlar düşünce bildirim almak ister misiniz? Bildirimlerinizi açın",
-  "bildirimizinayaragit": "Ayarlara Git"
+  "bildirimizinayaragit": "Ayarlara Git",
+  "urunlinkinipaylas": "Ürünün Linkini Gönder",
+  "urunsitesinegit": "Sitesine Git",
+  "dahafazlabilgi" : "Daha Fazla Bilgi Göster",
+  "dahaaz" : "Daha Az"
 }

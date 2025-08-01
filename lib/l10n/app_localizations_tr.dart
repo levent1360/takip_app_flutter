@@ -181,4 +181,16 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get bildirimizinayaragit => 'Ayarlara Git';
+
+  @override
+  String get urunlinkinipaylas => 'Ürünün Linkini Gönder';
+
+  @override
+  String get urunsitesinegit => 'Sitesine Git';
+
+  @override
+  String get dahafazlabilgi => 'Daha Fazla Bilgi Göster';
+
+  @override
+  String get dahaaz => 'Daha Az';
 }
