@@ -61,7 +61,6 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
 
   String getMarkaName(String name) {
     final data = state.data;
-    if (data == null) return 'Bilinmiyor';
 
     try {
       final brand = data.firstWhere((x) => x.name == name);

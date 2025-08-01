@@ -20,7 +20,6 @@ class ShopHomePageScroll extends ConsumerStatefulWidget {
 
 class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
   final ScrollController scrollController = ScrollController();
-  late VoidCallback _clearChildText = () {};
 
   @override
   void initState() {

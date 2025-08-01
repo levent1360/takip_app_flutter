@@ -176,11 +176,6 @@ class UrunNotifier extends StateNotifier<UrunState> {
       return;
     }
 
-    // 2. Arama metni normalize edilir
-    final normalizedQuery = query != null
-        ? normalizeTurkishCharacters(query.toLowerCase())
-        : null;
-
     // 3. Eğer query varsa, setQueryText çalışsın ve marka temizlensin
     if (isQuery) {
       setQueryText(query ?? '');
