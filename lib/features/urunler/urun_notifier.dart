@@ -296,9 +296,11 @@ class UrunNotifier extends StateNotifier<UrunState> {
         isLoading: false,
         data: updatedData,
         filteredData: updatedFilteredData,
+        selectedProduct: null,
       );
+    } else {
+      state = state.copyWith(isLoading: false);
     }
-    state = state.copyWith(isLoading: false);
   }
 
   Future<bool?> bildirimAc(int id, bool deger) async {

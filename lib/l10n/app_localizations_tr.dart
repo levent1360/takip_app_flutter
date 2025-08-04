@@ -36,11 +36,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ilkfiyat => 'İlk Fiyat';
 
   @override
-  String get linkgonder => 'Link Gönder';
+  String get linkgonder => 'Link Kaydet';
 
   @override
   String get takipyapistirmetin =>
-      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve gönderiniz.';
+      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve kaydediniz.';
 
   @override
   String get yapistirmetin => 'Link buraya yapıştırın';
@@ -49,7 +49,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get yapistir => 'Yapıştır';
 
   @override
-  String get gonder => 'Gönder';
+  String get gonder => 'Kaydet';
 
   @override
   String get silmebaslik => 'Silme Onayı';
@@ -71,7 +71,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get urunkontrol => 'Kontrol Ediliyor... Bekleyiniz';
 
   @override
-  String get gecerligonder => 'Geçerli bir ürün linki gönderiniz.';
+  String get gecerligonder => 'Geçerli bir ürün linki ekleyiniz.';
 
   @override
   String get urunkaydediliyor => 'Ürünleriniz Kaydediliyor... ';

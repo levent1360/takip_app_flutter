@@ -18,39 +18,46 @@ class _ShowMoreWidgetState extends State<ShowMoreWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: _toggleExpanded,
-          child: Row(
-            children: [
-              Expanded(
-                child: Divider(thickness: 1, color: Colors.grey, endIndent: 10),
-              ),
-              Text(
-                _isExpanded
-                    ? LocalizationHelper.l10n.dahaaz
-                    : LocalizationHelper.l10n.dahafazlabilgi,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Expanded(
-                child: Divider(thickness: 1, color: Colors.grey, indent: 10),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: _toggleExpanded,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                    endIndent: 10,
+                  ),
+                ),
+                Text(
+                  _isExpanded
+                      ? LocalizationHelper.l10n.dahaaz
+                      : LocalizationHelper.l10n.dahafazlabilgi,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Expanded(
+                  child: Divider(thickness: 1, color: Colors.grey, indent: 10),
+                ),
+              ],
+            ),
           ),
-        ),
-        AnimatedCrossFade(
-          duration: Duration(milliseconds: 300),
-          crossFadeState: _isExpanded
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          firstChild: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: LinkPaylasimYardimScreenSimple(),
+          AnimatedCrossFade(
+            duration: Duration(milliseconds: 300),
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            firstChild: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: LinkPaylasimYardimScreenSimple(),
+            ),
+            secondChild: SizedBox.shrink(),
           ),
-          secondChild: SizedBox.shrink(),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

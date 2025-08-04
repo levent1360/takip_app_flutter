@@ -155,13 +155,13 @@ abstract class AppLocalizations {
   /// No description provided for @linkgonder.
   ///
   /// In en, this message translates to:
-  /// **'Submit Link'**
+  /// **'Save Link'**
   String get linkgonder;
 
   /// No description provided for @takipyapistirmetin.
   ///
   /// In en, this message translates to:
-  /// **'Paste the link of the product you want to track here and submit it.'**
+  /// **'Paste the link of the product you want to track here and save it.'**
   String get takipyapistirmetin;
 
   /// No description provided for @yapistirmetin.
@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @gonder.
   ///
   /// In en, this message translates to:
-  /// **'Submit'**
+  /// **'Save'**
   String get gonder;
 
   /// No description provided for @silmebaslik.
@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @gecerligonder.
   ///
   /// In en, this message translates to:
-  /// **'Please send a valid product link.'**
+  /// **'Please save a valid product link.'**
   String get gecerligonder;
 
   /// No description provided for @urunkaydediliyor.

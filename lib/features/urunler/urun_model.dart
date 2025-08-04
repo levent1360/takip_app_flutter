@@ -27,8 +27,11 @@ class UrunModel {
   bool get isFiyatAyni => lastPrice! == firstPrice!;
   String get filterMarkaNameBirlesik => '$siteMarka $name';
 
-  bool get isSonBirSaat =>
-      DateTime.now().difference(updateDate).inMinutes <= 60;
+  bool get isSonBirSaat {
+    final now = DateTime.now();
+    return updateDate.isBefore(now) &&
+        updateDate.isAfter(now.subtract(const Duration(hours: 1)));
+  }
 
   UrunModel({
     required this.id,

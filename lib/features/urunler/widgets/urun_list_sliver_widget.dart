@@ -96,11 +96,11 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
           final productCard = ResponsiveUrunCardWidget(
             key: ValueKey(urun.iden),
             delete: () => delete(urun.iden),
-            showDetail: () {
+            showDetail: () async {
               ref
                   .read(urunNotifierProvider.notifier)
                   .setSelectedProduct(urun.id);
-              Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ProductDetailPage()),
               );

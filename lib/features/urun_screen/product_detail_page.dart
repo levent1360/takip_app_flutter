@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
-import 'package:takip/components/snackbar/success_snackbar_component.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/urunler/shop_home_page_scroll.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
-import 'package:takip/features/urunler/widgets/notification_status_icon.dart';
+import 'package:takip/features/urunler/buttons/notification_status_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget {
@@ -37,23 +35,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
 
     if (result == true) {
-      ref.read(urunNotifierProvider.notifier).urunSil(guidId);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => ShopHomePageScroll()),
-      );
-    }
-  }
+      // Sayfayı önce kapat
+      Navigator.of(context).pop();
 
-  Future<void> bildirimAc(int id, bool deger) async {
-    final result = await ref
-        .read(urunNotifierProvider.notifier)
-        .bildirimAc(id, deger);
-
-    if (result == null) return;
-    if (result) {
-      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimkapatildi);
-    } else {
-      showSuccessSnackBar(message: LocalizationHelper.l10n.bildirimacildi);
+      // Ardından silme işlemini başlat
+      Future.microtask(() {
+        ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+      });
     }
   }
 

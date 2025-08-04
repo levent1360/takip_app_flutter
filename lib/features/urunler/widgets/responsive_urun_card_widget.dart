@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/widgets/full_image_page_screen.dart';
-import 'package:takip/features/urunler/widgets/urun_card_notification_widget.dart';
+import 'package:takip/features/urunler/buttons/urun_card_notification_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ResponsiveUrunCardWidget extends StatelessWidget {

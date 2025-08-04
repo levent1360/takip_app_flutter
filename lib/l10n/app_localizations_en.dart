@@ -36,11 +36,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ilkfiyat => 'Initial Price';
 
   @override
-  String get linkgonder => 'Submit Link';
+  String get linkgonder => 'Save Link';
 
   @override
   String get takipyapistirmetin =>
-      'Paste the link of the product you want to track here and submit it.';
+      'Paste the link of the product you want to track here and save it.';
 
   @override
   String get yapistirmetin => 'Paste the link here';
@@ -49,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yapistir => 'Paste';
 
   @override
-  String get gonder => 'Submit';
+  String get gonder => 'Save';
 
   @override
   String get silmebaslik => 'Delete Confirmation';
@@ -71,7 +71,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get urunkontrol => 'Checking... Please wait';
 
   @override
-  String get gecerligonder => 'Please send a valid product link.';
+  String get gecerligonder => 'Please save a valid product link.';
 
   @override
   String get urunkaydediliyor => 'Saving your products...';
