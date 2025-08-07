@@ -115,6 +115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iptal => 'Cancel';
 
   @override
+  String get tamam => 'OK';
+
+  @override
   String get defaultOnay => 'Confirm';
 
   @override
@@ -195,4 +198,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dahaaz => 'Show Less';
+
+  @override
+  String get uruneklenemedibilgi =>
+      'Product could not be added! Please make sure that the link you provided contains a single product and its price.';
 }

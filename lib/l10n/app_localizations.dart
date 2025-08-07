@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get iptal;
 
+  /// No description provided for @tamam.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get tamam;
+
   /// No description provided for @defaultOnay.
   ///
   /// In en, this message translates to:
@@ -445,6 +451,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show Less'**
   String get dahaaz;
+
+  /// No description provided for @uruneklenemedibilgi.
+  ///
+  /// In en, this message translates to:
+  /// **'Product could not be added! Please make sure that the link you provided contains a single product and its price.'**
+  String get uruneklenemedibilgi;
 }
 
 class _AppLocalizationsDelegate

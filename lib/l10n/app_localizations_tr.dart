@@ -114,6 +114,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get iptal => 'İptal';
 
   @override
+  String get tamam => 'Tamam';
+
+  @override
   String get defaultOnay => 'Onayla';
 
   @override
@@ -193,4 +196,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get dahaaz => 'Daha Az';
+
+  @override
+  String get uruneklenemedibilgi =>
+      'Ürün eklenemedi! Verdiğiniz linkte tek bir ürün ve fiyatı olduğuna emin olun.';
 }

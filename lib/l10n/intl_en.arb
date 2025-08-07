@@ -33,6 +33,7 @@
   "evet": "Yes",
   "hayir": "No",
   "iptal": "Cancel",
+  "tamam":"OK",
   "defaultOnay": "Confirm",
   "defaultOnayMetin": "Are you sure you want to perform this action?",
   "ileri": "Next",
@@ -63,5 +64,6 @@
   "urunlinkinipaylas": "Share Your Product Link",
   "urunsitesinegit": "Shop",
   "dahafazlabilgi" : "Show More Information",
-  "dahaaz" : "Show Less"
+  "dahaaz" : "Show Less",
+  "uruneklenemedibilgi" :"Product could not be added! Please make sure that the link you provided contains a single product and its price."
 }

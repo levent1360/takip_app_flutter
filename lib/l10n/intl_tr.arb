@@ -33,6 +33,7 @@
   "evet" : "Evet",
   "hayir": "Hayır",
   "iptal": "İptal",
+  "tamam":"Tamam",
   "defaultOnay" : "Onayla",
   "defaultOnayMetin" : "Bu işlemi yapmak istediğinizden emin misiniz?",
   "ileri": "İleri",
@@ -63,5 +64,6 @@
   "urunlinkinipaylas": "Ürünün Linkini Gönder",
   "urunsitesinegit": "Sitesine Git",
   "dahafazlabilgi" : "Daha Fazla Bilgi Göster",
-  "dahaaz" : "Daha Az"
+  "dahaaz" : "Daha Az",
+  "uruneklenemedibilgi" :"Ürün eklenemedi! Verdiğiniz linkte tek bir ürün ve fiyatı olduğuna emin olun."
 }
