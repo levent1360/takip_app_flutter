@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// No description provided for @bildirimizinayaragit.
   ///
   /// In en, this message translates to:
-  /// **'Go to Settings'**
+  /// **'Device Settings'**
   String get bildirimizinayaragit;
 
   /// No description provided for @urunlinkinipaylas.

@@ -182,7 +182,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Would you like to receive a notification when prices drop? Turn on notifications.';
 
   @override
-  String get bildirimizinayaragit => 'Go to Settings';
+  String get bildirimizinayaragit => 'Device Settings';
 
   @override
   String get urunlinkinipaylas => 'Share Your Product Link';

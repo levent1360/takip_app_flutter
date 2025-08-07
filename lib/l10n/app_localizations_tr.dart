@@ -180,7 +180,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Fiyatlar düşünce bildirim almak ister misiniz? Bildirimlerinizi açın';
 
   @override
-  String get bildirimizinayaragit => 'Ayarlara Git';
+  String get bildirimizinayaragit => 'Cihaz Ayarları';
 
   @override
   String get urunlinkinipaylas => 'Ürünün Linkini Gönder';
