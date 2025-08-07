@@ -5,7 +5,7 @@ class UrunKaydetController {
 
   UrunKaydetController(this._urunService);
 
-  Future<String?> urunKaydet2(String? url) async {
-    return await _urunService.urunKaydet2(url);
+  Future<String?> urunKaydet(String? url) async {
+    return await _urunService.urunKaydet3(url);
   }
 }

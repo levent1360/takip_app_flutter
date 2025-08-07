@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:takip/core/constant/api_endpoints.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/models/paginated_response_model.dart';
@@ -15,6 +16,7 @@ abstract class UrunService {
     String? marka,
   ]);
   Future<String?> urunKaydet2(String? url);
+  Future<String?> urunKaydet3(String? url);
   Future urunGoruldu();
   Future<int> urunSil(String guidId);
   Future<List<HataliKayitModel>> hataliKayitlar();
@@ -93,6 +95,20 @@ class UrunServiceImpl implements UrunService {
 
     final result = await _apiService.get<String?>(
       ApiEndpoints.urunKaydet2(token!, uri),
+      fromJsonT: (json) => json as String?,
+    );
+    return result;
+  }
+
+  Future<String?> urunKaydet3(String? url) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+
+    final String uri = Uri.encodeComponent(url!);
+    final locale = LocalizationHelper.currentLanguageCode;
+
+    final result = await _apiService.get<String?>(
+      ApiEndpoints.urunKaydet3(token!, uri, locale == 'en'),
       fromJsonT: (json) => json as String?,
     );
     return result;

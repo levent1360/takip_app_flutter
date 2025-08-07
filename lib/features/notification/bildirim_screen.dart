@@ -28,7 +28,7 @@ class _BildirimScreenState extends ConsumerState<BildirimScreen> {
   Future<void> refresh(String link) async {
     ref
         .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(
+        .urunKaydet(
           link,
           checkingText: LocalizationHelper.l10n.urunkontrol,
           gecerliGonderText: LocalizationHelper.l10n.gecerligonder,

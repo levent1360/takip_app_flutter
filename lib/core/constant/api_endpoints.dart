@@ -35,6 +35,11 @@ class ApiEndpoints {
     return 'takip/link2/$token?linktext=$url&isTestData=$isTest';
   }
 
+  static String urunKaydet3(String token, String url, bool isEnglish) {
+    final isTest = kDebugMode ? true : false;
+    return 'takip/link3/$token?linktext=$url&isTestData=$isTest&isEnglish=$isEnglish';
+  }
+
   static String urunSil(String token, String guidId) {
     return 'takip/UrunSil/$token/$guidId';
   }

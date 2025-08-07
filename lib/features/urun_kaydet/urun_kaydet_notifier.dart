@@ -17,7 +17,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
 
   UrunKaydetNotifier(this.ref) : super(UrunKaydetState.initial()) {}
 
-  Future<void> urunKaydet2(
+  Future<void> urunKaydet(
     String? url, {
     required String checkingText,
     required String gecerliGonderText,
@@ -31,7 +31,7 @@ class UrunKaydetNotifier extends StateNotifier<UrunKaydetState> {
       // API çağrısını yap
       final apiResponse = await ref
           .read(urunKaydetControllerProvider)
-          .urunKaydet2(url);
+          .urunKaydet(url);
 
       if (apiResponse == null) {
         showErrorSnackBar(message: gecerliGonderText);
