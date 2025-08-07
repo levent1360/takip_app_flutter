@@ -155,13 +155,13 @@ abstract class AppLocalizations {
   /// No description provided for @linkgonder.
   ///
   /// In en, this message translates to:
-  /// **'Submit Link'**
+  /// **'Save Link'**
   String get linkgonder;
 
   /// No description provided for @takipyapistirmetin.
   ///
   /// In en, this message translates to:
-  /// **'Paste the link of the product you want to track here and submit it.'**
+  /// **'Paste the link of the product you want to track here and save it.'**
   String get takipyapistirmetin;
 
   /// No description provided for @yapistirmetin.
@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @gonder.
   ///
   /// In en, this message translates to:
-  /// **'Submit'**
+  /// **'Save'**
   String get gonder;
 
   /// No description provided for @silmebaslik.
@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @gecerligonder.
   ///
   /// In en, this message translates to:
-  /// **'Please send a valid product link.'**
+  /// **'Please save a valid product link.'**
   String get gecerligonder;
 
   /// No description provided for @urunkaydediliyor.
@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get iptal;
 
+  /// No description provided for @tamam.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get tamam;
+
   /// No description provided for @defaultOnay.
   ///
   /// In en, this message translates to:
@@ -337,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected brand not found'**
   String get markabulunamadi;
+
+  /// No description provided for @aramamarkabulunamadi.
+  ///
+  /// In en, this message translates to:
+  /// **'No brand found matching the search criteria.'**
+  String get aramamarkabulunamadi;
 
   /// No description provided for @markasiteyegit.
   ///
@@ -413,8 +425,38 @@ abstract class AppLocalizations {
   /// No description provided for @bildirimizinayaragit.
   ///
   /// In en, this message translates to:
-  /// **'Go to Settings'**
+  /// **'Device Settings'**
   String get bildirimizinayaragit;
+
+  /// No description provided for @urunlinkinipaylas.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Product Link'**
+  String get urunlinkinipaylas;
+
+  /// No description provided for @urunsitesinegit.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get urunsitesinegit;
+
+  /// No description provided for @dahafazlabilgi.
+  ///
+  /// In en, this message translates to:
+  /// **'Show More Information'**
+  String get dahafazlabilgi;
+
+  /// No description provided for @dahaaz.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Less'**
+  String get dahaaz;
+
+  /// No description provided for @uruneklenemedibilgi.
+  ///
+  /// In en, this message translates to:
+  /// **'Product could not be added! Please make sure that the link you provided contains a single product and its price.'**
+  String get uruneklenemedibilgi;
 }
 
 class _AppLocalizationsDelegate

@@ -10,7 +10,7 @@ class CustomSkeleton extends StatefulWidget {
     required this.width,
     required this.height,
     this.shape = const RoundedRectangleBorder(
-      borderRadius: BorderRadiusGeometry.all(Radius.circular(5)),
+      borderRadius: BorderRadiusGeometry.all(Radius.circular(12)),
     ),
   });
 

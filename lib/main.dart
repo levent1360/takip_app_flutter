@@ -63,7 +63,7 @@ class _TakipAppState extends ConsumerState<TakipApp>
 
         await ref
             .read(urunKaydetNotifierProvider.notifier)
-            .urunKaydet2(
+            .urunKaydet(
               _sharedText,
               checkingText: LocalizationHelper.l10n.urunkontrol,
               gecerliGonderText: LocalizationHelper.l10n.gecerligonder,

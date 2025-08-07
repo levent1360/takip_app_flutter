@@ -36,11 +36,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ilkfiyat => 'İlk Fiyat';
 
   @override
-  String get linkgonder => 'Link Gönder';
+  String get linkgonder => 'Link Kaydet';
 
   @override
   String get takipyapistirmetin =>
-      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve gönderiniz.';
+      'Takip etmek istediğiniz ürünün linkini buraya yapıştırınız ve kaydediniz.';
 
   @override
   String get yapistirmetin => 'Link buraya yapıştırın';
@@ -49,7 +49,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get yapistir => 'Yapıştır';
 
   @override
-  String get gonder => 'Gönder';
+  String get gonder => 'Kaydet';
 
   @override
   String get silmebaslik => 'Silme Onayı';
@@ -71,7 +71,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get urunkontrol => 'Kontrol Ediliyor... Bekleyiniz';
 
   @override
-  String get gecerligonder => 'Geçerli bir ürün linki gönderiniz.';
+  String get gecerligonder => 'Geçerli bir ürün linki ekleyiniz.';
 
   @override
   String get urunkaydediliyor => 'Ürünleriniz Kaydediliyor... ';
@@ -114,6 +114,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get iptal => 'İptal';
 
   @override
+  String get tamam => 'Tamam';
+
+  @override
   String get defaultOnay => 'Onayla';
 
   @override
@@ -131,6 +134,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get markabulunamadi => 'Seçili marka bulunamadı';
+
+  @override
+  String get aramamarkabulunamadi => 'Aranan kritere göre marka bulunamadı';
 
   @override
   String get markasiteyegit => 'sitesine git ve linki paylaş';
@@ -177,5 +183,21 @@ class AppLocalizationsTr extends AppLocalizations {
       'Fiyatlar düşünce bildirim almak ister misiniz? Bildirimlerinizi açın';
 
   @override
-  String get bildirimizinayaragit => 'Ayarlara Git';
+  String get bildirimizinayaragit => 'Cihaz Ayarları';
+
+  @override
+  String get urunlinkinipaylas => 'Ürünün Linkini Gönder';
+
+  @override
+  String get urunsitesinegit => 'Sitesine Git';
+
+  @override
+  String get dahafazlabilgi => 'Daha Fazla Bilgi Göster';
+
+  @override
+  String get dahaaz => 'Daha Az';
+
+  @override
+  String get uruneklenemedibilgi =>
+      'Ürün eklenemedi! Verdiğiniz linkte tek bir ürün ve fiyatı olduğuna emin olun.';
 }

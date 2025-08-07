@@ -36,11 +36,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ilkfiyat => 'Initial Price';
 
   @override
-  String get linkgonder => 'Submit Link';
+  String get linkgonder => 'Save Link';
 
   @override
   String get takipyapistirmetin =>
-      'Paste the link of the product you want to track here and submit it.';
+      'Paste the link of the product you want to track here and save it.';
 
   @override
   String get yapistirmetin => 'Paste the link here';
@@ -49,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yapistir => 'Paste';
 
   @override
-  String get gonder => 'Submit';
+  String get gonder => 'Save';
 
   @override
   String get silmebaslik => 'Delete Confirmation';
@@ -71,7 +71,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get urunkontrol => 'Checking... Please wait';
 
   @override
-  String get gecerligonder => 'Please send a valid product link.';
+  String get gecerligonder => 'Please save a valid product link.';
 
   @override
   String get urunkaydediliyor => 'Saving your products...';
@@ -115,6 +115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iptal => 'Cancel';
 
   @override
+  String get tamam => 'OK';
+
+  @override
   String get defaultOnay => 'Confirm';
 
   @override
@@ -132,6 +135,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get markabulunamadi => 'Selected brand not found';
+
+  @override
+  String get aramamarkabulunamadi =>
+      'No brand found matching the search criteria.';
 
   @override
   String get markasiteyegit => 'Go to the brand\'s website and share the link';
@@ -178,5 +185,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'Would you like to receive a notification when prices drop? Turn on notifications.';
 
   @override
-  String get bildirimizinayaragit => 'Go to Settings';
+  String get bildirimizinayaragit => 'Device Settings';
+
+  @override
+  String get urunlinkinipaylas => 'Share Your Product Link';
+
+  @override
+  String get urunsitesinegit => 'Shop';
+
+  @override
+  String get dahafazlabilgi => 'Show More Information';
+
+  @override
+  String get dahaaz => 'Show Less';
+
+  @override
+  String get uruneklenemedibilgi =>
+      'Product could not be added! Please make sure that the link you provided contains a single product and its price.';
 }

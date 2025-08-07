@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takip/features/urunler/urun_model.dart';
-import 'package:takip/features/urunler/widgets/notification_status_icon.dart';
+import 'package:takip/features/urunler/buttons/notification_status_icon.dart';
 
 class UrunCardNotificationWidget extends StatelessWidget {
   const UrunCardNotificationWidget({

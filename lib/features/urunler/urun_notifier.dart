@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takip/core/utils/normalizeTurkishCharacters.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 import 'package:takip/features/urunler/urun_provider.dart';
@@ -16,124 +15,74 @@ class UrunNotifier extends StateNotifier<UrunState> {
 
   UrunNotifier(this.ref) : super(UrunState.initial()) {}
 
-  Future<void> getProducts({
-    String query = '',
-    bool ismarka = false,
-    bool forceRefresh = false,
+  Future<void> initData({
+    bool isNext = false,
+    bool isMarkaFilter = false,
   }) async {
-    state = state.copyWith(isLoading: true);
+    // Eğer zaten veri yükleniyorsa ya da tüm veriler yüklendiyse işlemi durdur
+    if (isNext &&
+        (state.isNextLoading || state.data.length >= state.totalCount))
+      return;
 
-    // final urunController = ref.read(urunControllerProvider);
-    // await urunController.urunGoruldu();
-    if (forceRefresh) {
-      state = state.copyWith(isLoading: true);
+    // Sayfa numarasını belirle
+    final nextPage = isNext ? state.pageNumber + 1 : 1;
 
+    // Yükleme durumunu güncelle
+    state = state.copyWith(
+      isLoading: !isNext, // İlk yüklemede tam ekran loading
+      isNextLoading: isNext, // Scroll ile yüklemede alt loading
+    );
+
+    try {
       final urunController = ref.read(urunControllerProvider);
-      final apiResponse = await urunController.getProducts();
+
+      final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
+      String? _marka;
+      if (selectedMarka != null) {
+        _marka = selectedMarka.name;
+      }
+
+      String? _searchText;
+      if (state.queryText != null) {
+        _searchText = state.queryText;
+      } else {
+        _searchText = null;
+      }
+
+      // API'den sayfalı veri al
+      final apiResponse = await urunController.getUrunlerPageSearch(
+        nextPage,
+        _searchText,
+        _marka,
+      );
+
+      // Ürün görüntülendi işlemi
       await urunController.urunGoruldu();
 
-      state = state.copyWith(data: apiResponse, isLoading: false);
-    }
+      // Yeni verileri ekle (isNext'e göre ya sıfırla ya da üstüne ekle)
+      final newData = isNext
+          ? [...state.data, ...apiResponse.data]
+          : apiResponse.data;
 
-    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
-    final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
-
-    List<UrunModel> filtered = state.data.where((product) {
-      final productName = normalizeTurkishCharacters(
-        product.name?.toLowerCase() ?? '',
+      if (!isMarkaFilter && apiResponse.markalar != null) {
+        await ref
+            .read(markaNotifierProvider.notifier)
+            .setFilterMarkas(apiResponse.markalar!);
+      }
+      // State güncelle
+      state = state.copyWith(
+        data: newData,
+        filteredData:
+            newData, // Eğer dışarıdan farklı filtreleme varsa buna göre ayır
+        pageNumber: nextPage,
+        totalCount: apiResponse.totalCount,
+        isLoading: false,
+        isNextLoading: false,
       );
-      final matchesQuery = query.isEmpty
-          ? true
-          : productName.contains(normalizedQuery);
-      final matchesMarka = !ismarka
-          ? true
-          : (selectedMarka == null
-                ? true
-                : product.siteMarka == selectedMarka.name);
-
-      return matchesQuery && matchesMarka;
-    }).toList();
-
-    state = state.copyWith(
-      data: state.data,
-      filteredData: filtered,
-      isLoading: false,
-    );
-  }
-
-  Future<void> initData() async {
-    state = state.copyWith(isLoading: true);
-
-    final urunController = ref.read(urunControllerProvider);
-    final apiResponse = await urunController.getProductsPage(1);
-    await urunController.urunGoruldu();
-
-    state = state.copyWith(
-      data: apiResponse.data,
-      filteredData: apiResponse.data,
-      pageNumber: apiResponse.pageNumber,
-      isLoading: false,
-      totalCount: apiResponse.totalCount,
-    );
-
-    filterData(); // filtreleme işlemi yapılır
-  }
-
-  Future<void> nextData() async {
-    // Son sayfaya gelindiyse tekrar yükleme yapılmasın
-    final alreadyFetchedCount = state.data.length;
-    if (state.isNextLoading || alreadyFetchedCount >= state.totalCount) return;
-
-    state = state.copyWith(isLoading: true, isNextLoading: true);
-
-    final urunController = ref.read(urunControllerProvider);
-    final nextPage = state.pageNumber + 1;
-    final apiResponse = await urunController.getProductsPage(nextPage);
-    await urunController.urunGoruldu();
-
-    final updatedData = [...state.data, ...apiResponse.data];
-
-    state = state.copyWith(
-      data: updatedData,
-      filteredData: updatedData,
-      pageNumber: nextPage,
-      isLoading: false,
-      isNextLoading: false,
-      totalCount: apiResponse.totalCount, // <- önemli
-    );
-
-    filterData(ismarka: true);
-  }
-
-  /// Bu method kullanılmıyor. Dikkat Et
-  void filterData({String query = '', bool ismarka = false}) {
-    final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
-    final selectedMarka = ref.read(markaNotifierProvider).selectedMarka;
-
-    if (!ismarka) {
-      ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
+    } catch (e) {
+      // Hata durumunda loading false yapılmalı
+      state = state.copyWith(isLoading: false, isNextLoading: false);
     }
-
-    List<UrunModel> filtered = state.data.where((product) {
-      final productName = normalizeTurkishCharacters(
-        product.name?.toLowerCase() ?? '',
-      );
-      final matchesQuery = query.isEmpty
-          ? true
-          : productName.contains(normalizedQuery);
-      final matchesMarka = !ismarka
-          ? true
-          : (selectedMarka == null
-                ? true
-                : product.siteMarka == selectedMarka.name);
-
-      return matchesQuery && matchesMarka;
-    }).toList();
-
-    final uniqueMarkalar = filtered.map((e) => e.siteMarka).toSet().toList();
-    print(uniqueMarkalar);
-
-    state = state.copyWith(filteredData: filtered);
   }
 
   void setSelectedProduct(int id) {
@@ -141,54 +90,33 @@ class UrunNotifier extends StateNotifier<UrunState> {
     state = state.copyWith(selectedProduct: product);
   }
 
-  // Future<void> getFilteredProducts() async {
-  //   state = state.copyWith(isLoading: true);
+  Future<void> setQueryText(String? text) async {
+    state = state.copyWith(queryText: text);
+  }
 
-  //   state = state.copyWith(
-  //     data: state.data,
-  //     filteredData: state.filteredData,
-  //     isLoading: false,
-  //   );
-  // }
+  void clearQueryText() {
+    state = state.copyWith(queryText: null);
+  }
 
-  // void filterProducts(String query) {
-  //   ref.read(markaNotifierProvider.notifier).clearSelectedMarka();
-  //   state = state.copyWith(isLoading: true);
-  //   final normalizedQuery = normalizeTurkishCharacters(query.toLowerCase());
+  Future<void> clearAllfilter() async {
+    state = state.copyWith(filteredData: state.data, queryText: null);
+    await ref.read(markaNotifierProvider.notifier).clearFilterMarkas();
+  }
 
-  //   final filtered = state.data.where((q) {
-  //     final normalizedName = normalizeTurkishCharacters(q.name!.toLowerCase());
-  //     return normalizedName.contains(normalizedQuery);
-  //   }).toList();
+  Future<void> refreshData() async {
+    // State'i temizle
+    state = state.copyWith(
+      data: [],
+      queryText: null,
+      queryTextSetToNull: true,
+      filteredData: [],
+      pageNumber: 1,
+    );
 
-  //   state = state.copyWith(filteredData: filtered, isLoading: false);
-  // }
-
-  // Future<void> filterByMarkaProducts() async {
-  //   state = state.copyWith(isLoading: true);
-
-  //   // Marka state'ini almak için read kullanıyoruz
-  //   final markaState = ref.read(markaNotifierProvider);
-
-  //   List<UrunModel> filtered = [];
-
-  //   // Eğer selectedMarka null ise, tüm verileri filteredData'ya ekliyoruz
-  //   if (markaState.selectedMarka == null) {
-  //     filtered = state.data.isEmpty ? [] : state.data;
-  //   } else {
-  //     // Eğer selectedMarka varsa, veri filtreleme işlemi yapıyoruz
-  //     filtered = state.filteredData
-  //         .where((q) => q.siteMarka == markaState.selectedMarka?.name)
-  //         .toList();
-  //   }
-
-  //   // filteredData'yı güncelliyoruz ve loading'i false yapıyoruz
-  //   state = state.copyWith(filteredData: filtered, isLoading: false);
-  // }
-
-  // void resetFilter() {
-  //   state = state.copyWith(filteredData: state.data);
-  // }
+    await ref.read(markaNotifierProvider.notifier).clearFilterMarkas();
+    // Yeni verileri getir (filtresiz, ilk sayfa)
+    await initData(isNext: false);
+  }
 
   Future<void> urunSil(String guidId) async {
     state = state.copyWith(isLoading: true);
@@ -204,9 +132,11 @@ class UrunNotifier extends StateNotifier<UrunState> {
         isLoading: false,
         data: updatedData,
         filteredData: updatedFilteredData,
+        selectedProduct: null,
       );
+    } else {
+      state = state.copyWith(isLoading: false);
     }
-    state = state.copyWith(isLoading: false);
   }
 
   Future<bool?> bildirimAc(int id, bool deger) async {

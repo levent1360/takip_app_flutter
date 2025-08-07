@@ -7,14 +7,16 @@ import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
 import 'package:takip/features/urunler/widgets/responsive_error_product_card.dart';
 import 'package:takip/features/urunler/widgets/responsive_urun_card_widget.dart';
+import 'package:takip/features/urunler/widgets/urun_card_skeleton_widget.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
+  const UrunListSliverWidget({super.key});
+
   @override
   ConsumerState<UrunListSliverWidget> createState() =>
       _UrunListSliverWidgetState();
@@ -35,21 +37,8 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
         );
         return;
       }
-      ref.read(urunNotifierProvider.notifier).initData();
+      ref.read(urunNotifierProvider.notifier).initData(isNext: false);
     });
-  }
-
-  Future<void> refresh(String link) async {
-    ref
-        .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(
-          link,
-          checkingText: LocalizationHelper.l10n.urunkontrol,
-          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
-          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
-          bittiText: LocalizationHelper.l10n.bitti,
-          hataText: LocalizationHelper.l10n.hata,
-        );
   }
 
   Future<void> delete(String guidId) async {
@@ -59,7 +48,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     );
 
     if (result == true) {
-      ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+      await ref.read(urunNotifierProvider.notifier).urunSil(guidId);
     }
   }
 
@@ -75,13 +64,29 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     final allItems = state.filteredData;
 
     if (state.isLoading && allItems.isEmpty) {
-      return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(child: CircularProgressIndicator()),
+      return SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return UrunCardSkeleton(
+              isTablet: false, // Cihaz türüne göre ayarla
+              screenWidth: MediaQuery.of(context).size.width,
+              containerPadding: 12,
+              fontSizeSmall: 12,
+              fontSizeNormal: 14,
+              iconSize: 24,
+            );
+          },
+          childCount: 6, // Kaç tane skeleton gösterilsin?
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
         ),
       );
     }
+
     if (!state.isLoading && allItems.isEmpty) {
       return SliverToBoxAdapter(
         child: NoItemsViewSimple(selectedMarka: stateMarka.selectedMarka),
@@ -96,11 +101,11 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
           final productCard = ResponsiveUrunCardWidget(
             key: ValueKey(urun.iden),
             delete: () => delete(urun.iden),
-            showDetail: () {
+            showDetail: () async {
               ref
                   .read(urunNotifierProvider.notifier)
                   .setSelectedProduct(urun.id);
-              Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ProductDetailPage()),
               );

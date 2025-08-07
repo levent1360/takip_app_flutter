@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takip/components/image/network_image_with_loader.dart';
 
 class FullScreenImagePage extends StatefulWidget {
   final String imageUrl;
@@ -44,7 +45,15 @@ class _FullScreenImagePageState extends State<FullScreenImagePage> {
             Transform.translate(
               offset: Offset(0, offsetY),
               child: Center(
-                child: InteractiveViewer(child: Image.network(widget.imageUrl)),
+                child: InteractiveViewer(
+                  child: NetworkImageWithLoader(
+                    widget.imageUrl,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  // Image.network(widget.imageUrl)
+                ),
               ),
             ),
           ],

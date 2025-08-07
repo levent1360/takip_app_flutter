@@ -24,8 +24,25 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
     );
   }
 
+  Future<void> setFilterMarkas(List<String?> filtreMarkalar) async {
+    state = state.copyWith(isLoading: true);
+
+    final filtered = state.data.where((q) {
+      return filtreMarkalar.contains(q.name);
+    }).toList();
+    state = state.copyWith(filteredData: filtered, isLoading: false);
+  }
+
+  Future<void> clearFilterMarkas() async {
+    state = state.copyWith(isLoading: true);
+
+    state = state.copyWith(filteredData: state.data, isLoading: false);
+  }
+
   Future<void> selectedMarka(MarkaModel model) async {
     var _selectedBefore = state.selectedMarka;
+
+    print(_selectedBefore?.name);
 
     if (_selectedBefore == null) {
       _selectedBefore = model;
@@ -44,7 +61,6 @@ class MarkaNotifier extends StateNotifier<MarkaState> {
 
   String getMarkaName(String name) {
     final data = state.data;
-    if (data == null) return 'Bilinmiyor';
 
     try {
       final brand = data.firstWhere((x) => x.name == name);

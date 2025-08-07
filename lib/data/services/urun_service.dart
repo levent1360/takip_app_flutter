@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:takip/core/constant/api_endpoints.dart';
+import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/data/models/paginated_response_model.dart';
@@ -9,9 +10,13 @@ import 'package:takip/features/notification/models/hatali_kayit_model.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 
 abstract class UrunService {
-  Future<List<UrunModel>> getProducts();
-  Future<PaginatedResponseModel<UrunModel>> getProductsPage(int pageNumber);
+  Future<PaginatedResponseModel<UrunModel>> getUrunlerPageSearch(
+    int pageNumber, [
+    String? searchtext,
+    String? marka,
+  ]);
   Future<String?> urunKaydet2(String? url);
+  Future<String?> urunKaydet3(String? url);
   Future urunGoruldu();
   Future<int> urunSil(String guidId);
   Future<List<HataliKayitModel>> hataliKayitlar();
@@ -24,23 +29,33 @@ class UrunServiceImpl implements UrunService {
 
   UrunServiceImpl(this._apiService);
 
-  Future<List<UrunModel>> getProducts() async {
-    final localDataSource = sl<LocalDataSource>();
-    final token = await localDataSource.getDeviceToken();
-    return await _apiService.getList<UrunModel>(
-      '${ApiEndpoints.urunler}/$token',
-      fromJsonT: (json) => UrunModel.fromJson(json),
-    );
-  }
+  // Future<PaginatedResponseModel<UrunModel>> getProductsPage([
+  //   int pageNumber = 1,
+  // ]) async {
+  //   final localDataSource = sl<LocalDataSource>();
+  //   final token = await localDataSource.getDeviceToken();
 
-  Future<PaginatedResponseModel<UrunModel>> getProductsPage([
+  //   final result = await _apiService.get<PaginatedResponseModel<UrunModel>>(
+  //     ApiEndpoints.getUrunsPage(token!, pageNumber),
+  //     fromJsonT: (json) => PaginatedResponseModel<UrunModel>.fromJson(
+  //       json as Map<String, dynamic>,
+  //       (item) => UrunModel.fromJson(item),
+  //     ),
+  //   );
+
+  //   return result!; // Burada null olmadığını garanti ediyorsun
+  // }
+
+  Future<PaginatedResponseModel<UrunModel>> getUrunlerPageSearch([
     int pageNumber = 1,
+    String? searchtext,
+    String? marka,
   ]) async {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
 
     final result = await _apiService.get<PaginatedResponseModel<UrunModel>>(
-      ApiEndpoints.getUrunsPage(token!, pageNumber),
+      ApiEndpoints.getUrunlerPageSearch(token!, pageNumber, searchtext, marka),
       fromJsonT: (json) => PaginatedResponseModel<UrunModel>.fromJson(
         json as Map<String, dynamic>,
         (item) => UrunModel.fromJson(item),
@@ -80,6 +95,20 @@ class UrunServiceImpl implements UrunService {
 
     final result = await _apiService.get<String?>(
       ApiEndpoints.urunKaydet2(token!, uri),
+      fromJsonT: (json) => json as String?,
+    );
+    return result;
+  }
+
+  Future<String?> urunKaydet3(String? url) async {
+    final localDataSource = sl<LocalDataSource>();
+    final token = await localDataSource.getDeviceToken();
+
+    final String uri = Uri.encodeComponent(url!);
+    final locale = LocalizationHelper.currentLanguageCode;
+
+    final result = await _apiService.get<String?>(
+      ApiEndpoints.urunKaydet3(token!, uri, locale == 'en'),
       fromJsonT: (json) => json as String?,
     );
     return result;

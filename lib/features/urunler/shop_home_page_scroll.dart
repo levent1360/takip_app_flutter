@@ -32,12 +32,19 @@ class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
     if (!urunState.isNextLoading &&
         scrollController.position.pixels >=
             scrollController.position.maxScrollExtent - 200) {
-      ref.read(urunNotifierProvider.notifier).nextData();
+      ref.read(urunNotifierProvider.notifier).initData(isNext: true);
     }
   }
 
   Future<void> refresh() async {
-    await ref.read(urunNotifierProvider.notifier).initData();
+    await ref.read(urunNotifierProvider.notifier).refreshData();
+    clearTextFieldCallback?.call();
+  }
+
+  VoidCallback? clearTextFieldCallback;
+
+  void _registerClearCallback(VoidCallback callback) {
+    clearTextFieldCallback = callback;
   }
 
   @override
@@ -68,7 +75,9 @@ class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 10),
-                      const SearchBarScreen(),
+                      SearchBarScreen(
+                        onInitClearCallback: _registerClearCallback,
+                      ),
                       const SizedBox(height: 10),
                       Text(
                         LocalizationHelper.l10n.markalar,

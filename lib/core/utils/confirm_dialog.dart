@@ -5,6 +5,7 @@ import 'package:takip/core/services/error_service.dart';
 Future<bool?> showConfirmDialog({
   String? title,
   String? content,
+  bool isShowCancel = true,
   String? cancelText,
   String? confirmText,
   Color? confirmColor,
@@ -44,21 +45,23 @@ Future<bool?> showConfirmDialog({
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(
-                      cancelText ?? LocalizationHelper.l10n.iptal,
-                      style: TextStyle(color: Colors.redAccent),
-                    ),
-                  ),
-                ),
+                isShowCancel
+                    ? Expanded(
+                        child: OutlinedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text(
+                            cancelText ?? LocalizationHelper.l10n.iptal,
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
                 const SizedBox(width: 12),
 
                 Expanded(

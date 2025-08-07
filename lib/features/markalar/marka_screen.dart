@@ -7,6 +7,8 @@ import 'package:takip/features/markalar/widgets/shop_category.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 
 class MarkaScreen extends ConsumerStatefulWidget {
+  const MarkaScreen({super.key});
+
   @override
   ConsumerState<MarkaScreen> createState() => _MarkaScreenState();
 }
@@ -28,9 +30,12 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         final allItems = state.filteredData;
         final selectedItem = state.selectedMarka;
 
-        if (!state.isLoading && allItems.length == 0) {
-          return Center(
-            child: Text(LocalizationHelper.l10n.herhangiveribulunamadi),
+        if (!state.isLoading && allItems.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(LocalizationHelper.l10n.aramamarkabulunamadi),
+            ),
           );
         }
 
@@ -52,9 +57,9 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
                     await ref
                         .read(markaNotifierProvider.notifier)
                         .selectedMarka(marka);
-                    ref
+                    await ref
                         .read(urunNotifierProvider.notifier)
-                        .filterData(ismarka: true);
+                        .initData(isMarkaFilter: true);
                   },
                 );
               }

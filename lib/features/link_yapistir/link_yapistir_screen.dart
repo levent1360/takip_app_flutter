@@ -38,7 +38,7 @@ class _LinkYapistirScreenState extends ConsumerState<LinkYapistirScreen> {
     ).pushReplacement(MaterialPageRoute(builder: (_) => ShopHomePageScroll()));
     await ref
         .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(
+        .urunKaydet(
           controller.text,
           checkingText: LocalizationHelper.l10n.urunkontrol,
           gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
