@@ -20,6 +20,7 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
 
     final fontSizeSmall = isTablet ? 16.0 : 12.0;
@@ -51,8 +52,8 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AspectRatio(
-              aspectRatio: isTablet ? 16 / 7 : 15 / 9,
+            SizedBox(
+              height: isTablet ? screenHeight * 0.2 : screenHeight * 0.17,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
@@ -108,7 +109,7 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
             SizedBox(height: containerPadding / 2),
             Text(
               urun.name ?? '',
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -117,11 +118,10 @@ class ResponsiveUrunCardWidget extends StatelessWidget {
             ),
             SizedBox(height: 4),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (!urun.isFiyatAyni)
                       Text(
