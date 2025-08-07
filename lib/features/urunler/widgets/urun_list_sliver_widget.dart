@@ -126,7 +126,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
       }, childCount: allItems.length),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.7,
+        childAspectRatio: 0.6,
         crossAxisSpacing: 5,
         mainAxisSpacing: 5,
       ),
