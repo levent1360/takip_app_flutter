@@ -30,7 +30,7 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
         final allItems = state.filteredData;
         final selectedItem = state.selectedMarka;
 
-        if (!state.isLoading && allItems.length == 0) {
+        if (!state.isLoading && allItems.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(

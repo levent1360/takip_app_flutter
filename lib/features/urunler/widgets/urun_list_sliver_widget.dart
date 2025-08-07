@@ -12,6 +12,7 @@ import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
 import 'package:takip/features/urunler/widgets/responsive_error_product_card.dart';
 import 'package:takip/features/urunler/widgets/responsive_urun_card_widget.dart';
+import 'package:takip/features/urunler/widgets/urun_card_skeleton_widget.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
   const UrunListSliverWidget({super.key});
@@ -63,13 +64,29 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     final allItems = state.filteredData;
 
     if (state.isLoading && allItems.isEmpty) {
-      return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(child: CircularProgressIndicator()),
+      return SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return UrunCardSkeleton(
+              isTablet: false, // Cihaz türüne göre ayarla
+              screenWidth: MediaQuery.of(context).size.width,
+              containerPadding: 12,
+              fontSizeSmall: 12,
+              fontSizeNormal: 14,
+              iconSize: 24,
+            );
+          },
+          childCount: 6, // Kaç tane skeleton gösterilsin?
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
         ),
       );
     }
+
     if (!state.isLoading && allItems.isEmpty) {
       return SliverToBoxAdapter(
         child: NoItemsViewSimple(selectedMarka: stateMarka.selectedMarka),
