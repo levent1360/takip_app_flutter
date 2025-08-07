@@ -32,12 +32,12 @@ class _ShopHomePageScrollState extends ConsumerState<ShopHomePageScroll> {
     if (!urunState.isNextLoading &&
         scrollController.position.pixels >=
             scrollController.position.maxScrollExtent - 200) {
-      ref.read(urunNotifierProvider.notifier).nextData();
+      ref.read(urunNotifierProvider.notifier).initData(isNext: true);
     }
   }
 
   Future<void> refresh() async {
-    await ref.read(urunNotifierProvider.notifier).initData(isClearAll: true);
+    await ref.read(urunNotifierProvider.notifier).refreshData();
     clearTextFieldCallback?.call();
   }
 

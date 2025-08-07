@@ -52,13 +52,15 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
             controller: _searchController,
             onChanged: (value) async {
               if (_debounce?.isActive ?? false) _debounce!.cancel();
-              _debounce = Timer(const Duration(milliseconds: 500), () async {
+              _debounce = Timer(const Duration(milliseconds: 1000), () async {
                 await ref
                     .read(urunNotifierProvider.notifier)
-                    .filterData(isQuery: true, query: value);
+                    .setQueryText(value);
+                await ref.read(urunNotifierProvider.notifier).initData();
               });
             },
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -69,7 +71,7 @@ class _SearchBarScreenState extends ConsumerState<SearchBarScreen> {
                         FocusScope.of(context).unfocus();
                         await ref
                             .read(urunNotifierProvider.notifier)
-                            .filterData(isClearAll: true);
+                            .refreshData();
                       },
                     )
                   : SizedBox.shrink(),

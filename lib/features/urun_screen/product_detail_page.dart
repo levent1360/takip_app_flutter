@@ -4,8 +4,8 @@ import 'package:takip/components/image/network_image_with_loader.dart';
 import 'package:takip/core/constant/localization_helper.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/buttons/notification_status_icon.dart';
+import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget {

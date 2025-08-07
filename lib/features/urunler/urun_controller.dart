@@ -7,14 +7,22 @@ class UrunController {
 
   UrunController(this._urunService);
 
-  Future<List<UrunModel>> getProducts() async {
-    return await _urunService.getProducts();
-  }
+  // Future<PaginatedResponseModel<UrunModel>> getProductsPage(
+  //   int pageNumber,
+  // ) async {
+  //   return await _urunService.getProductsPage(pageNumber);
+  // }
 
-  Future<PaginatedResponseModel<UrunModel>> getProductsPage(
-    int pageNumber,
-  ) async {
-    return await _urunService.getProductsPage(pageNumber);
+  Future<PaginatedResponseModel<UrunModel>> getUrunlerPageSearch(
+    int pageNumber, [
+    String? searchtext,
+    String? marka,
+  ]) async {
+    return await _urunService.getUrunlerPageSearch(
+      pageNumber,
+      searchtext,
+      marka,
+    );
   }
 
   Future urunGoruldu() async {

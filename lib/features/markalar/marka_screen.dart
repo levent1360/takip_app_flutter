@@ -7,6 +7,8 @@ import 'package:takip/features/markalar/widgets/shop_category.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 
 class MarkaScreen extends ConsumerStatefulWidget {
+  const MarkaScreen({super.key});
+
   @override
   ConsumerState<MarkaScreen> createState() => _MarkaScreenState();
 }
@@ -55,7 +57,9 @@ class _MarkaScreenState extends ConsumerState<MarkaScreen> {
                     await ref
                         .read(markaNotifierProvider.notifier)
                         .selectedMarka(marka);
-                    await ref.read(urunNotifierProvider.notifier).filterData();
+                    await ref
+                        .read(urunNotifierProvider.notifier)
+                        .initData(isMarkaFilter: true);
                   },
                 );
               }

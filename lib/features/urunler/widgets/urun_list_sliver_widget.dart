@@ -7,7 +7,6 @@ import 'package:takip/core/di/service_locator.dart';
 import 'package:takip/core/utils/confirm_dialog.dart';
 import 'package:takip/data/datasources/local_datasource.dart';
 import 'package:takip/features/markalar/marka_notifier.dart';
-import 'package:takip/features/urun_kaydet/urun_kaydet_notifier.dart';
 import 'package:takip/features/urun_screen/product_detail_page.dart';
 import 'package:takip/features/urunler/urun_notifier.dart';
 import 'package:takip/features/urunler/widgets/no_items_view_simple.dart';
@@ -15,6 +14,8 @@ import 'package:takip/features/urunler/widgets/responsive_error_product_card.dar
 import 'package:takip/features/urunler/widgets/responsive_urun_card_widget.dart';
 
 class UrunListSliverWidget extends ConsumerStatefulWidget {
+  const UrunListSliverWidget({super.key});
+
   @override
   ConsumerState<UrunListSliverWidget> createState() =>
       _UrunListSliverWidgetState();
@@ -35,21 +36,8 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
         );
         return;
       }
-      ref.read(urunNotifierProvider.notifier).initData();
+      ref.read(urunNotifierProvider.notifier).initData(isNext: false);
     });
-  }
-
-  Future<void> refresh(String link) async {
-    ref
-        .read(urunKaydetNotifierProvider.notifier)
-        .urunKaydet2(
-          link,
-          checkingText: LocalizationHelper.l10n.urunkontrol,
-          gecerliGonderText: LocalizationHelper.l10n.gecerligonder,
-          urunkaydediliyorText: LocalizationHelper.l10n.urunkaydediliyor,
-          bittiText: LocalizationHelper.l10n.bitti,
-          hataText: LocalizationHelper.l10n.hata,
-        );
   }
 
   Future<void> delete(String guidId) async {
@@ -59,7 +47,7 @@ class _UrunListSliverWidgetState extends ConsumerState<UrunListSliverWidget> {
     );
 
     if (result == true) {
-      ref.read(urunNotifierProvider.notifier).urunSil(guidId);
+      await ref.read(urunNotifierProvider.notifier).urunSil(guidId);
     }
   }
 

@@ -38,12 +38,13 @@ class _AnimationPleaseWaitContainerWidgetState
               opacity: 1.0,
               duration: Duration(seconds: 1), // 1 saniyede kaybolur
               child: Container(
-                width: double.infinity, // Ekran genişliği kadar olur
+                width: double.infinity,
                 height: 75,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(83, 33, 149, 243),
-                  borderRadius: BorderRadius.circular(16), // Köşeleri yumuşatır
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 8), // İç boşluk
                 child: Row(
                   children: [
                     SizedBox(
@@ -54,17 +55,19 @@ class _AnimationPleaseWaitContainerWidgetState
                         fit: BoxFit.cover,
                       ),
                     ),
+                    const SizedBox(
+                      width: 16,
+                    ), // Lottie ile text arasında boşluk
                     Expanded(
-                      child: Container(
-                        child: Center(
-                          child: Text(
-                            widget.metin!,
-                            softWrap: true,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 12, 71, 123),
-                              fontSize: 18,
-                            ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.metin ?? '',
+                          softWrap: true,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 12, 71, 123),
+                            fontSize: 18,
                           ),
                         ),
                       ),

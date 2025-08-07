@@ -9,8 +9,11 @@ import 'package:takip/features/notification/models/hatali_kayit_model.dart';
 import 'package:takip/features/urunler/urun_model.dart';
 
 abstract class UrunService {
-  Future<List<UrunModel>> getProducts();
-  Future<PaginatedResponseModel<UrunModel>> getProductsPage(int pageNumber);
+  Future<PaginatedResponseModel<UrunModel>> getUrunlerPageSearch(
+    int pageNumber, [
+    String? searchtext,
+    String? marka,
+  ]);
   Future<String?> urunKaydet2(String? url);
   Future urunGoruldu();
   Future<int> urunSil(String guidId);
@@ -24,23 +27,33 @@ class UrunServiceImpl implements UrunService {
 
   UrunServiceImpl(this._apiService);
 
-  Future<List<UrunModel>> getProducts() async {
-    final localDataSource = sl<LocalDataSource>();
-    final token = await localDataSource.getDeviceToken();
-    return await _apiService.getList<UrunModel>(
-      '${ApiEndpoints.urunler}/$token',
-      fromJsonT: (json) => UrunModel.fromJson(json),
-    );
-  }
+  // Future<PaginatedResponseModel<UrunModel>> getProductsPage([
+  //   int pageNumber = 1,
+  // ]) async {
+  //   final localDataSource = sl<LocalDataSource>();
+  //   final token = await localDataSource.getDeviceToken();
 
-  Future<PaginatedResponseModel<UrunModel>> getProductsPage([
+  //   final result = await _apiService.get<PaginatedResponseModel<UrunModel>>(
+  //     ApiEndpoints.getUrunsPage(token!, pageNumber),
+  //     fromJsonT: (json) => PaginatedResponseModel<UrunModel>.fromJson(
+  //       json as Map<String, dynamic>,
+  //       (item) => UrunModel.fromJson(item),
+  //     ),
+  //   );
+
+  //   return result!; // Burada null olmadığını garanti ediyorsun
+  // }
+
+  Future<PaginatedResponseModel<UrunModel>> getUrunlerPageSearch([
     int pageNumber = 1,
+    String? searchtext,
+    String? marka,
   ]) async {
     final localDataSource = sl<LocalDataSource>();
     final token = await localDataSource.getDeviceToken();
 
     final result = await _apiService.get<PaginatedResponseModel<UrunModel>>(
-      ApiEndpoints.getUrunsPage(token!, pageNumber),
+      ApiEndpoints.getUrunlerPageSearch(token!, pageNumber, searchtext, marka),
       fromJsonT: (json) => PaginatedResponseModel<UrunModel>.fromJson(
         json as Map<String, dynamic>,
         (item) => UrunModel.fromJson(item),
